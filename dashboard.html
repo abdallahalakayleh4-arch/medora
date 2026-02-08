@@ -8,9 +8,10 @@
   <!-- Auth Guard -->
   <script type="module" src="auth-guard.js"></script>
 
-  <!-- Firebase (for logout) -->
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
   <style>
     body {
@@ -49,14 +50,8 @@
       font-size: 22px;
     }
 
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-    }
-
     .brand-text strong {
       font-size: 18px;
-      letter-spacing: 0.4px;
     }
 
     .brand-text span {
@@ -89,7 +84,6 @@
     .welcome h1 {
       margin: 0;
       font-size: 26px;
-      font-weight: 600;
     }
 
     .welcome p {
@@ -118,19 +112,6 @@
       overflow: hidden;
     }
 
-    .card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at top left, rgba(58,134,255,0.25), transparent 60%);
-      opacity: 0;
-      transition: 0.4s;
-    }
-
-    .card:hover::after {
-      opacity: 1;
-    }
-
     .card:hover {
       transform: translateY(-8px);
     }
@@ -151,13 +132,44 @@
       line-height: 1.6;
     }
 
-    /* ===== FOOTER ===== */
+    /* ===== PROGRESS CARD ===== */
+    .progress-card {
+      cursor: default;
+    }
+
+    .progress-info {
+      margin: 10px 0;
+      font-size: 14px;
+      color: #c7d2fe;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background: #020617;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 10px 0 14px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #3a86ff);
+      border-radius: 10px;
+      transition: width 0.6s ease;
+    }
+
+    .progress-text {
+      font-size: 13px;
+      color: #94a3b8;
+    }
+
     footer {
       text-align: center;
       padding: 25px;
       font-size: 12px;
       color: #94a3b8;
-      opacity: 0.8;
     }
   </style>
 </head>
@@ -183,41 +195,58 @@
 
 <section class="welcome">
   <h1>Welcome back 👋</h1>
-  <p>
-    Stay organized, focused, and in control of your medical studies.
-    Medora helps you manage tasks, track progress, and access smart tools
-    designed specifically for medical students.
-  </p>
+  <p>Track your progress and stay focused on what really matters today.</p>
 </section>
 
 <section class="container">
+
+  <!-- TASK PROGRESS -->
+  <div class="card progress-card">
+    <div class="card-icon">📊</div>
+    <h3>Your Tasks Progress</h3>
+
+    <div class="progress-info">
+      <span id="completedTasks">0</span> /
+      <span id="totalTasks">0</span> completed
+    </div>
+
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <p class="progress-text" id="progressText">
+      Loading your tasks...
+    </p>
+  </div>
+
   <div class="card" onclick="location.href='todo.html'">
     <div class="card-icon">✅</div>
     <h3>To-Do List</h3>
-    <p>Plan and track your daily medical tasks with clarity and progress insights.</p>
+    <p>Plan and track your daily medical tasks with clarity.</p>
   </div>
 
   <div class="card" onclick="location.href='timer.html'">
     <div class="card-icon">⏱</div>
     <h3>Study Timer</h3>
-    <p>Boost focus using Pomodoro-based study sessions and breaks.</p>
+    <p>Stay focused using Pomodoro-based sessions.</p>
   </div>
 
   <div class="card" onclick="location.href='scores.html'">
     <div class="card-icon">🧠</div>
     <h3>Medical Scores</h3>
-    <p>Access essential clinical calculators and scoring systems instantly.</p>
+    <p>Clinical calculators and scoring tools.</p>
   </div>
 
   <div class="card" onclick="location.href='reports.html'">
     <div class="card-icon">📄</div>
     <h3>Reports & Courses</h3>
-    <p>Trusted resources and curated learning materials for medical students.</p>
+    <p>Curated medical learning resources.</p>
   </div>
+
 </section>
 
 <footer>
-  © 2026 Medora — Designed for medical students, by medical students.
+  © 2026 Medora — Designed for medical students.
 </footer>
 
 <script>
@@ -228,13 +257,48 @@
   };
 
   firebase.initializeApp(firebaseConfig);
+
   const auth = firebase.auth();
+  const db = firebase.firestore();
 
   function logout() {
     auth.signOut().then(() => {
       window.location.href = "login.html";
     });
   }
+
+  auth.onAuthStateChanged(user => {
+    if (!user) return;
+
+    db.collection("tasks")
+      .where("uid", "==", user.uid)
+      .onSnapshot(snapshot => {
+        const total = snapshot.size;
+        let completed = 0;
+
+        snapshot.forEach(doc => {
+          if (doc.data().completed) completed++;
+        });
+
+        const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+
+        document.getElementById("totalTasks").textContent = total;
+        document.getElementById("completedTasks").textContent = completed;
+        document.getElementById("progressFill").style.width = percent + "%";
+
+        const text = document.getElementById("progressText");
+
+        if (total === 0) {
+          text.textContent = "No tasks yet — start planning your day ✨";
+        } else if (percent === 100) {
+          text.textContent = "Excellent! All tasks completed 🎉";
+        } else if (percent >= 50) {
+          text.textContent = "You're making great progress 💪";
+        } else {
+          text.textContent = "Keep going — every task counts 🔥";
+        }
+      });
+  });
 </script>
 
 </body>
