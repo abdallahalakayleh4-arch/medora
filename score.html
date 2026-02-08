@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Medora | Medical Scores</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Auth Guard -->
+  <script type="module" src="auth-guard.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: radial-gradient(circle at top, #1c2541, #020617);
+      color: #eaeaea;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 22px 40px;
+      background: rgba(28,37,65,0.9);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .wrapper {
+      padding: 40px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    /* SEARCH */
+    .search-box {
+      position: relative;
+      margin-bottom: 30px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 14px;
+      border: none;
+      outline: none;
+      background: #020617;
+      color: #eaeaea;
+      font-size: 16px;
+    }
+
+    .search-box input::placeholder {
+      color: #94a3b8;
+    }
+
+    /* RESULTS */
+    .results {
+      display: grid;
+      gap: 14px;
+    }
+
+    .score-item {
+      background: linear-gradient(180deg, #1c2541, #16203a);
+      border-radius: 16px;
+      padding: 18px 22px;
+      cursor: pointer;
+      transition: 0.3s;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .score-item:hover {
+      transform: translateY(-4px);
+      background: linear-gradient(180deg, #24355c, #1c2541);
+    }
+
+    .score-item h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+    }
+
+    .score-item span {
+      font-size: 13px;
+      color: #b0bcd6;
+    }
+
+    .empty {
+      text-align: center;
+      color: #94a3b8;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🧠 Medical Scores</h1>
+</header>
+
+<div class="wrapper">
+
+  <div class="search-box">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Search medical score (e.g. CHA2DS2-VASc, Wells, CURB-65...)"
+    >
+  </div>
+
+  <div class="results" id="results"></div>
+
+  <div class="empty" id="emptyMessage">
+    Start typing to see medical scores…
+  </div>
+
+</div>
+
+<script>
+  const scores = [
+    "APGAR Score",
+    "Glasgow Coma Scale (GCS)",
+    "Bishop Score",
+    "Wells Score – DVT",
+    "Wells Score – Pulmonary Embolism",
+    "CHA₂DS₂-VASc",
+    "HAS-BLED",
+    "CURB-65",
+    "SOFA Score",
+    "qSOFA",
+    "APACHE II",
+    "NIH Stroke Scale (NIHSS)",
+    "TIMI Risk Score",
+    "GRACE Score",
+    "Child–Pugh Score",
+    "MELD Score",
+    "Alvarado Score",
+    "Ranson Criteria",
+    "BISAP Score",
+    "Glasgow-Blatchford Score",
+    "Rockall Score",
+    "Framingham Risk Score",
+    "ASCVD Risk Calculator",
+    "ABCD² Score",
+    "Barthel Index",
+    "Karnofsky Performance Status",
+    "ECOG Performance Status",
+    "ASA Physical Status",
+    "CHADS₂ Score",
+    "PESI Score",
+    "NEWS2 Score",
+    "Braden Scale",
+    "MMSE",
+    "PHQ-9",
+    "GAD-7",
+    "Beck Depression Inventory",
+    "Ottawa Ankle Rules",
+    "Canadian CT Head Rule",
+    "Centor Score",
+    "Duke Criteria",
+    "Modified Rankin Scale (mRS)",
+    "SIRS Criteria",
+    "HScore",
+    "PADUA Score",
+    "Caprini Score",
+    "MUST Score",
+    "FIB-4 Index",
+    "SAPS II",
+    "Shock Index",
+    "FOUR Score",
+    "Charlson Comorbidity Index",
+    "Killip–Kimball Classification",
+    "EuroSCORE II",
+    "STOP-BANG",
+    "MELD-Na",
+    "BODE Index"
+  ];
+
+  const input = document.getElementById("searchInput");
+  const results = document.getElementById("results");
+  const empty = document.getElementById("emptyMessage");
+
+  input.addEventListener("input", () => {
+    const query = input.value.toLowerCase();
+    results.innerHTML = "";
+
+    if (query === "") {
+      empty.style.display = "block";
+      return;
+    }
+
+    const filtered = scores.filter(score =>
+      score.toLowerCase().includes(query)
+    );
+
+    if (filtered.length === 0) {
+      empty.style.display = "block";
+      empty.textContent = "No matching scores found.";
+      return;
+    }
+
+    empty.style.display = "none";
+
+    filtered.forEach(score => {
+      const div = document.createElement("div");
+      div.className = "score-item";
+      div.innerHTML = `
+        <h3>${score}</h3>
+        <span>Click to open calculator</span>
+      `;
+      div.onclick = () => {
+        alert(score + " calculator coming soon 👨‍⚕️");
+      };
+      results.appendChild(div);
+    });
+  });
+</script>
+
+</body>
+</html>
