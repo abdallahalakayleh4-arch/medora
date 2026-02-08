@@ -1,110 +1,153 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Medora | Login</title>
+  <meta charset="UTF-8">
+  <title>Medora | Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Firebase SDKs (COMPAT – لازم) -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <!-- Firebase SDKs (COMPAT) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
-    <style>
-        body {
-            font-family: Arial;
-            background: #f4f7fb;
-            text-align: center;
-            padding-top: 80px;
-        }
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0b132b;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      color: #eaeaea;
+    }
 
-        .box {
-            background: white;
-            width: 350px;
-            margin: auto;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-        }
+    .box {
+      background: #1c2541;
+      width: 360px;
+      padding: 35px;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      text-align: center;
+    }
 
-        input, button {
-            width: 90%;
-            padding: 12px;
-            margin: 10px 0;
-        }
+    h2 {
+      margin-bottom: 25px;
+    }
 
-        button {
-            background: #4facfe;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-        }
-    </style>
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      border-radius: 8px;
+      border: none;
+      background: #3a86ff;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #2563eb;
+    }
+
+    .secondary {
+      background: #3a506b;
+    }
+
+    .secondary:hover {
+      background: #2c3e50;
+    }
+
+    #status {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #b0bcd6;
+    }
+  </style>
 </head>
 
 <body>
 
 <div class="box">
-    <h2>Medora Login</h2>
+  <h2>🧠 Medora Login</h2>
 
-    <input type="email" id="email" placeholder="Email">
-    <input type="password" id="password" placeholder="Password">
+  <input type="email" id="email" placeholder="Email" required>
+  <input type="password" id="password" placeholder="Password" required>
 
-    <button type="button" onclick="login()">Login</button>
-    <button type="button" onclick="signup()">Sign Up</button>
-    <button type="button" onclick="logout()">Logout</button>
+  <button onclick="login()">Login</button>
+  <button class="secondary" onclick="signup()">Sign Up</button>
+  <button class="secondary" onclick="logout()">Logout</button>
 
-    <p id="status"></p>
+  <p id="status"></p>
 </div>
 
 <script>
-    // Firebase configuration (تعريف واحد فقط)
-    const firebaseConfig = {
-        apiKey: "AIzaSyCRVWEvWa-xOi3NFjP-IdIaCBXNJoEOKqY",
-        authDomain: "medora-app-10e70.firebaseapp.com",
-        projectId: "medora-app-10e70",
-        storageBucket: "medora-app-10e70.appspot.com",
-        messagingSenderId: "105310866840",
-        appId: "1:105310866840:web:3265227cdd5e8a1555afed",
-        measurementId: "G-ZBS3F30LLR"
-    };
+  // Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyCRVWEvWa-xOi3NFjP-IdIaCBXNJoEOKqY",
+    authDomain: "medora-app-10e70.firebaseapp.com",
+    projectId: "medora-app-10e70",
+    storageBucket: "medora-app-10e70.appspot.com",
+    messagingSenderId: "105310866840",
+    appId: "1:105310866840:web:3265227cdd5e8a1555afed"
+  };
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
 
-    // Sign up
-    function signup() {
-        auth.createUserWithEmailAndPassword(
-            document.getElementById("email").value,
-            document.getElementById("password").value
-        )
-        .then(() => {
-            document.getElementById("status").innerText = "Signed up successfully ✅";
-        })
-        .catch(error => {
-            document.getElementById("status").innerText = error.message;
-        });
+  // إذا المستخدم مسجّل دخول، لا تخليه يشوف login
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      window.location.href = "dashboard.html";
     }
+  });
 
-    // Login
-    function login() {
-        auth.signInWithEmailAndPassword(
-            document.getElementById("email").value,
-            document.getElementById("password").value
-        )
-        .then(() => {
-            document.getElementById("status").innerText = "Logged in successfully ✅";
-        })
-        .catch(error => {
-            document.getElementById("status").innerText = error.message;
-        });
-    }
+  // Login
+  function login() {
+    auth.signInWithEmailAndPassword(
+      document.getElementById("email").value,
+      document.getElementById("password").value
+    )
+    .then(() => {
+      window.location.href = "dashboard.html";
+    })
+    .catch(error => {
+      document.getElementById("status").innerText = error.message;
+    });
+  }
 
-    // Logout
-    function logout() {
-        auth.signOut().then(() => {
-            document.getElementById("status").innerText = "Logged out ✅";
-        });
-    }
+  // Sign Up
+  function signup() {
+    auth.createUserWithEmailAndPassword(
+      document.getElementById("email").value,
+      document.getElementById("password").value
+    )
+    .then(() => {
+      window.location.href = "dashboard.html";
+    })
+    .catch(error => {
+      document.getElementById("status").innerText = error.message;
+    });
+  }
+
+  // Logout
+  function logout() {
+    auth.signOut().then(() => {
+      document.getElementById("status").innerText = "Logged out ✅";
+    });
+  }
 </script>
 
 </body>
