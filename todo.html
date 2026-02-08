@@ -8,142 +8,175 @@
   <!-- Auth Guard -->
   <script type="module" src="auth-guard.js"></script>
 
+  <!-- Firebase SDKs (COMPAT) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
   <style>
     body {
       margin: 0;
       font-family: "Segoe UI", Arial, sans-serif;
-      background: linear-gradient(180deg, #0b132b, #020617);
+      background: radial-gradient(circle at top, #1c2541, #020617);
       color: #eaeaea;
       min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    header {
-      padding: 20px 30px;
-      background: #1c2541;
-      font-size: 20px;
-      font-weight: 600;
-    }
-
-    .container {
-      max-width: 700px;
-      margin: 40px auto;
-      background: #1c2541;
+    .card {
+      width: 720px;
+      background: #0f172a;
+      border-radius: 20px;
       padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
     }
 
     h2 {
-      margin-bottom: 20px;
+      margin: 0 0 20px;
+      font-weight: 600;
     }
 
+    /* === TOP SECTION === */
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    /* === CIRCULAR PROGRESS === */
+    .progress-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: conic-gradient(#3a86ff 0deg, #020617 0deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.4s;
+    }
+
+    .progress-circle span {
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    /* === ADD TASK === */
     .add-task {
       display: flex;
       gap: 10px;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
     }
 
     .add-task input {
       flex: 1;
-      padding: 12px;
-      border-radius: 8px;
+      padding: 14px;
+      border-radius: 10px;
       border: none;
       outline: none;
-      font-size: 14px;
+      font-size: 15px;
     }
 
     .add-task button {
-      padding: 12px 18px;
-      border-radius: 8px;
+      padding: 14px 20px;
+      border-radius: 10px;
       border: none;
       background: #3a86ff;
       color: white;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 15px;
+      transition: 0.3s;
     }
 
+    .add-task button:hover {
+      background: #2563eb;
+      transform: translateY(-2px);
+    }
+
+    /* === TASK LIST === */
     ul {
       list-style: none;
       padding: 0;
+      margin: 0;
     }
 
     li {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      background: #3a506b;
-      padding: 12px 15px;
-      border-radius: 10px;
+      gap: 12px;
+      background: #1c2541;
+      padding: 14px 16px;
+      border-radius: 12px;
       margin-bottom: 10px;
+      transition: 0.3s;
+    }
+
+    li:hover {
+      background: #24355c;
     }
 
     li.completed span {
       text-decoration: line-through;
-      color: #b0bcd6;
+      color: #9ca3af;
     }
 
     li span {
       flex: 1;
-      margin-left: 10px;
+      font-size: 15px;
+    }
+
+    li input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
     }
 
     li button {
       background: transparent;
       border: none;
       color: #ff6b6b;
+      font-size: 18px;
       cursor: pointer;
-      font-size: 16px;
+      transition: 0.2s;
     }
 
-    /* Progress */
-    .progress-box {
-      margin-top: 30px;
+    li button:hover {
+      transform: scale(1.2);
     }
 
-    .progress-text {
-      margin-bottom: 8px;
-      font-size: 14px;
-    }
-
-    .progress-bar {
-      width: 100%;
-      height: 14px;
-      background: #020617;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    .progress {
-      height: 100%;
-      width: 0%;
-      background: #3a86ff;
-      transition: width 0.3s;
-    }
-
-    .back {
+    /* === FOOTER === */
+    .footer {
       margin-top: 25px;
       text-align: center;
     }
 
-    .back button {
-      background: #3a506b;
+    .footer button {
+      background: #1c2541;
       border: none;
       padding: 10px 18px;
-      border-radius: 8px;
+      border-radius: 10px;
       color: #eaeaea;
       cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .footer button:hover {
+      background: #3a506b;
     }
   </style>
 </head>
 
 <body>
 
-<header>
-  ✅ Medora – To-Do List
-</header>
-
-<div class="container">
-  <h2>Your Tasks</h2>
+<div class="card">
+  <div class="top">
+    <h2>Your Tasks</h2>
+    <div class="progress-circle" id="progressCircle">
+      <span id="progressPercent">0%</span>
+    </div>
+  </div>
 
   <div class="add-task">
     <input type="text" id="taskInput" placeholder="Add a new task...">
@@ -152,79 +185,84 @@
 
   <ul id="taskList"></ul>
 
-  <div class="progress-box">
-    <div class="progress-text">
-      Progress: <span id="progressPercent">0%</span>
-    </div>
-    <div class="progress-bar">
-      <div class="progress" id="progressBar"></div>
-    </div>
-  </div>
-
-  <div class="back">
+  <div class="footer">
     <button onclick="location.href='dashboard.html'">← Back to Dashboard</button>
   </div>
 </div>
 
 <script>
-  let tasks = JSON.parse(localStorage.getItem("medoraTasks")) || [];
+  const firebaseConfig = {
+    apiKey: "AIzaSyCRVWEvWa-xOi3NFjP-IdIaCBXNJoEOKqY",
+    authDomain: "medora-app-10e70.firebaseapp.com",
+    projectId: "medora-app-10e70"
+  };
 
-  function saveTasks() {
-    localStorage.setItem("medoraTasks", JSON.stringify(tasks));
-  }
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  let userId = null;
+
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      userId = user.uid;
+      loadTasks();
+    }
+  });
 
   function addTask() {
-    const input = document.getElementById("taskInput");
-    if (input.value.trim() === "") return;
+    const text = taskInput.value.trim();
+    if (!text) return;
 
-    tasks.push({ text: input.value, completed: false });
-    input.value = "";
-    saveTasks();
-    renderTasks();
-  }
-
-  function toggleTask(index) {
-    tasks[index].completed = !tasks[index].completed;
-    saveTasks();
-    renderTasks();
-  }
-
-  function deleteTask(index) {
-    tasks.splice(index, 1);
-    saveTasks();
-    renderTasks();
-  }
-
-  function renderTasks() {
-    const list = document.getElementById("taskList");
-    list.innerHTML = "";
-
-    tasks.forEach((task, index) => {
-      const li = document.createElement("li");
-      if (task.completed) li.classList.add("completed");
-
-      li.innerHTML = `
-        <input type="checkbox" ${task.completed ? "checked" : ""} onchange="toggleTask(${index})">
-        <span>${task.text}</span>
-        <button onclick="deleteTask(${index})">✕</button>
-      `;
-
-      list.appendChild(li);
+    db.collection("users").doc(userId).collection("todos").add({
+      text,
+      completed: false,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 
-    updateProgress();
+    taskInput.value = "";
   }
 
-  function updateProgress() {
-    const total = tasks.length;
-    const completed = tasks.filter(t => t.completed).length;
-    const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
-
-    document.getElementById("progressPercent").innerText = percent + "%";
-    document.getElementById("progressBar").style.width = percent + "%";
+  function toggleTask(id, current) {
+    db.collection("users").doc(userId).collection("todos").doc(id)
+      .update({ completed: !current });
   }
 
-  renderTasks();
+  function deleteTask(id) {
+    db.collection("users").doc(userId).collection("todos").doc(id).delete();
+  }
+
+  function loadTasks() {
+    db.collection("users").doc(userId).collection("todos")
+      .orderBy("createdAt")
+      .onSnapshot(snapshot => {
+        taskList.innerHTML = "";
+        let total = 0, done = 0;
+
+        snapshot.forEach(doc => {
+          total++;
+          const task = doc.data();
+          if (task.completed) done++;
+
+          const li = document.createElement("li");
+          if (task.completed) li.classList.add("completed");
+
+          li.innerHTML = `
+            <input type="checkbox" ${task.completed ? "checked" : ""} 
+              onchange="toggleTask('${doc.id}', ${task.completed})">
+            <span>${task.text}</span>
+            <button onclick="deleteTask('${doc.id}')">✕</button>
+          `;
+
+          taskList.appendChild(li);
+        });
+
+        const percent = total === 0 ? 0 : Math.round((done / total) * 100);
+        progressPercent.innerText = percent + "%";
+        progressCircle.style.background =
+          `conic-gradient(#3a86ff ${percent * 3.6}deg, #020617 0deg)`;
+      });
+  }
 </script>
 
 </body>
