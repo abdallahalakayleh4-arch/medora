@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Medora | Login</title>
+
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f7fb;
+            text-align: center;
+            padding-top: 80px;
+        }
+
+        .box {
+            background: white;
+            width: 350px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        input, button {
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0;
+        }
+
+        button {
+            background: #4facfe;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+    <h2>Medora Login</h2>
+
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+
+    <button onclick="login()">Login</button>
+    <button onclick="signup()">Sign Up</button>
+    <button onclick="logout()">Logout</button>
+
+    <p id="status"></p>
+</div>
+
+<script>
+    // 🔴 الصق firebaseConfig هنا
+    const firebaseConfig = {
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCRVWEvWa-xOi3NFjP-IdIaCBXNJoEOKqY",
+  authDomain: "medora-app-10e70.firebaseapp.com",
+  projectId: "medora-app-10e70",
+  storageBucket: "medora-app-10e70.firebasestorage.app",
+  messagingSenderId: "105310866840",
+  appId: "1:105310866840:web:3265227cdd5e8a1555afed",
+  measurementId: "G-ZBS3F30LLR"
+};
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function signup() {
+        auth.createUserWithEmailAndPassword(
+            email.value, password.value
+        ).then(() => {
+            status.innerText = "Signed up successfully";
+        }).catch(e => status.innerText = e.message);
+    }
+
+    function login() {
+        auth.signInWithEmailAndPassword(
+            email.value, password.value
+        ).then(() => {
+            status.innerText = "Logged in";
+        }).catch(e => status.innerText = e.message);
+    }
+
+    function logout() {
+        auth.signOut().then(() => {
+            status.innerText = "Logged out";
+        });
+    }
+</script>
+
+</body>
+</html>
