@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Medora | Study Timer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Auth Guard -->
+  <script type="module" src="auth-guard.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b132b;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .box {
+      background: #1c2541;
+      width: 400px;
+      padding: 30px;
+      border-radius: 14px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .modes {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+
+    .modes button {
+      flex: 1;
+      padding: 8px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      background: #3a506b;
+      color: white;
+    }
+
+    .modes button.active {
+      background: #3a86ff;
+    }
+
+    .mode-text {
+      margin: 10px 0;
+      font-size: 14px;
+      color: #b0bcd6;
+    }
+
+    .time {
+      font-size: 52px;
+      margin: 20px 0;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .start {
+      background: #3a86ff;
+      color: white;
+    }
+
+    .pause {
+      background: #3a506b;
+      color: white;
+    }
+
+    .reset {
+      background: #ff5c5c;
+      color: white;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .footer {
+      margin-top: 20px;
+    }
+
+    .footer button {
+      background: transparent;
+      color: #b0bcd6;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Study Timer</h2>
+
+  <!-- MODE SELECT -->
+  <div class="modes">
+    <button id="mode25" class="active">25 min</button>
+    <button id="mode50">50 min</button>
+  </div>
+
+  <div class="mode-text" id="modeText">Study Session</div>
+  <div class="time" id="time">25:00</div>
+
+  <div class="buttons">
+    <button id="startBtn" class="start">Start</button>
+    <button id="pauseBtn" class="pause" disabled>Pause</button>
+    <button id="resetBtn" class="reset">Reset</button>
+  </div>
+
+  <div class="footer">
+    <button onclick="location.href='dashboard.html'">← Back to Dashboard</button>
+  </div>
+</div>
+
+<script>
+  let STUDY_TIME = 25 * 60;
+  let BREAK_TIME = 5 * 60;
+
+  let timeLeft = STUDY_TIME;
+  let timer = null;
+  let isStudy = true;
+
+  const timeEl = document.getElementById("time");
+  const modeText = document.getElementById("modeText");
+
+  const startBtn = document.getElementById("startBtn");
+  const pauseBtn = document.getElementById("pauseBtn");
+  const resetBtn = document.getElementById("resetBtn");
+
+  const mode25 = document.getElementById("mode25");
+  const mode50 = document.getElementById("mode50");
+
+  function updateDisplay() {
+    const m = String(Math.floor(timeLeft / 60)).padStart(2, "0");
+    const s = String(timeLeft % 60).padStart(2, "0");
+    timeEl.innerText = `${m}:${s}`;
+  }
+
+  function setMode(minutes) {
+    clearInterval(timer);
+    timer = null;
+    isStudy = true;
+
+    STUDY_TIME = minutes * 60;
+    BREAK_TIME = minutes === 25 ? 5 * 60 : 10 * 60;
+
+    timeLeft = STUDY_TIME;
+    modeText.innerText = "Study Session";
+    updateDisplay();
+
+    startBtn.disabled = false;
+    pauseBtn.disabled = true;
+
+    mode25.classList.toggle("active", minutes === 25);
+    mode50.classList.toggle("active", minutes === 50);
+  }
+
+  function startTimer() {
+    if (timer) return;
+
+    startBtn.disabled = true;
+    pauseBtn.disabled = false;
+
+    timer = setInterval(() => {
+      timeLeft--;
+      updateDisplay();
+
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        timer = null;
+
+        isStudy = !isStudy;
+        timeLeft = isStudy ? STUDY_TIME : BREAK_TIME;
+        modeText.innerText = isStudy ? "Study Session" : "Break Time";
+
+        alert(isStudy ? "Break finished! Back to study 💪" : "Study finished! Take a break ☕");
+
+        updateDisplay();
+        startBtn.disabled = false;
+        pauseBtn.disabled = true;
+      }
+    }, 1000);
+  }
+
+  function pauseTimer() {
+    clearInterval(timer);
+    timer = null;
+    startBtn.disabled = false;
+    pauseBtn.disabled = true;
+  }
+
+  function resetTimer() {
+    clearInterval(timer);
+    timer = null;
+    isStudy = true;
+    timeLeft = STUDY_TIME;
+    modeText.innerText = "Study Session";
+    updateDisplay();
+    startBtn.disabled = false;
+    pauseBtn.disabled = true;
+  }
+
+  // Events
+  mode25.onclick = () => setMode(25);
+  mode50.onclick = () => setMode(50);
+  startBtn.onclick = startTimer;
+  pauseBtn.onclick = pauseTimer;
+  resetBtn.onclick = resetTimer;
+
+  updateDisplay();
+</script>
+
+</body>
+</html>
