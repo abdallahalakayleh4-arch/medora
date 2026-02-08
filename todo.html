@@ -84,9 +84,42 @@
       background: #ff5c5c;
     }
 
-    .status {
+    .progress-text {
       margin-top: 10px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background: #0b132b;
+      border-radius: 6px;
+      margin-top: 6px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: #3a86ff;
+      transition: 0.3s;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .footer button {
+      background: transparent;
+      color: #b0bcd6;
       font-size: 13px;
+    }
+
+    .status {
+      margin-top: 8px;
+      font-size: 12px;
       color: #ccc;
       text-align: center;
     }
@@ -105,11 +138,20 @@
 
   <ul id="list"></ul>
 
+  <!-- Progress -->
+  <div class="progress-text" id="progressText">Progress: 0%</div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+
+  <div class="footer">
+    <button onclick="location.href='dashboard.html'">← Back to Dashboard</button>
+  </div>
+
   <div class="status" id="status">Loading user...</div>
 </div>
 
 <script>
-  // Firebase config
   firebase.initializeApp({
     apiKey: "AIzaSyCRVWEvWa-xOi3NFjP-IdIaCBXNJoEOKqY",
     authDomain: "medora-app-10e70.firebaseapp.com",
@@ -123,10 +165,11 @@
   const list = document.getElementById("list");
   const status = document.getElementById("status");
   const addBtn = document.getElementById("addBtn");
+  const progressText = document.getElementById("progressText");
+  const progressFill = document.getElementById("progressFill");
 
   let userId = null;
 
-  // 🔐 AUTH
   auth.onAuthStateChanged(user => {
     if (!user) {
       window.location.href = "login.html";
@@ -138,7 +181,6 @@
     loadTasks();
   });
 
-  // ➕ ADD TASK
   addBtn.onclick = () => {
     const text = input.value.trim();
     if (!text || !userId) return;
@@ -153,13 +195,9 @@
       })
       .then(() => {
         input.value = "";
-      })
-      .catch(err => {
-        alert(err.message);
       });
   };
 
-  // 📥 LOAD TASKS
   function loadTasks() {
     db.collection("users")
       .doc(userId)
@@ -168,8 +206,12 @@
       .onSnapshot(snapshot => {
         list.innerHTML = "";
 
+        let total = snapshot.size;
+        let done = 0;
+
         snapshot.forEach(doc => {
           const task = doc.data();
+          if (task.completed) done++;
 
           const li = document.createElement("li");
           if (task.completed) li.classList.add("done");
@@ -198,6 +240,10 @@
 
           list.appendChild(li);
         });
+
+        const percent = total === 0 ? 0 : Math.round((done / total) * 100);
+        progressText.innerText = `Progress: ${percent}%`;
+        progressFill.style.width = percent + "%";
       });
   }
 </script>
