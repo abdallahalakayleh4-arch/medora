@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Medora | Medical Calculators</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: radial-gradient(circle at top, #1c2541, #020617);
+  color: #e5e7eb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.box {
+  width: 480px;
+  background: linear-gradient(180deg, #1c2541, #0b132b);
+  padding: 28px;
+  border-radius: 18px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+}
+
+h2 {
+  margin: 0 0 20px;
+  text-align: center;
+}
+
+select, input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #24355c;
+  color: white;
+}
+
+label {
+  font-size: 13px;
+  color: #b0bcd6;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, #38bdf8, #3a86ff);
+  color: #020617;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.result {
+  margin-top: 18px;
+  padding: 14px;
+  background: #020617;
+  border-radius: 12px;
+  font-size: 15px;
+  display: none;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 18px;
+}
+
+.footer button {
+  background: transparent;
+  color: #94a3b8;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Medical Calculators</h2>
+
+  <!-- Calculator Selector -->
+  <label>Select Calculator</label>
+  <select id="calculator">
+    <option value="">-- Choose --</option>
+    <option value="bmi">BMI</option>
+    <option value="crcl">Creatinine Clearance</option>
+    <option value="calcium">Corrected Calcium</option>
+    <option value="parkland">Parkland Formula</option>
+  </select>
+
+  <!-- Dynamic Inputs -->
+  <div id="inputs"></div>
+
+  <button onclick="calculate()">Calculate</button>
+
+  <div class="result" id="result"></div>
+
+  <div class="footer">
+    <button onclick="location.href='dashboard.html'">← Back to Dashboard</button>
+  </div>
+</div>
+
+<script>
+const inputsDiv = document.getElementById("inputs");
+const resultDiv = document.getElementById("result");
+const calcSelect = document.getElementById("calculator");
+
+calcSelect.onchange = () => {
+  inputsDiv.innerHTML = "";
+  resultDiv.style.display = "none";
+
+  if (calcSelect.value === "bmi") {
+    inputsDiv.innerHTML = `
+      <label>Weight (kg)</label>
+      <input id="weight" type="number">
+
+      <label>Height (cm)</label>
+      <input id="height" type="number">
+    `;
+  }
+
+  if (calcSelect.value === "crcl") {
+    inputsDiv.innerHTML = `
+      <label>Age (years)</label>
+      <input id="age" type="number">
+
+      <label>Weight (kg)</label>
+      <input id="weight" type="number">
+
+      <label>Serum Creatinine (mg/dL)</label>
+      <input id="scr" type="number" step="0.1">
+
+      <label>Sex</label>
+      <select id="sex">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+    `;
+  }
+
+  if (calcSelect.value === "calcium") {
+    inputsDiv.innerHTML = `
+      <label>Total Calcium (mg/dL)</label>
+      <input id="calcium" type="number" step="0.1">
+
+      <label>Albumin (g/dL)</label>
+      <input id="albumin" type="number" step="0.1">
+    `;
+  }
+
+  if (calcSelect.value === "parkland") {
+    inputsDiv.innerHTML = `
+      <label>Weight (kg)</label>
+      <input id="weight" type="number">
+
+      <label>% TBSA Burn</label>
+      <input id="tbsa" type="number">
+    `;
+  }
+};
+
+function calculate() {
+  let result = "";
+
+  if (calcSelect.value === "bmi") {
+    const w = +weight.value;
+    const h = +height.value / 100;
+    const bmi = (w / (h * h)).toFixed(1);
+    result = `BMI = <strong>${bmi}</strong>`;
+  }
+
+  if (calcSelect.value === "crcl") {
+    const age = +age.value;
+    const w = +weight.value;
+    const scr = +scr.value;
+    const sex = document.getElementById("sex").value;
+
+    let crcl = ((140 - age) * w) / (72 * scr);
+    if (sex === "female") crcl *= 0.85;
+
+    result = `Creatinine Clearance = <strong>${crcl.toFixed(1)} mL/min</strong>`;
+  }
+
+  if (calcSelect.value === "calcium") {
+    const ca = +calcium.value;
+    const alb = +albumin.value;
+    const corr = ca + 0.8 * (4 - alb);
+
+    result = `Corrected Calcium = <strong>${corr.toFixed(2)} mg/dL</strong>`;
+  }
+
+  if (calcSelect.value === "parkland") {
+    const w = +weight.value;
+    const tbsa = +tbsa.value;
+
+    const total = 4 * w * tbsa;
+    const first8 = total / 2;
+    const next16 = total / 2;
+
+    result = `
+      Total Fluids: <strong>${total} mL</strong><br>
+      First 8h: ${first8} mL<br>
+      Next 16h: ${next16} mL
+    `;
+  }
+
+  resultDiv.innerHTML = result;
+  resultDiv.style.display = "block";
+}
+</script>
+
+</body>
+</html>
