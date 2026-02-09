@@ -10,18 +10,21 @@ body{
   font-family:Arial, sans-serif;
   background:#020617;
   color:#e5e7eb;
-  padding:40px;
+  padding:30px;
 }
 
-.top-bar{
+.header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:25px;
+  margin-bottom:30px;
 }
 
-.top-bar a{
-  color:#3a86ff;
+.header a{
+  background:#1d4ed8;
+  padding:8px 14px;
+  border-radius:8px;
+  color:white;
   text-decoration:none;
   font-size:14px;
 }
@@ -29,11 +32,10 @@ body{
 /* ===== GRID ===== */
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
   gap:20px;
 }
 
-/* ===== CARD ===== */
 .card{
   background:#1c2541;
   border-radius:16px;
@@ -42,22 +44,18 @@ body{
   transition:.3s;
 }
 
-.card:hover{
-  transform:translateY(-6px);
-  background:#24355c;
-}
+.card:hover{transform:translateY(-6px)}
 
 .card img{
   width:100%;
-  height:160px;
+  height:150px;
   object-fit:cover;
   background:#0f172a;
 }
 
 .card h3{
-  margin:12px;
-  font-size:16px;
   text-align:center;
+  margin:12px;
 }
 
 /* ===== REPORT ===== */
@@ -72,138 +70,104 @@ body{
 
 .report img{
   width:100%;
-  max-height:280px;
+  max-height:260px;
   object-fit:cover;
   border-radius:12px;
   margin-bottom:20px;
 }
 
 .report a{
-  color:#3a86ff;
+  color:#60a5fa;
   font-weight:bold;
-  text-decoration:none;
 }
 
-.placeholder{
-  opacity:.7;
-  margin-top:15px;
-}
-
-.actions{
-  margin-top:25px;
-  display:flex;
-  gap:15px;
+.btn{
+  margin-top:20px;
+  background:#1d4ed8;
+  color:white;
+  border:none;
+  padding:8px 14px;
+  border-radius:8px;
+  cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<div class="top-bar">
+<div class="header">
   <h1>Medical Courses</h1>
-  <a href="dashboard.html">← Back to Dashboard</a>
+  <a href="dashboard.html">← Dashboard</a>
 </div>
 
-<!-- ===== COURSES GRID ===== -->
+<!-- ===== COURSES ===== -->
 <div class="grid" id="grid">
-
   <div class="card" onclick="openReport('hms')">
-    <img src="images/hms.jpg" onerror="this.src='images/default.jpg'">
+    <img src="images/hms.jpg">
     <h3>Harvard Medical School</h3>
   </div>
 
   <div class="card" onclick="openReport('ecg')">
-    <img src="images/ecg.jpg" onerror="this.src='images/default.jpg'">
+    <img src="images/ecg.jpg">
     <h3>ECG Interpretation</h3>
   </div>
 
   <div class="card" onclick="openReport('sepsis')">
-    <img src="images/sepsis.jpg" onerror="this.src='images/default.jpg'">
+    <img src="images/sepsis.jpg">
     <h3>Sepsis & Shock</h3>
   </div>
 
   <div class="card" onclick="openReport('icu')">
-    <img src="images/icu.jpg" onerror="this.src='images/default.jpg'">
+    <img src="images/icu.jpg">
     <h3>ICU Essentials</h3>
   </div>
 
   <div class="card" onclick="openReport('pharma')">
-    <img src="images/pharma.jpg" onerror="this.src='images/default.jpg'">
+    <img src="images/pharma.jpg">
     <h3>Clinical Pharmacology</h3>
   </div>
 
-  <div class="card" onclick="openReport('radiology')">
-    <img src="images/radiology.jpg" onerror="this.src='images/default.jpg'">
+  <div class="card" onclick="openReport('radio')">
+    <img src="images/radiology.jpg">
     <h3>Radiology Basics</h3>
   </div>
-
 </div>
 
-<!-- ===== REPORT TEMPLATE ===== -->
-<div class="report" id="report">
-  <img id="reportImg">
-  <h2 id="reportTitle"></h2>
+<!-- ===== REPORTS ===== -->
 
-  <p class="placeholder">
-    📌 Paste your course report here later.<br>
-    You can add guidelines, summaries, bullet points, or notes.
-  </p>
+<div class="report" id="hms">
+  <img src="images/hms.jpg">
+  <h2>Harvard Medical School</h2>
 
-  <p>
-    🔗 <a id="reportLink" href="#" target="_blank">Open course material</a>
-  </p>
+  <!-- ✍️ اكتب تقريرك هنا -->
+  <p>ضع تقرير الكورس هنا…</p>
 
-  <div class="actions">
-    <button onclick="goBack()">← Back to Courses</button>
-    <a href="dashboard.html">Dashboard</a>
-  </div>
+  <a href="https://learn.hms.harvard.edu" target="_blank">Open course</a><br>
+  <button class="btn" onclick="back()">← Back</button>
 </div>
+
+<div class="report" id="ecg">
+  <img src="images/ecg.jpg">
+  <h2>ECG Interpretation</h2>
+
+  <!-- ✍️ اكتب تقريرك هنا -->
+  <p>ضع تقرير ECG هنا…</p>
+
+  <a href="https://litfl.com/ecg-library/" target="_blank">Open material</a><br>
+  <button class="btn" onclick="back()">← Back</button>
+</div>
+
+<!-- كرر نفس الشكل لباقي الكورسات -->
 
 <script>
-const courses = {
-  hms:{
-    title:"Harvard Medical School",
-    img:"images/hms.jpg",
-    link:"https://learn.hms.harvard.edu"
-  },
-  ecg:{
-    title:"ECG Interpretation",
-    img:"images/ecg.jpg",
-    link:"https://litfl.com/ecg-library/"
-  },
-  sepsis:{
-    title:"Sepsis & Shock",
-    img:"images/sepsis.jpg",
-    link:"https://www.survivingsepsis.org"
-  },
-  icu:{
-    title:"ICU Essentials",
-    img:"images/icu.jpg",
-    link:"https://emcrit.org"
-  },
-  pharma:{
-    title:"Clinical Pharmacology",
-    img:"images/pharma.jpg",
-    link:"https://bnf.nice.org.uk"
-  },
-  radiology:{
-    title:"Radiology Basics",
-    img:"images/radiology.jpg",
-    link:"https://radiopaedia.org"
-  }
-};
-
-function openReport(key){
+function openReport(id){
   document.getElementById("grid").style.display="none";
-  document.getElementById("report").style.display="block";
-
-  document.getElementById("reportTitle").innerText = courses[key].title;
-  document.getElementById("reportImg").src = courses[key].img;
-  document.getElementById("reportLink").href = courses[key].link;
+  document.querySelectorAll(".report").forEach(r=>r.style.display="none");
+  document.getElementById(id).style.display="block";
 }
 
-function goBack(){
-  document.getElementById("report").style.display="none";
+function back(){
+  document.querySelectorAll(".report").forEach(r=>r.style.display="none");
   document.getElementById("grid").style.display="grid";
 }
 </script>
