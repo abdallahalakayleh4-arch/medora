@@ -13,8 +13,17 @@ body{
   padding:40px;
 }
 
-h1{
+.top-bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
   margin-bottom:25px;
+}
+
+.top-bar a{
+  color:#3a86ff;
+  text-decoration:none;
+  font-size:14px;
 }
 
 /* ===== GRID ===== */
@@ -24,7 +33,7 @@ h1{
   gap:20px;
 }
 
-/* ===== COURSE CARD ===== */
+/* ===== CARD ===== */
 .card{
   background:#1c2541;
   border-radius:16px;
@@ -51,7 +60,7 @@ h1{
   text-align:center;
 }
 
-/* ===== REPORT PAGE ===== */
+/* ===== REPORT ===== */
 .report{
   display:none;
   max-width:900px;
@@ -69,32 +78,33 @@ h1{
   margin-bottom:20px;
 }
 
-.report h2{
-  margin-top:0;
+.report a{
+  color:#3a86ff;
+  font-weight:bold;
+  text-decoration:none;
 }
 
 .placeholder{
   opacity:.7;
-  font-style:italic;
-  line-height:1.8;
+  margin-top:15px;
 }
 
-.back{
+.actions{
   margin-top:25px;
-  background:none;
-  border:none;
-  color:#3a86ff;
-  cursor:pointer;
-  font-size:14px;
+  display:flex;
+  gap:15px;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Medical Courses</h1>
+<div class="top-bar">
+  <h1>Medical Courses</h1>
+  <a href="dashboard.html">← Back to Dashboard</a>
+</div>
 
-<!-- ================= COURSES GRID ================= -->
+<!-- ===== COURSES GRID ===== -->
 <div class="grid" id="grid">
 
   <div class="card" onclick="openReport('hms')">
@@ -112,35 +122,74 @@ h1{
     <h3>Sepsis & Shock</h3>
   </div>
 
+  <div class="card" onclick="openReport('icu')">
+    <img src="images/icu.jpg" onerror="this.src='images/default.jpg'">
+    <h3>ICU Essentials</h3>
+  </div>
+
+  <div class="card" onclick="openReport('pharma')">
+    <img src="images/pharma.jpg" onerror="this.src='images/default.jpg'">
+    <h3>Clinical Pharmacology</h3>
+  </div>
+
+  <div class="card" onclick="openReport('radiology')">
+    <img src="images/radiology.jpg" onerror="this.src='images/default.jpg'">
+    <h3>Radiology Basics</h3>
+  </div>
+
 </div>
 
-<!-- ================= REPORT TEMPLATE ================= -->
+<!-- ===== REPORT TEMPLATE ===== -->
 <div class="report" id="report">
-
-  <img id="reportImg" src="">
+  <img id="reportImg">
   <h2 id="reportTitle"></h2>
 
   <p class="placeholder">
-    📌 This is a course report template.<br>
-    You can paste your content here later (text, lists, guidelines, links).
+    📌 Paste your course report here later.<br>
+    You can add guidelines, summaries, bullet points, or notes.
   </p>
 
-  <button class="back" onclick="goBack()">← Back to courses</button>
+  <p>
+    🔗 <a id="reportLink" href="#" target="_blank">Open course material</a>
+  </p>
+
+  <div class="actions">
+    <button onclick="goBack()">← Back to Courses</button>
+    <a href="dashboard.html">Dashboard</a>
+  </div>
 </div>
 
 <script>
-const data = {
+const courses = {
   hms:{
     title:"Harvard Medical School",
-    img:"images/hms.jpg"
+    img:"images/hms.jpg",
+    link:"https://learn.hms.harvard.edu"
   },
   ecg:{
     title:"ECG Interpretation",
-    img:"images/ecg.jpg"
+    img:"images/ecg.jpg",
+    link:"https://litfl.com/ecg-library/"
   },
   sepsis:{
     title:"Sepsis & Shock",
-    img:"images/sepsis.jpg"
+    img:"images/sepsis.jpg",
+    link:"https://www.survivingsepsis.org"
+  },
+  icu:{
+    title:"ICU Essentials",
+    img:"images/icu.jpg",
+    link:"https://emcrit.org"
+  },
+  pharma:{
+    title:"Clinical Pharmacology",
+    img:"images/pharma.jpg",
+    link:"https://bnf.nice.org.uk"
+  },
+  radiology:{
+    title:"Radiology Basics",
+    img:"images/radiology.jpg",
+    link:"https://radiopaedia.org"
   }
 };
 
@@ -148,8 +197,9 @@ function openReport(key){
   document.getElementById("grid").style.display="none";
   document.getElementById("report").style.display="block";
 
-  document.getElementById("reportTitle").innerText = data[key].title;
-  document.getElementById("reportImg").src = data[key].img;
+  document.getElementById("reportTitle").innerText = courses[key].title;
+  document.getElementById("reportImg").src = courses[key].img;
+  document.getElementById("reportLink").href = courses[key].link;
 }
 
 function goBack(){
