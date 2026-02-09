@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Medora | Courses</title>
+
+<style>
+body{
+  font-family:Arial;
+  background:#020617;
+  color:white;
+  padding:30px;
+}
+.card{
+  background:#1c2541;
+  padding:15px;
+  margin:10px 0;
+  cursor:pointer;
+  border-radius:10px;
+}
+.report{
+  display:none;
+  background:#0b132b;
+  padding:20px;
+  margin-top:20px;
+  border-radius:10px;
+}
+button{
+  margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Courses</h1>
+
+<!-- ====== أزرار الكورسات ====== -->
+<div class="card" onclick="openReport(1)">Course 1</div>
+<div class="card" onclick="openReport(2)">Course 2</div>
+<div class="card" onclick="openReport(3)">Course 3</div>
+
+<!-- ====== تقرير كورس 1 ====== -->
+<div class="report" id="report1">
+<h2>Course 1</h2>
+
+Harvard University – Harvard Online / HarvardX
+Overview
+
+Harvard University is one of the most prestigious universities in the world. Through Harvard Online and HarvardX, the university provides high-quality online education designed for both professionals and students worldwide.
+
+Platforms Used
+
+Harvard Online (official portal)
+
+edX (for HarvardX programs)
+
+Fields of Study
+
+Computer Science (CS50, AI, Data Science)
+
+Medicine & Public Health
+
+Business & Leadership
+
+Law, Ethics, and Social Sciences
+
+Education and Sustainability
+
+Course Structure
+
+Video lectures by Harvard professors
+
+Reading materials and case studies
+
+Assignments, quizzes, and projects
+
+Final assessments (graded)
+
+Certificates
+
+Verified Certificates issued by Harvard University
+
+Digital certificates (shareable on LinkedIn)
+
+Identity-verified (passport or ID required)
+
+Cost
+
+Course content: often free
+
+Certificate: usually $50–$300 USD
+
+Recognition & Value
+
+Highly respected by employers worldwide
+
+Strong academic credibility
+
+Excellent for graduate school applications and professional portfolios
+
+Best For
+
+Learners seeking elite academic branding
+
+Professionals upgrading theoretical knowledge
+
+Students building a strong international CV
+<p>
+الصق تقريرك هنا  
+انسخ التقرير كامل من أي مكان  
+والصقه هنا  
+ولا تغيّر أي شي ثاني
+</p>
+
+<button onclick="closeAll()">رجوع</button>
+</div>
+
+<!-- ====== تقرير كورس 2 ====== -->
+<div class="report" id="report2">
+<h2>Course 2</h2>
+
+coursera 
+  . Coursera
+Overview
+
+Coursera is one of the largest online learning platforms globally, partnering with top universities and companies to deliver professional and academic courses.
+
+Major Partners
+
+Stanford University
+
+University of London
+
+Google, IBM, Meta, Microsoft
+
+DeepLearning.AI
+
+Fields of Study
+
+Data Science & Machine Learning
+
+Computer Programming
+
+Business Administration (MBA-level courses)
+
+Health Sciences
+
+Cloud Computing & Cybersecurity
+
+Course Types
+
+Single Courses
+
+Specializations (series of courses)
+
+Professional Certificates
+
+Online Degrees (Bachelor’s & Master’s)
+
+Certificates
+
+University-branded certificates
+
+Industry-recognized certificates (Google, IBM, Meta)
+
+Verifiable and LinkedIn-shareable
+
+Cost
+
+$39–$79 per month (subscription-based)
+
+Financial Aid available (up to 100%)
+
+Recognition & Value
+
+Strong professional and industry recognition
+
+Widely accepted by employers
+
+Practical, job-ready skills
+
+Best For
+
+Career changers
+
+Tech and business professionals
+
+Learners who want practical + academic balance
+<p>
+الصق تقرير الكورس الثاني هنا
+</p>
+
+<button onclick="closeAll()">رجوع</button>
+</div>
+
+<!-- ====== تقرير كورس 3 ====== -->
+<div class="report" id="report3">
+<h2>Course 3</h2>
+
+<!-- ✏️✏️✏️ الصق تقرير الكورس الثالث هنا فقط -->
+<p>
+الصق تقرير الكورس الثالث هنا
+</p>
+
+<button onclick="closeAll()">رجوع</button>
+</div>
+
+<script>
+function openReport(n){
+  closeAll();
+  document.getElementById("report"+n).style.display="block";
+}
+function closeAll(){
+  document.querySelectorAll(".report").forEach(r=>r.style.display="none");
+}
+</script>
+
+</body>
+</html>
