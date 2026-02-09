@@ -26,7 +26,7 @@
       width: 420px;
       background: #1c2541;
       padding: 25px;
-      border-radius: 12px;
+      border-radius: 14px;
     }
 
     h2 {
@@ -48,62 +48,112 @@
     }
 
     button {
-      padding: 10px 14px;
-      border-radius: 6px;
       border: none;
       cursor: pointer;
+      border-radius: 6px;
+    }
+
+    #addBtn {
+      padding: 10px 16px;
       background: #3a86ff;
       color: white;
     }
 
+    /* ===== TODO LIST ===== */
     ul {
       list-style: none;
       padding: 0;
+      margin: 0;
     }
 
     li {
       background: #3a506b;
-      padding: 10px;
-      border-radius: 6px;
-      margin-bottom: 8px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin-bottom: 10px;
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 10px;
     }
 
     li.done span {
       text-decoration: line-through;
-      color: #ccc;
+      color: #cbd5e1;
     }
 
     li span {
       flex: 1;
-    }
-
-    li button {
-      background: #ff5c5c;
-    }
-
-    .progress-text {
-      margin-top: 10px;
       font-size: 14px;
-      text-align: center;
     }
 
-    .progress-bar {
-      width: 100%;
-      height: 10px;
-      background: #0b132b;
-      border-radius: 6px;
-      margin-top: 6px;
-      overflow: hidden;
+    .actions {
+      display: flex;
+      gap: 6px;
     }
 
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: #3a86ff;
-      transition: 0.3s;
+    .done-btn,
+    .delete-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.25s;
+    }
+
+    .done-btn {
+      background: rgba(34,197,94,0.2);
+      color: #22c55e;
+    }
+
+    .done-btn:hover {
+      background: #22c55e;
+      color: #020617;
+    }
+
+    .delete-btn {
+      background: rgba(239,68,68,0.2);
+      color: #ef4444;
+    }
+
+    .delete-btn:hover {
+      background: #ef4444;
+      color: #020617;
+    }
+
+    /* ===== PROGRESS CIRCLE ===== */
+    .progress-circle {
+      position: relative;
+      width: 120px;
+      margin: 20px auto;
+    }
+
+    .bg-circle {
+      fill: none;
+      stroke: #0b132b;
+      stroke-width: 10;
+    }
+
+    .fg-circle {
+      fill: none;
+      stroke-width: 10;
+      stroke-linecap: round;
+      stroke-dasharray: 327;
+      stroke-dashoffset: 327;
+      transform: rotate(-90deg);
+      transform-origin: center;
+      transition: stroke-dashoffset 0.5s, stroke 0.3s;
+    }
+
+    .circle-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 20px;
+      font-weight: bold;
     }
 
     .footer {
@@ -138,10 +188,13 @@
 
   <ul id="list"></ul>
 
-  <!-- Progress -->
-  <div class="progress-text" id="progressText">Progress: 0%</div>
-  <div class="progress-bar">
-    <div class="progress-fill" id="progressFill"></div>
+  <!-- Progress Circle -->
+  <div class="progress-circle">
+    <svg width="120" height="120">
+      <circle cx="60" cy="60" r="52" class="bg-circle"/>
+      <circle cx="60" cy="60" r="52" class="fg-circle" id="progressCircle"/>
+    </svg>
+    <div class="circle-text" id="progressText">0%</div>
   </div>
 
   <div class="footer">
@@ -166,7 +219,7 @@
   const status = document.getElementById("status");
   const addBtn = document.getElementById("addBtn");
   const progressText = document.getElementById("progressText");
-  const progressFill = document.getElementById("progressFill");
+  const progressCircle = document.getElementById("progressCircle");
 
   let userId = null;
 
@@ -175,7 +228,6 @@
       window.location.href = "login.html";
       return;
     }
-
     userId = user.uid;
     status.innerText = "User loaded ✔";
     loadTasks();
@@ -189,13 +241,11 @@
       .doc(userId)
       .collection("todos")
       .add({
-        text: text,
+        text,
         completed: false,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       })
-      .then(() => {
-        input.value = "";
-      });
+      .then(() => input.value = "");
   };
 
   function loadTasks() {
@@ -205,7 +255,6 @@
       .orderBy("createdAt")
       .onSnapshot(snapshot => {
         list.innerHTML = "";
-
         let total = snapshot.size;
         let done = 0;
 
@@ -217,12 +266,14 @@
           if (task.completed) li.classList.add("done");
 
           li.innerHTML = `
-            <input type="checkbox" ${task.completed ? "checked" : ""}>
             <span>${task.text}</span>
-            <button>X</button>
+            <div class="actions">
+              <button class="done-btn">✓</button>
+              <button class="delete-btn">✕</button>
+            </div>
           `;
 
-          li.querySelector("input").onchange = () => {
+          li.querySelector(".done-btn").onclick = () => {
             db.collection("users")
               .doc(userId)
               .collection("todos")
@@ -230,7 +281,7 @@
               .update({ completed: !task.completed });
           };
 
-          li.querySelector("button").onclick = () => {
+          li.querySelector(".delete-btn").onclick = () => {
             db.collection("users")
               .doc(userId)
               .collection("todos")
@@ -241,10 +292,25 @@
           list.appendChild(li);
         });
 
-        const percent = total === 0 ? 0 : Math.round((done / total) * 100);
-        progressText.innerText = `Progress: ${percent}%`;
-        progressFill.style.width = percent + "%";
+        updateProgress(done, total);
       });
+  }
+
+  function updateProgress(done, total) {
+    const percent = total === 0 ? 0 : Math.round((done / total) * 100);
+    progressText.innerText = percent + "%";
+
+    const circumference = 327;
+    progressCircle.style.strokeDashoffset =
+      circumference - (circumference * percent) / 100;
+
+    if (percent < 25) {
+      progressCircle.style.stroke = "#ef4444";
+    } else if (percent <= 80) {
+      progressCircle.style.stroke = "#facc15";
+    } else {
+      progressCircle.style.stroke = "#22c55e";
+    }
   }
 </script>
 
