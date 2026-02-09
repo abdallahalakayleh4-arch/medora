@@ -5,283 +5,181 @@
 <title>Medora | Medical Calculators</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- =================================================================
-     MEDORA MEDICAL CALCULATORS
-     SINGLE FILE – SPLIT INTO 4 TEXT PARTS (LINE-BASED ONLY)
-     PART 1 / 4
-================================================================= -->
-
 <style>
-
-/* ================================================================
-   ROOT VARIABLES – MEDICAL DARK THEME
-================================================================ */
 :root {
-  --bg-main: #020617;
-  --bg-panel: #0b132b;
-  --bg-card: #1c2541;
-  --primary: #3a86ff;
-  --accent: #38bdf8;
-  --danger: #ef4444;
-  --warning: #facc15;
-  --success: #22c55e;
-  --text-main: #e5e7eb;
-  --text-muted: #94a3b8;
-  --border-soft: rgba(255,255,255,0.08);
+  --bg-main:#020617;
+  --bg-panel:#0b132b;
+  --bg-card:#111827;
+  --primary:#3a86ff;
+  --accent:#38bdf8;
+  --text:#e5e7eb;
+  --muted:#94a3b8;
+  --border:rgba(255,255,255,.08);
 }
 
-/* ================================================================
-   RESET & BASE STYLES
-================================================================ */
-* {
-  box-sizing: border-box;
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:"Segoe UI",Arial,sans-serif;
+  background:radial-gradient(circle at top,#1c2541,#020617);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
-body {
-  margin: 0;
-  font-family: "Segoe UI", Arial, sans-serif;
-  background: radial-gradient(circle at top, #1c2541, #020617);
-  color: var(--text-main);
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.app{
+  width:1200px;
+  max-width:96%;
+  background:linear-gradient(180deg,#1c2541,#0b132b);
+  border-radius:26px;
+  padding:34px;
+  border:1px solid var(--border);
+  box-shadow:0 40px 90px rgba(0,0,0,.6);
 }
 
-/* ================================================================
-   MAIN APP CONTAINER
-================================================================ */
-.app {
-  width: 1100px;
-  max-width: 96%;
-  background: linear-gradient(180deg, #1c2541, #0b132b);
-  border-radius: 24px;
-  padding: 32px;
-  border: 1px solid var(--border-soft);
-  box-shadow: 0 40px 90px rgba(0,0,0,0.65);
+.header{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-bottom:30px;
 }
 
-/* ================================================================
-   HEADER
-================================================================ */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32px;
+.logo{
+  width:48px;
+  height:48px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
 }
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 14px;
+.header strong{font-size:22px}
+.header span{font-size:12px;color:var(--muted)}
+
+.main{
+  display:grid;
+  grid-template-columns:360px 1fr;
+  gap:30px;
 }
 
-.brand-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
+.sidebar{
+  background:var(--bg-panel);
+  border-radius:22px;
+  padding:22px;
+  border:1px solid var(--border);
 }
 
-.brand-text strong {
-  font-size: 22px;
-  letter-spacing: 0.3px;
+.sidebar h3{
+  margin:0 0 16px;
+  font-size:16px;
 }
 
-.brand-text span {
-  font-size: 12px;
-  color: var(--text-muted);
+.calc-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
 }
 
-/* ================================================================
-   LAYOUT GRID
-================================================================ */
-.main {
-  display: grid;
-  grid-template-columns: 340px 1fr;
-  gap: 30px;
+.calc-item{
+  padding:14px 16px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  cursor:pointer;
+  transition:.25s;
 }
 
-/* ================================================================
-   SIDEBAR
-================================================================ */
-.sidebar {
-  background: var(--bg-panel);
-  border-radius: 20px;
-  padding: 22px;
-  border: 1px solid var(--border-soft);
+.calc-item:hover{
+  background:rgba(58,134,255,.15);
 }
 
-.sidebar h3 {
-  margin-top: 0;
-  font-size: 16px;
-  margin-bottom: 16px;
-  color: var(--text-main);
+.calc-item.active{
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  color:#020617;
+  font-weight:600;
 }
 
-/* ================================================================
-   CALCULATOR LIST
-================================================================ */
-.calc-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.content{
+  background:var(--bg-panel);
+  border-radius:22px;
+  padding:28px;
+  border:1px solid var(--border);
+  display:flex;
+  flex-direction:column;
 }
 
-.calc-item {
-  padding: 13px 15px;
-  border-radius: 14px;
-  background: transparent;
-  border: 1px solid var(--border-soft);
-  color: var(--text-main);
-  cursor: pointer;
-  transition: all 0.25s ease;
-  font-size: 14px;
+.content h2{margin:0;font-size:26px}
+.content p{margin:6px 0 0;color:var(--muted)}
+
+.form{
+  margin-top:26px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
 }
 
-.calc-item:hover {
-  background: rgba(58,134,255,0.15);
+.form-group{display:flex;flex-direction:column}
+.form-group label{font-size:13px;margin-bottom:6px;color:var(--muted)}
+.form-group input,.form-group select{
+  padding:12px 14px;
+  border-radius:12px;
+  border:none;
+  background:#24355c;
+  color:white;
 }
 
-.calc-item.active {
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  color: #020617;
-  font-weight: 600;
+.actions{
+  margin-top:auto;
+  display:flex;
+  justify-content:flex-end;
+  gap:14px;
 }
 
-/* ================================================================
-   CONTENT PANEL
-================================================================ */
-.content {
-  background: var(--bg-panel);
-  border-radius: 20px;
-  padding: 26px;
-  border: 1px solid var(--border-soft);
-  display: flex;
-  flex-direction: column;
+.actions button{
+  padding:12px 22px;
+  border-radius:14px;
+  border:none;
+  cursor:pointer;
+  font-size:14px;
 }
 
-/* ================================================================
-   CONTENT HEADER
-================================================================ */
-.content-header h2 {
-  margin: 0;
-  font-size: 24px;
+.btn-calc{
+  background:linear-gradient(135deg,var(--accent),var(--primary));
+  color:#020617;
+  font-weight:700;
 }
 
-.content-header p {
-  margin-top: 6px;
-  font-size: 14px;
-  color: var(--text-muted);
+.btn-reset{
+  background:transparent;
+  color:var(--muted);
+  border:1px solid var(--border);
 }
 
-/* ================================================================
-   FORM GRID
-================================================================ */
-.form {
-  margin-top: 28px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
+.result{
+  margin-top:26px;
+  padding:20px;
+  border-radius:16px;
+  background:#020617;
+  border:1px solid var(--border);
+  display:none;
+  font-size:24px;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
+.footer{
+  margin-top:26px;
+  text-align:center;
 }
 
-.form-group.full {
-  grid-column: span 2;
+.footer button{
+  background:none;
+  border:none;
+  color:var(--muted);
+  cursor:pointer;
 }
-
-.form-group label {
-  font-size: 13px;
-  margin-bottom: 6px;
-  color: var(--text-muted);
-}
-
-.form-group input,
-.form-group select {
-  padding: 11px 13px;
-  border-radius: 12px;
-  border: none;
-  background: #24355c;
-  color: white;
-  font-size: 14px;
-}
-
-/* ================================================================
-   ACTION BUTTONS
-================================================================ */
-.actions {
-  margin-top: auto;
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-}
-
-.actions button {
-  padding: 12px 20px;
-  border-radius: 14px;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.btn-calc {
-  background: linear-gradient(135deg, var(--accent), var(--primary));
-  color: #020617;
-  font-weight: bold;
-}
-
-.btn-reset {
-  background: transparent;
-  color: var(--text-muted);
-  border: 1px solid var(--border-soft);
-}
-
-/* ================================================================
-   RESULT BOX
-================================================================ */
-.result-box {
-  margin-top: 26px;
-  padding: 20px;
-  border-radius: 16px;
-  background: #020617;
-  border: 1px solid var(--border-soft);
-  display: none;
-}
-
-.result-box h4 {
-  margin-top: 0;
-}
-
-.result-value {
-  font-size: 26px;
-  margin-top: 12px;
-}
-
-/* ================================================================
-   FOOTER
-================================================================ */
-.footer {
-  margin-top: 28px;
-  text-align: center;
-}
-
-.footer button {
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  font-size: 13px;
-}
-
 </style>
 </head>
 
@@ -289,378 +187,515 @@ body {
 
 <div class="app">
 
-  <div class="header">
-    <div class="brand">
-      <div class="brand-icon">🧮</div>
-      <div class="brand-text">
-        <strong>Medora</strong><br>
-        <span>Advanced Medical Calculators</span>
-      </div>
-    </div>
+<div class="header">
+  <div class="logo">🧮</div>
+  <div>
+    <strong>Medora</strong><br>
+    <span>Medical Calculators</span>
   </div>
+</div>
 
-  <div class="main">
+<div class="main">
 
-    <div class="sidebar">
-      <h3>Calculators</h3>
-      <div class="calc-list" id="calcList">
-        <div class="calc-item active" data-calc="bmi">BMI</div>
-        <div class="calc-item" data-calc="bsa">BSA</div>
-        <div class="calc-item" data-calc="crcl">Creatinine Clearance</div>
-        <div class="calc-item" data-calc="egfr">eGFR</div>
-        <div class="calc-item" data-calc="calcium">Corrected Calcium</div>
-        <div class="calc-item" data-calc="parkland">Parkland Formula</div>
-        <div class="calc-item" data-calc="aniongap">Anion Gap</div>
-        <div class="calc-item" data-calc="map">MAP</div>
-        <div class="calc-item" data-calc="osm">Osmolarity</div>
-        <div class="calc-item" data-calc="ldl">LDL</div>
-      </div>
-    </div>
+<div class="sidebar">
+<h3>Calculators</h3>
+<div class="calc-list" id="calcList">
 
-    <div class="content">
+<div class="calc-item active" data-calc="bmi">BMI</div>
+<div class="calc-item" data-calc="bsa">BSA</div>
+<div class="calc-item" data-calc="crcl">Creatinine Clearance</div>
+<div class="calc-item" data-calc="egfr">eGFR (MDRD)</div>
+<div class="calc-item" data-calc="calcium">Corrected Calcium</div>
+<div class="calc-item" data-calc="parkland">Parkland Formula</div>
+<div class="calc-item" data-calc="aniongap">Anion Gap</div>
+<div class="calc-item" data-calc="map">Mean Arterial Pressure</div>
+<div class="calc-item" data-calc="sodium">Sodium Correction</div>
+<div class="calc-item" data-calc="osm">Osmolarity</div>
+<div class="calc-item" data-calc="ldl">LDL</div>
+<div class="calc-item" data-calc="childpugh">Child-Pugh</div>
+<div class="calc-item" data-calc="meld">MELD</div>
+<div class="calc-item" data-calc="cha2ds2vasc">CHA₂DS₂-VASc</div>
+<div class="calc-item" data-calc="curb65">CURB-65</div>
+<div class="calc-item" data-calc="wells">Wells Score</div>
+<div class="calc-item" data-calc="apache">APACHE II</div>
+<div class="calc-item" data-calc="nihss">NIHSS</div>
 
-      <div class="content-header">
-        <h2 id="calcTitle">BMI</h2>
-        <p id="calcDesc">Body Mass Index calculation.</p>
-      </div>
+</div>
+</div>
 
-      <div class="form" id="dynamicForm">
-        <!-- dynamic inputs continue here -->      </div>
+<div class="content">
+<h2 id="title">BMI</h2>
+<p id="desc">Body Mass Index</p>
+<div class="form" id="form"></div>
 
-      <!-- ACTION BUTTONS -->
-      <div class="actions">
-        <button class="btn-reset" id="resetBtn">Reset</button>
-        <button class="btn-calc" id="calcBtn">Calculate</button>
-      </div>
+<div class="actions">
+  <button class="btn-reset" id="reset">Reset</button>
+  <button class="btn-calc" id="calc">Calculate</button>
+</div>
 
-      <!-- RESULT -->
-      <div class="result-box" id="resultBox">
-        <h4>Result</h4>
-        <div class="result-value" id="resultValue">—</div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="footer">
-    <button onclick="location.href='dashboard.html'">← Back to Dashboard</button>
-  </div>
+<div class="result" id="result"></div>
+</div>
 
 </div>
 
-<script>
-/* ================================================================
-   CALCULATOR DEFINITIONS (EXTENSIBLE REGISTRY)
-================================================================ */
+<div class="footer">
+<button onclick="location.href='dashboard.html'">← Back to Dashboard</button>
+</div>
 
-/*
-  NOTE:
-  - This registry holds ALL calculators.
-  - Each calculator defines:
-    title, description, fields[], calculate()
-  - More calculators will be added in PART 3.
-*/
+</div>
 
-const CALCULATORS = {
+     <script>
+/* ============================================================
+   MEDORA MEDICAL CALCULATORS
+   CORE ENGINE – PART 2 / 5
+============================================================ */
 
-  /* ============================================================
-     BMI
-  ============================================================ */
-  bmi: {
-    title: "Body Mass Index (BMI)",
-    description: "Weight-to-height ratio used to classify body mass.",
-    fields: [
-      { id: "weight", label: "Weight (kg)", type: "number" },
-      { id: "height", label: "Height (cm)", type: "number" }
-    ],
-    calculate(d) {
-      const h = d.height / 100;
-      const bmi = d.weight / (h * h);
-      return bmi.toFixed(2);
-    }
-  },
+/* ============================================================
+   GLOBAL STATE
+============================================================ */
 
-  /* ============================================================
-     BSA – Body Surface Area (Mosteller)
-  ============================================================ */
-  bsa: {
-    title: "Body Surface Area (BSA)",
-    description: "Mosteller formula used for drug dosing.",
-    fields: [
-      { id: "weight", label: "Weight (kg)", type: "number" },
-      { id: "height", label: "Height (cm)", type: "number" }
-    ],
-    calculate(d) {
-      const bsa = Math.sqrt((d.height * d.weight) / 3600);
-      return bsa.toFixed(2) + " m²";
-    }
-  },
+let ACTIVE_CALCULATOR = "bmi";
 
-  /* ============================================================
-     Creatinine Clearance – Cockcroft–Gault
-  ============================================================ */
-  crcl: {
-    title: "Creatinine Clearance",
-    description: "Cockcroft–Gault estimation of renal function.",
-    fields: [
-      { id: "age", label: "Age (years)", type: "number" },
-      { id: "weight", label: "Weight (kg)", type: "number" },
-      { id: "scr", label: "Serum Creatinine (mg/dL)", type: "number", step: "0.1" },
-      { id: "sex", label: "Sex", type: "select", options: ["male", "female"] }
-    ],
-    calculate(d) {
-      let crcl = ((140 - d.age) * d.weight) / (72 * d.scr);
-      if (d.sex === "female") crcl *= 0.85;
-      return crcl.toFixed(1) + " mL/min";
-    }
-  },
+/* ============================================================
+   DOM REFERENCES
+============================================================ */
 
-  /* ============================================================
-     eGFR – MDRD (Simplified)
-  ============================================================ */
-  egfr: {
-    title: "eGFR (MDRD)",
-    description: "Estimated glomerular filtration rate.",
-    fields: [
-      { id: "age", label: "Age (years)", type: "number" },
-      { id: "scr", label: "Serum Creatinine (mg/dL)", type: "number", step: "0.1" },
-      { id: "sex", label: "Sex", type: "select", options: ["male", "female"] }
-    ],
-    calculate(d) {
-      let gfr = 175 * Math.pow(d.scr, -1.154) * Math.pow(d.age, -0.203);
-      if (d.sex === "female") gfr *= 0.742;
-      return gfr.toFixed(1) + " mL/min/1.73m²";
-    }
-  },
+const calcList   = document.getElementById("calcList");
+const titleEl    = document.getElementById("title");
+const descEl     = document.getElementById("desc");
+const formEl     = document.getElementById("form");
+const resultEl   = document.getElementById("result");
+const calcBtn    = document.getElementById("calc");
+const resetBtn   = document.getElementById("reset");
 
-  /* ============================================================
-     Corrected Calcium
-  ============================================================ */
-  calcium: {
-    title: "Corrected Calcium",
-    description: "Corrects calcium level based on albumin.",
-    fields: [
-      { id: "calcium", label: "Total Calcium (mg/dL)", type: "number", step: "0.1" },
-      { id: "albumin", label: "Albumin (g/dL)", type: "number", step: "0.1" }
-    ],
-    calculate(d) {
-      const corrected = d.calcium + 0.8 * (4 - d.albumin);
-      return corrected.toFixed(2) + " mg/dL";
-    }
-  },
+/* ============================================================
+   UTILITIES
+============================================================ */
 
-  /* ============================================================
-     Parkland Formula
-  ============================================================ */
-  parkland: {
-    title: "Parkland Formula",
-    description: "Fluid resuscitation calculation for burns.",
-    fields: [
-      { id: "weight", label: "Weight (kg)", type: "number" },
-      { id: "tbsa", label: "TBSA Burn (%)", type: "number" }
-    ],
-    calculate(d) {
-      const total = 4 * d.weight * d.tbsa;
-      return `
-        Total fluids: ${total} mL<br>
-        First 8 hours: ${total / 2} mL<br>
-        Next 16 hours: ${total / 2} mL
-      `;
-    }
-  },
+function clearResult() {
+  resultEl.style.display = "none";
+  resultEl.innerHTML = "";
+}
 
-  /* ============================================================
-     Anion Gap
-  ============================================================ */
-  aniongap: {
-    title: "Anion Gap",
-    description: "Na − (Cl + HCO₃)",
-    fields: [
-      { id: "na", label: "Sodium (mEq/L)", type: "number" },
-      { id: "cl", label: "Chloride (mEq/L)", type: "number" },
-      { id: "hco3", label: "Bicarbonate (mEq/L)", type: "number" }
-    ],
-    calculate(d) {
-      const ag = d.na - (d.cl + d.hco3);
-      return ag + " mEq/L";
-    }
-  },
+function showResult(html) {
+  resultEl.innerHTML = html;
+  resultEl.style.display = "block";
+}
 
-  /* ============================================================
-     Mean Arterial Pressure
-  ============================================================ */
-  map: {
-    title: "Mean Arterial Pressure",
-    description: "MAP = (SBP + 2×DBP) / 3",
-    fields: [
-      { id: "sbp", label: "Systolic BP (mmHg)", type: "number" },
-      { id: "dbp", label: "Diastolic BP (mmHg)", type: "number" }
-    ],
-    calculate(d) {
-      const map = (d.sbp + 2 * d.dbp) / 3;
-      return map.toFixed(1) + " mmHg";
-    }
-  },
+function createInput(field) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "form-group";
 
-  /* ============================================================
-     Osmolarity
-  ============================================================ */
-  osm: {
-    title: "Serum Osmolarity",
-    description: "Calculated serum osmolarity.",
-    fields: [
-      { id: "na", label: "Sodium (mEq/L)", type: "number" },
-      { id: "glucose", label: "Glucose (mg/dL)", type: "number" },
-      { id: "bun", label: "BUN (mg/dL)", type: "number" }
-    ],
-    calculate(d) {
-      const osm = 2 * d.na + d.glucose / 18 + d.bun / 2.8;
-      return osm.toFixed(1) + " mOsm/kg";
-    }
-  },
+  const label = document.createElement("label");
+  label.textContent = field.label;
 
-  /* ============================================================
-     LDL – Friedewald Formula
-  ============================================================ */
-  ldl: {
-    title: "LDL Cholesterol",
-    description: "Friedewald equation.",
-    fields: [
-      { id: "tc", label: "Total Cholesterol (mg/dL)", type: "number" },
-      { id: "hdl", label: "HDL (mg/dL)", type: "number" },
-      { id: "tg", label: "Triglycerides (mg/dL)", type: "number" }
-    ],
-    calculate(d) {
-      const ldl = d.tc - d.hdl - d.tg / 5;
-      return ldl.toFixed(1) + " mg/dL";
-    }
+  let input;
+
+  if (field.type === "select") {
+    input = document.createElement("select");
+    field.options.forEach(opt => {
+      const o = document.createElement("option");
+      o.value = opt.value;
+      o.textContent = opt.label;
+      input.appendChild(o);
+    });
+  } else {
+    input = document.createElement("input");
+    input.type = field.type || "number";
+    if (field.step) input.step = field.step;
+    if (field.placeholder) input.placeholder = field.placeholder;
   }
 
-}; // END REGISTRY (continues in PART 3)
+  input.id = field.id;
 
-/* ================================================================
-   STATE & DOM REFERENCES
-================================================================ */
+  wrapper.appendChild(label);
+  wrapper.appendChild(input);
 
-let activeCalc = "bmi";
+  return wrapper;
+}
 
-const calcList = document.getElementById("calcList");
-const form = document.getElementById("dynamicForm");
-const titleEl = document.getElementById("calcTitle");
-const descEl = document.getElementById("calcDesc");
-const resultBox = document.getElementById("resultBox");
-const resultValue = document.getElementById("resultValue");
-const calcBtn = document.getElementById("calcBtn");
-const resetBtn = document.getElementById("resetBtn");
+/* ============================================================
+   FORM RENDERER
+============================================================ */
 
-/* ================================================================
-   RENDER CALCULATOR (UI BUILDER)
-================================================================ */
+function renderForm(calculator) {
+  formEl.innerHTML = "";
+  clearResult();
 
-function renderCalculator(key) {
-  activeCalc = key;
-  const calc = CALCULATORS[key];
+  calculator.fields.forEach(field => {
+    const inputGroup = createInput(field);
+    formEl.appendChild(inputGroup);
+  });
+}
 
+/* ============================================================
+   SIDEBAR NAVIGATION
+============================================================ */
+
+function setActiveSidebar(key) {
   document.querySelectorAll(".calc-item").forEach(item => {
     item.classList.toggle("active", item.dataset.calc === key);
   });
-
-  titleEl.textContent = calc.title;
-  descEl.textContent = calc.description;
-
-  form.innerHTML = "";
-
-  calc.fields.forEach(field => {
-    const div = document.createElement("div");
-    div.className = "form-group";
-
-    const label = document.createElement("label");
-    label.textContent = field.label;
-
-    let input;
-    if (field.type === "select") {
-      input = document.createElement("select");
-      field.options.forEach(opt => {
-        const o = document.createElement("option");
-        o.value = opt;
-        o.textContent = opt;
-        input.appendChild(o);
-      });
-    } else {
-      input = document.createElement("input");
-      input.type = field.type;
-      if (field.step) input.step = field.step;
-    }
-
-    input.id = field.id;
-    div.appendChild(label);
-    div.appendChild(input);
-    form.appendChild(div);
-  });
-
-  resultBox.style.display = "none";
 }
 
-/* ================================================================
-   EVENTS (CONTINUES IN PART 3)
-================================================================ */
-calcList.onclick = e => {
+calcList.addEventListener("click", e => {
   const item = e.target.closest(".calc-item");
   if (!item) return;
-  renderCalculator(item.dataset.calc);
-};
 
-calcBtn.onclick = () => {
-  const calc = CALCULATORS[activeCalc];
+  const key = item.dataset.calc;
+  if (!CALCULATORS[key]) return;
+
+  ACTIVE_CALCULATOR = key;
+  setActiveSidebar(key);
+
+  const calc = CALCULATORS[key];
+  titleEl.textContent = calc.title;
+  descEl.textContent  = calc.description;
+
+  renderForm(calc);
+});
+
+/* ============================================================
+   DATA COLLECTION & VALIDATION
+============================================================ */
+
+function collectData(calculator) {
   const data = {};
 
-  for (let field of calc.fields) {
+  for (let field of calculator.fields) {
     const el = document.getElementById(field.id);
+
     if (!el || el.value === "") {
-      alert("Please fill all fields");
-      return;
+      alert("Please fill all required fields");
+      return null;
     }
-    data[field.id] =
-      field.type === "number" ? Number(el.value) : el.value;
+
+    if (field.type === "select") {
+      data[field.id] = el.value;
+    } else {
+      const value = Number(el.value);
+      if (isNaN(value)) {
+        alert("Invalid numeric value");
+        return null;
+      }
+      data[field.id] = value;
+    }
   }
 
-  const result = calc.calculate(data);
-  resultValue.innerHTML = result;
-  resultBox.style.display = "block";
+  return data;
+}
+
+/* ============================================================
+   BUTTON EVENTS (CALC / RESET)
+============================================================ */
+
+calcBtn.addEventListener("click", () => {
+  const calc = CALCULATORS[ACTIVE_CALCULATOR];
+  if (!calc) return;
+
+  const data = collectData(calc);
+  if (!data) return;
+
+  const output = calc.calculate(data);
+  showResult(output);
+});
+
+resetBtn.addEventListener("click", () => {
+  const calc = CALCULATORS[ACTIVE_CALCULATOR];
+  if (!calc) return;
+  renderForm(calc);
+});
+
+/* ============================================================
+   INITIAL RENDER
+============================================================ */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const initial = CALCULATORS[ACTIVE_CALCULATOR];
+  if (!initial) return;
+
+  setActiveSidebar(ACTIVE_CALCULATOR);
+  titleEl.textContent = initial.title;
+  descEl.textContent  = initial.description;
+  renderForm(initial);
+});
+
+</script>
+<script>
+/* ============================================================
+   MEDORA MEDICAL CALCULATORS
+   CORE ENGINE – PART 2 / 5
+============================================================ */
+
+/* ============================================================
+   GLOBAL STATE
+============================================================ */
+
+let ACTIVE_CALCULATOR = "bmi";
+
+/* ============================================================
+   DOM REFERENCES
+============================================================ */
+
+const calcList   = document.getElementById("calcList");
+const titleEl    = document.getElementById("title");
+const descEl     = document.getElementById("desc");
+const formEl     = document.getElementById("form");
+const resultEl   = document.getElementById("result");
+const calcBtn    = document.getElementById("calc");
+const resetBtn   = document.getElementById("reset");
+
+/* ============================================================
+   UTILITIES
+============================================================ */
+
+function clearResult() {
+  resultEl.style.display = "none";
+  resultEl.innerHTML = "";
+}
+
+function showResult(html) {
+  resultEl.innerHTML = html;
+  resultEl.style.display = "block";
+}
+
+function createInput(field) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "form-group";
+
+  const label = document.createElement("label");
+  label.textContent = field.label;
+
+  let input;
+
+  if (field.type === "select") {
+    input = document.createElement("select");
+    field.options.forEach(opt => {
+      const o = document.createElement("option");
+      o.value = opt.value;
+      o.textContent = opt.label;
+      input.appendChild(o);
+    });
+  } else {
+    input = document.createElement("input");
+    input.type = field.type || "number";
+    if (field.step) input.step = field.step;
+    if (field.placeholder) input.placeholder = field.placeholder;
+  }
+
+  input.id = field.id;
+
+  wrapper.appendChild(label);
+  wrapper.appendChild(input);
+
+  return wrapper;
+}
+
+/* ============================================================
+   FORM RENDERER
+============================================================ */
+
+function renderForm(calculator) {
+  formEl.innerHTML = "";
+  clearResult();
+
+  calculator.fields.forEach(field => {
+    const inputGroup = createInput(field);
+    formEl.appendChild(inputGroup);
+  });
+}
+
+/* ============================================================
+   SIDEBAR NAVIGATION
+============================================================ */
+
+function setActiveSidebar(key) {
+  document.querySelectorAll(".calc-item").forEach(item => {
+    item.classList.toggle("active", item.dataset.calc === key);
+  });
+}
+
+calcList.addEventListener("click", e => {
+  const item = e.target.closest(".calc-item");
+  if (!item) return;
+
+  const key = item.dataset.calc;
+  if (!CALCULATORS[key]) return;
+
+  ACTIVE_CALCULATOR = key;
+  setActiveSidebar(key);
+
+  const calc = CALCULATORS[key];
+  titleEl.textContent = calc.title;
+  descEl.textContent  = calc.description;
+
+  renderForm(calc);
+});
+
+/* ============================================================
+   DATA COLLECTION & VALIDATION
+============================================================ */
+
+function collectData(calculator) {
+  const data = {};
+
+  for (let field of calculator.fields) {
+    const el = document.getElementById(field.id);
+
+    if (!el || el.value === "") {
+      alert("Please fill all required fields");
+      return null;
+    }
+
+    if (field.type === "select") {
+      data[field.id] = el.value;
+    } else {
+      const value = Number(el.value);
+      if (isNaN(value)) {
+        alert("Invalid numeric value");
+        return null;
+      }
+      data[field.id] = value;
+    }
+  }
+
+  return data;
+}
+
+/* ============================================================
+   BUTTON EVENTS (CALC / RESET)
+============================================================ */
+
+calcBtn.addEventListener("click", () => {
+  const calc = CALCULATORS[ACTIVE_CALCULATOR];
+  if (!calc) return;
+
+  const data = collectData(calc);
+  if (!data) return;
+
+  const output = calc.calculate(data);
+  showResult(output);
+});
+
+resetBtn.addEventListener("click", () => {
+  const calc = CALCULATORS[ACTIVE_CALCULATOR];
+  if (!calc) return;
+  renderForm(calc);
+});
+
+/* ============================================================
+   INITIAL RENDER
+============================================================ */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const initial = CALCULATORS[ACTIVE_CALCULATOR];
+  if (!initial) return;
+
+  setActiveSidebar(ACTIVE_CALCULATOR);
+  titleEl.textContent = initial.title;
+  descEl.textContent  = initial.description;
+  renderForm(initial);
+});
+
+</script>
+<script>
+/* ============================================================
+   CALCULATORS REGISTRY – PART 4 / 5
+   (10 → 18)
+============================================================ */
+
+/* ============================================================
+   10. Serum Osmolarity
+============================================================ */
+CALCULATORS.osm = {
+  title: "Serum Osmolarity",
+  description: "Calculated serum osmolarity",
+  fields: [
+    { id: "na", label: "Sodium (mEq/L)", type: "number" },
+    { id: "glucose", label: "Glucose (mg/dL)", type: "number" },
+    { id: "bun", label: "BUN (mg/dL)", type: "number" }
+  ],
+  calculate(d) {
+    const osm = 2 * d.na + d.glucose / 18 + d.bun / 2.8;
+    return `Serum Osmolarity: <b>${osm.toFixed(1)} mOsm/kg</b>`;
+  }
 };
 
-resetBtn.onclick = () => {
-  renderCalculator(activeCalc);
+/* ============================================================
+   11. LDL Cholesterol – Friedewald
+============================================================ */
+CALCULATORS.ldl = {
+  title: "LDL Cholesterol",
+  description: "Friedewald equation",
+  fields: [
+    { id: "tc", label: "Total Cholesterol (mg/dL)", type: "number" },
+    { id: "hdl", label: "HDL (mg/dL)", type: "number" },
+    { id: "tg", label: "Triglycerides (mg/dL)", type: "number" }
+  ],
+  calculate(d) {
+    if (d.tg >= 400) {
+      return "Friedewald formula is invalid if TG ≥ 400 mg/dL";
+    }
+    const ldl = d.tc - d.hdl - d.tg / 5;
+    return `LDL: <b>${ldl.toFixed(1)} mg/dL</b>`;
+  }
 };
 
+/* ============================================================
+   12. Child–Pugh Score
+============================================================ */
 CALCULATORS.childpugh = {
-  title: "Child-Pugh Score",
-  description: "Assessment of liver disease severity.",
+  title: "Child–Pugh Score",
+  description: "Assessment of liver disease severity",
   fields: [
     { id: "bilirubin", label: "Bilirubin (mg/dL)", type: "number" },
     { id: "albumin", label: "Albumin (g/dL)", type: "number" },
-    { id: "inr", label: "INR", type: "number" },
-    { id: "ascites", label: "Ascites", type: "select", options: ["none", "mild", "severe"] },
-    { id: "encephalopathy", label: "Encephalopathy", type: "select", options: ["none", "grade1-2", "grade3-4"] }
+    { id: "inr", label: "INR", type: "number", step: "0.1" },
+    {
+      id: "ascites",
+      label: "Ascites",
+      type: "select",
+      options: [
+        { value: "1", label: "None" },
+        { value: "2", label: "Mild" },
+        { value: "3", label: "Moderate–Severe" }
+      ]
+    },
+    {
+      id: "encephalopathy",
+      label: "Encephalopathy",
+      type: "select",
+      options: [
+        { value: "1", label: "None" },
+        { value: "2", label: "Grade I–II" },
+        { value: "3", label: "Grade III–IV" }
+      ]
+    }
   ],
   calculate(d) {
     let score = 0;
+
     score += d.bilirubin < 2 ? 1 : d.bilirubin <= 3 ? 2 : 3;
     score += d.albumin > 3.5 ? 1 : d.albumin >= 2.8 ? 2 : 3;
     score += d.inr < 1.7 ? 1 : d.inr <= 2.3 ? 2 : 3;
-    score += d.ascites === "none" ? 1 : d.ascites === "mild" ? 2 : 3;
-    score += d.encephalopathy === "none" ? 1 : d.encephalopathy === "grade1-2" ? 2 : 3;
-    const cls = score <= 6 ? "Class A" : score <= 9 ? "Class B" : "Class C";
-    return `Score: ${score}<br>${cls}`;
+    score += Number(d.ascites);
+    score += Number(d.encephalopathy);
+
+    let grade = score <= 6 ? "Class A" : score <= 9 ? "Class B" : "Class C";
+
+    return `Child–Pugh Score: <b>${score}</b><br>${grade}`;
   }
 };
 
+/* ============================================================
+   13. MELD Score (Simplified)
+============================================================ */
 CALCULATORS.meld = {
   title: "MELD Score",
-  description: "Model for End-Stage Liver Disease.",
+  description: "Model for End-Stage Liver Disease",
   fields: [
     { id: "bilirubin", label: "Bilirubin (mg/dL)", type: "number" },
-    { id: "inr", label: "INR", type: "number" },
+    { id: "inr", label: "INR", type: "number", step: "0.1" },
     { id: "creatinine", label: "Creatinine (mg/dL)", type: "number" }
   ],
   calculate(d) {
@@ -669,120 +704,185 @@ CALCULATORS.meld = {
       11.2 * Math.log(d.inr) +
       9.57 * Math.log(d.creatinine) +
       6.43;
-    return Math.round(meld);
+
+    return `MELD Score: <b>${Math.round(meld)}</b>`;
   }
 };
 
+/* ============================================================
+   14. CHA₂DS₂-VASc
+============================================================ */
+CALCULATORS.cha2ds2vasc = {
+  title: "CHA₂DS₂-VASc Score",
+  description: "Stroke risk in atrial fibrillation",
+  fields: [
+    { id: "score", label: "Total Points", type: "number" }
+  ],
+  calculate(d) {
+    return `CHA₂DS₂-VASc Score: <b>${d.score}</b>`;
+  }
+};
+
+/* ============================================================
+   15. CURB-65
+============================================================ */
 CALCULATORS.curb65 = {
   title: "CURB-65",
-  description: "Pneumonia severity score.",
+  description: "Severity of community-acquired pneumonia",
   fields: [
-    { id: "confusion", label: "Confusion", type: "select", options: ["no", "yes"] },
-    { id: "urea", label: "Urea > 7 mmol/L", type: "select", options: ["no", "yes"] },
-    { id: "rr", label: "RR ≥ 30", type: "select", options: ["no", "yes"] },
-    { id: "bp", label: "Low BP", type: "select", options: ["no", "yes"] },
-    { id: "age", label: "Age ≥ 65", type: "select", options: ["no", "yes"] }
+    { id: "score", label: "Total Points (0–5)", type: "number" }
   ],
   calculate(d) {
-    let score = 0;
-    Object.values(d).forEach(v => v === "yes" && score++);
-    return score;
-  }
-};
-CALCULATORS.cha2ds2vasc = {
-  title: "CHA₂DS₂-VASc",
-  description: "Stroke risk in atrial fibrillation.",
-  fields: [
-    { id: "age75", label: "Age ≥ 75", type: "select", options: ["no", "yes"] },
-    { id: "age65", label: "Age 65–74", type: "select", options: ["no", "yes"] },
-    { id: "female", label: "Female Sex", type: "select", options: ["no", "yes"] },
-    { id: "htn", label: "Hypertension", type: "select", options: ["no", "yes"] },
-    { id: "dm", label: "Diabetes", type: "select", options: ["no", "yes"] },
-    { id: "stroke", label: "Stroke/TIA", type: "select", options: ["no", "yes"] },
-    { id: "vasc", label: "Vascular Disease", type: "select", options: ["no", "yes"] }
-  ],
-  calculate(d) {
-    let score = 0;
-    if (d.age75 === "yes") score += 2;
-    else if (d.age65 === "yes") score += 1;
-    if (d.female === "yes") score += 1;
-    if (d.htn === "yes") score += 1;
-    if (d.dm === "yes") score += 1;
-    if (d.stroke === "yes") score += 2;
-    if (d.vasc === "yes") score += 1;
-    return score;
+    let risk =
+      d.score <= 1 ? "Low risk" :
+      d.score <= 2 ? "Moderate risk" :
+      "High risk";
+
+    return `CURB-65 Score: <b>${d.score}</b><br>${risk}`;
   }
 };
 
-CALCULATORS.wells_dvt = {
-  title: "Wells Score (DVT)",
-  description: "Pretest probability for DVT.",
+/* ============================================================
+   16. Wells Score (DVT / PE)
+============================================================ */
+CALCULATORS.wells = {
+  title: "Wells Score",
+  description: "Clinical probability for DVT or PE",
   fields: [
-    { id: "cancer", label: "Active cancer", type: "select", options: ["no", "yes"] },
-    { id: "paralysis", label: "Paralysis/immobilization", type: "select", options: ["no", "yes"] },
-    { id: "tenderness", label: "Localized tenderness", type: "select", options: ["no", "yes"] },
-    { id: "swelling", label: "Leg swelling", type: "select", options: ["no", "yes"] },
-    { id: "collateral", label: "Collateral veins", type: "select", options: ["no", "yes"] },
-    { id: "alt", label: "Alternative diagnosis", type: "select", options: ["yes", "no"] }
+    { id: "score", label: "Total Points", type: "number", step: "0.5" }
   ],
   calculate(d) {
-    let score = 0;
-    Object.entries(d).forEach(([k, v]) => {
-      if (k === "alt" && v === "yes") score -= 2;
-      else if (v === "yes") score += 1;
-    });
-    return score;
+    let prob =
+      d.score < 2 ? "Low probability" :
+      d.score <= 6 ? "Moderate probability" :
+      "High probability";
+
+    return `Wells Score: <b>${d.score}</b><br>${prob}`;
   }
 };
 
+/* ============================================================
+   17. APACHE II (Simplified)
+============================================================ */
+CALCULATORS.apache = {
+  title: "APACHE II (Simplified)",
+  description: "Severity of disease classification",
+  fields: [
+    { id: "score", label: "Total APACHE II Score", type: "number" }
+  ],
+  calculate(d) {
+    return `APACHE II Score: <b>${d.score}</b>`;
+  }
+};
+
+/* ============================================================
+   18. NIHSS (Simplified)
+============================================================ */
 CALCULATORS.nihss = {
-  title: "NIH Stroke Scale (Simplified)",
-  description: "Neurological deficit severity.",
+  title: "NIH Stroke Scale (NIHSS)",
+  description: "Neurological deficit severity",
   fields: [
-    { id: "loc", label: "LOC", type: "number" },
-    { id: "gaze", label: "Gaze", type: "number" },
-    { id: "motor", label: "Motor", type: "number" },
-    { id: "speech", label: "Speech", type: "number" }
+    { id: "score", label: "NIHSS Total Score", type: "number" }
   ],
   calculate(d) {
-    const score = d.loc + d.gaze + d.motor + d.speech;
-    return score;
+    let severity =
+      d.score <= 4 ? "Minor Stroke" :
+      d.score <= 15 ? "Moderate Stroke" :
+      d.score <= 20 ? "Moderate–Severe Stroke" :
+      "Severe Stroke";
+
+    return `NIHSS Score: <b>${d.score}</b><br>${severity}`;
   }
 };
+</script>
+     <script>
+/* ============================================================
+   FINAL INITIALIZATION – PART 5 / 5
+============================================================ */
 
-/* ================================================================
-   SIDEBAR EXTENSION (ADD NEW ITEMS)
-================================================================ */
+/* ============================================================
+   SAFETY CHECKS
+============================================================ */
 
-const extraSidebarItems = [
-  { key: "childpugh", label: "Child-Pugh" },
-  { key: "meld", label: "MELD" },
-  { key: "cha2ds2vasc", label: "CHA₂DS₂-VASc" },
-  { key: "curb65", label: "CURB-65" },
-  { key: "wells_dvt", label: "Wells (DVT)" },
-  { key: "nihss", label: "NIHSS" }
-];
-
-extraSidebarItems.forEach(item => {
-  const div = document.createElement("div");
-  div.className = "calc-item";
-  div.dataset.calc = item.key;
-  div.textContent = item.label;
-  calcList.appendChild(div);
-});
-
-/* ================================================================
-   SAFETY INIT
-================================================================ */
-
-if (!CALCULATORS[activeCalc]) {
-  activeCalc = Object.keys(CALCULATORS)[0];
+if (typeof CALCULATORS !== "object") {
+  console.error("CALCULATORS registry not found");
 }
 
-renderCalculator(activeCalc);
+/* ============================================================
+   DEFAULT CALCULATOR SETUP
+============================================================ */
 
+function initDefaultCalculator() {
+  const defaultKey = "bmi";
+
+  if (!CALCULATORS[defaultKey]) {
+    console.error("Default calculator missing");
+    return;
+  }
+
+  ACTIVE_CALCULATOR = defaultKey;
+
+  setActiveSidebar(defaultKey);
+
+  titleEl.textContent = CALCULATORS[defaultKey].title;
+  descEl.textContent  = CALCULATORS[defaultKey].description;
+
+  renderForm(CALCULATORS[defaultKey]);
+  clearResult();
+}
+
+/* ============================================================
+   GLOBAL KEYBOARD SUPPORT (ENTER TO CALCULATE)
+============================================================ */
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    calcBtn.click();
+  }
+});
+
+/* ============================================================
+   FORM RESET ENHANCEMENT
+============================================================ */
+
+resetBtn.addEventListener("click", () => {
+  clearResult();
+});
+
+/* ============================================================
+   RESULT FORMATTING ENHANCEMENT
+============================================================ */
+
+const originalShowResult = showResult;
+
+function enhancedShowResult(html) {
+  originalShowResult(`
+    <div style="font-size:14px;color:#94a3b8;margin-bottom:6px">
+      Calculation Result
+    </div>
+    <div style="font-size:26px;font-weight:700">
+      ${html}
+    </div>
+  `);
+}
+
+showResult = enhancedShowResult;
+
+/* ============================================================
+   LOAD EVENT
+============================================================ */
+
+window.addEventListener("load", () => {
+  initDefaultCalculator();
+});
+
+/* ============================================================
+   END OF FILE
+============================================================ */
 </script>
 
 </body>
 </html>
+
 
