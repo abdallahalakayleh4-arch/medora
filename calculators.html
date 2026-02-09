@@ -5,231 +5,532 @@
 <title>Medora | Medical Calculators</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- =========================================================
+     MEDORA MEDICAL CALCULATORS
+     Single File – Split into TWO TEXT PARTS by line count only
+     PART 1 (Lines 1 → ~260)
+========================================================= -->
+
 <style>
+
+/* =========================================================
+   ROOT VARIABLES – MEDICAL THEME
+========================================================= */
+:root {
+  --bg-main: #020617;
+  --bg-panel: #0b132b;
+  --bg-card: #1c2541;
+  --primary: #3a86ff;
+  --accent: #38bdf8;
+  --danger: #ef4444;
+  --warning: #facc15;
+  --success: #22c55e;
+  --text-main: #e5e7eb;
+  --text-muted: #94a3b8;
+  --border-soft: rgba(255,255,255,0.08);
+}
+
+/* =========================================================
+   RESET & BASE
+========================================================= */
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: "Segoe UI", Arial, sans-serif;
   background: radial-gradient(circle at top, #1c2541, #020617);
-  color: #e5e7eb;
+  color: var(--text-main);
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
 }
 
-.box {
-  width: 480px;
+/* =========================================================
+   APP CONTAINER
+========================================================= */
+.app {
+  width: 1000px;
+  max-width: 96%;
   background: linear-gradient(180deg, #1c2541, #0b132b);
-  padding: 28px;
+  border-radius: 22px;
+  padding: 30px;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.65);
+  border: 1px solid var(--border-soft);
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.brand-text strong {
+  font-size: 20px;
+}
+
+.brand-text span {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* =========================================================
+   MAIN LAYOUT
+========================================================= */
+.main {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 28px;
+}
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+.sidebar {
+  background: var(--bg-panel);
   border-radius: 18px;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+  padding: 20px;
+  border: 1px solid var(--border-soft);
 }
 
-h2 {
-  margin: 0 0 20px;
-  text-align: center;
+.sidebar h3 {
+  margin-top: 0;
+  font-size: 16px;
+  margin-bottom: 14px;
 }
 
-label {
+/* =========================================================
+   CALCULATOR LIST
+========================================================= */
+.calc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.calc-item {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: transparent;
+  border: 1px solid var(--border-soft);
+  color: var(--text-main);
+  cursor: pointer;
+  transition: 0.25s;
+  font-size: 14px;
+}
+
+.calc-item:hover {
+  background: rgba(58,134,255,0.15);
+}
+
+.calc-item.active {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #020617;
+  font-weight: 600;
+}
+
+/* =========================================================
+   CONTENT PANEL
+========================================================= */
+.content {
+  background: var(--bg-panel);
+  border-radius: 18px;
+  padding: 24px;
+  border: 1px solid var(--border-soft);
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================================================
+   CONTENT HEADER
+========================================================= */
+.content-header h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.content-header p {
+  margin-top: 6px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+/* =========================================================
+   FORM GRID
+========================================================= */
+.form {
+  margin-top: 26px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group.full {
+  grid-column: span 2;
+}
+
+.form-group label {
   font-size: 13px;
-  color: #b0bcd6;
+  margin-bottom: 6px;
+  color: var(--text-muted);
 }
 
-select, input {
-  width: 100%;
-  padding: 10px;
-  margin: 6px 0 12px;
+.form-group input,
+.form-group select {
+  padding: 10px 12px;
   border-radius: 10px;
   border: none;
   background: #24355c;
   color: white;
 }
 
-button.calculate {
-  width: 100%;
-  padding: 12px;
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+.actions {
+  margin-top: auto;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.actions button {
+  padding: 12px 18px;
   border-radius: 12px;
   border: none;
   cursor: pointer;
-  background: linear-gradient(135deg, #38bdf8, #3a86ff);
-  color: #020617;
-  font-weight: bold;
-  margin-top: 10px;
+  font-size: 14px;
 }
 
-.result {
-  margin-top: 18px;
-  padding: 14px;
+.btn-calc {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: #020617;
+  font-weight: bold;
+}
+
+.btn-reset {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border-soft);
+}
+
+/* =========================================================
+   RESULT BOX
+========================================================= */
+.result-box {
+  margin-top: 24px;
+  padding: 18px;
+  border-radius: 14px;
   background: #020617;
-  border-radius: 12px;
-  font-size: 15px;
+  border: 1px solid var(--border-soft);
   display: none;
 }
 
+.result-box h4 {
+  margin-top: 0;
+}
+
+.result-value {
+  font-size: 26px;
+  margin-top: 10px;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
 .footer {
+  margin-top: 26px;
   text-align: center;
-  margin-top: 18px;
 }
 
 .footer button {
   background: transparent;
-  color: #94a3b8;
   border: none;
+  color: var(--text-muted);
   cursor: pointer;
   font-size: 13px;
 }
+
 </style>
 </head>
 
 <body>
 
-<div class="box">
-  <h2>Medical Calculators</h2>
+<div class="app">
 
-  <!-- Calculator Selector -->
-  <label>Select Calculator</label>
-  <select id="calculator">
-    <option value="">-- Choose --</option>
-    <option value="bmi">BMI</option>
-    <option value="crcl">Creatinine Clearance (Cockcroft–Gault)</option>
-    <option value="calcium">Corrected Calcium</option>
-    <option value="parkland">Parkland Formula</option>
-  </select>
+  <div class="header">
+    <div class="brand">
+      <div class="brand-icon">🧮</div>
+      <div class="brand-text">
+        <strong>Medora</strong><br>
+        <span>Medical Calculators</span>
+      </div>
+    </div>
+  </div>
 
-  <!-- Dynamic Inputs -->
-  <div id="inputs"></div>
+  <div class="main">
 
-  <button class="calculate" onclick="calculate()">Calculate</button>
+    <div class="sidebar">
+      <h3>Calculators</h3>
+      <div class="calc-list" id="calcList">
+        <div class="calc-item active" data-calc="bmi">BMI</div>
+        <div class="calc-item" data-calc="crcl">Creatinine Clearance</div>
+        <div class="calc-item" data-calc="calcium">Corrected Calcium</div>
+        <div class="calc-item" data-calc="parkland">Parkland Formula</div>
+        <div class="calc-item" data-calc="aniongap">Anion Gap</div>
+        <div class="calc-item" data-calc="map">Mean Arterial Pressure</div>
+      </div>
+    </div>
 
-  <div class="result" id="result"></div>
+    <div class="content">
+
+      <div class="content-header">
+        <h2 id="calcTitle">BMI</h2>
+        <p id="calcDesc">Body Mass Index calculation.</p>
+      </div>
+
+      <div class="form" id="dynamicForm">
+        <!-- inputs will continue here -->
+              </div>
+
+      <!-- ACTION BUTTONS -->
+      <div class="actions">
+        <button class="btn-reset" id="resetBtn">Reset</button>
+        <button class="btn-calc" id="calcBtn">Calculate</button>
+      </div>
+
+      <!-- RESULT -->
+      <div class="result-box" id="resultBox">
+        <h4>Result</h4>
+        <div class="result-value" id="resultValue">—</div>
+      </div>
+
+    </div>
+  </div>
 
   <div class="footer">
     <button onclick="location.href='dashboard.html'">← Back to Dashboard</button>
   </div>
+
 </div>
 
 <script>
-const inputsDiv = document.getElementById("inputs");
-const resultDiv = document.getElementById("result");
-const calcSelect = document.getElementById("calculator");
+/* =========================================================
+   CALCULATOR DEFINITIONS
+========================================================= */
 
-calcSelect.onchange = () => {
-  inputsDiv.innerHTML = "";
-  resultDiv.style.display = "none";
+const CALCULATORS = {
 
-  if (calcSelect.value === "bmi") {
-    inputsDiv.innerHTML = `
-      <label>Weight (kg)</label>
-      <input id="weight" type="number">
+  bmi: {
+    title: "BMI",
+    description: "Body Mass Index based on weight and height.",
+    fields: [
+      { id: "weight", label: "Weight (kg)", type: "number" },
+      { id: "height", label: "Height (cm)", type: "number" }
+    ],
+    calculate(data) {
+      const h = data.height / 100;
+      return (data.weight / (h * h)).toFixed(2);
+    }
+  },
 
-      <label>Height (cm)</label>
-      <input id="height" type="number">
-    `;
+  crcl: {
+    title: "Creatinine Clearance",
+    description: "Cockcroft–Gault equation.",
+    fields: [
+      { id: "age", label: "Age (years)", type: "number" },
+      { id: "weight", label: "Weight (kg)", type: "number" },
+      { id: "scr", label: "Serum Creatinine (mg/dL)", type: "number", step: "0.1" },
+      { id: "sex", label: "Sex", type: "select", options: ["male", "female"] }
+    ],
+    calculate(d) {
+      let crcl = ((140 - d.age) * d.weight) / (72 * d.scr);
+      if (d.sex === "female") crcl *= 0.85;
+      return crcl.toFixed(1) + " mL/min";
+    }
+  },
+
+  calcium: {
+    title: "Corrected Calcium",
+    description: "Corrected calcium based on albumin.",
+    fields: [
+      { id: "calcium", label: "Total Calcium (mg/dL)", type: "number", step: "0.1" },
+      { id: "albumin", label: "Albumin (g/dL)", type: "number", step: "0.1" }
+    ],
+    calculate(d) {
+      return (d.calcium + 0.8 * (4 - d.albumin)).toFixed(2) + " mg/dL";
+    }
+  },
+
+  parkland: {
+    title: "Parkland Formula",
+    description: "Fluid resuscitation in burns.",
+    fields: [
+      { id: "weight", label: "Weight (kg)", type: "number" },
+      { id: "tbsa", label: "% TBSA Burn", type: "number" }
+    ],
+    calculate(d) {
+      const total = 4 * d.weight * d.tbsa;
+      return `
+        Total: ${total} mL<br>
+        First 8h: ${total / 2} mL<br>
+        Next 16h: ${total / 2} mL
+      `;
+    }
+  },
+
+  aniongap: {
+    title: "Anion Gap",
+    description: "Na - (Cl + HCO3)",
+    fields: [
+      { id: "na", label: "Sodium (mEq/L)", type: "number" },
+      { id: "cl", label: "Chloride (mEq/L)", type: "number" },
+      { id: "hco3", label: "Bicarbonate (mEq/L)", type: "number" }
+    ],
+    calculate(d) {
+      return (d.na - (d.cl + d.hco3)) + " mEq/L";
+    }
+  },
+
+  map: {
+    title: "Mean Arterial Pressure",
+    description: "MAP = (SBP + 2×DBP) / 3",
+    fields: [
+      { id: "sbp", label: "Systolic BP", type: "number" },
+      { id: "dbp", label: "Diastolic BP", type: "number" }
+    ],
+    calculate(d) {
+      return ((d.sbp + 2 * d.dbp) / 3).toFixed(1) + " mmHg";
+    }
   }
 
-  if (calcSelect.value === "crcl") {
-    inputsDiv.innerHTML = `
-      <label>Age (years)</label>
-      <input id="age" type="number">
-
-      <label>Weight (kg)</label>
-      <input id="weight" type="number">
-
-      <label>Serum Creatinine (mg/dL)</label>
-      <input id="scr" type="number" step="0.1">
-
-      <label>Sex</label>
-      <select id="sex">
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-      </select>
-    `;
-  }
-
-  if (calcSelect.value === "calcium") {
-    inputsDiv.innerHTML = `
-      <label>Total Calcium (mg/dL)</label>
-      <input id="calcium" type="number" step="0.1">
-
-      <label>Albumin (g/dL)</label>
-      <input id="albumin" type="number" step="0.1">
-    `;
-  }
-
-  if (calcSelect.value === "parkland") {
-    inputsDiv.innerHTML = `
-      <label>Weight (kg)</label>
-      <input id="weight" type="number">
-
-      <label>% TBSA Burn</label>
-      <input id="tbsa" type="number">
-    `;
-  }
 };
 
-function calculate() {
-  let result = "";
+/* =========================================================
+   STATE & ELEMENTS
+========================================================= */
 
-  if (calcSelect.value === "") {
-    alert("Please select a calculator first");
-    return;
-  }
+let activeCalc = "bmi";
 
-  if (calcSelect.value === "bmi") {
-    const w = Number(document.getElementById("weight").value);
-    const h = Number(document.getElementById("height").value) / 100;
+const calcList = document.getElementById("calcList");
+const form = document.getElementById("dynamicForm");
+const titleEl = document.getElementById("calcTitle");
+const descEl = document.getElementById("calcDesc");
+const resultBox = document.getElementById("resultBox");
+const resultValue = document.getElementById("resultValue");
+const calcBtn = document.getElementById("calcBtn");
+const resetBtn = document.getElementById("resetBtn");
 
-    if (!w || !h) return alert("Please enter valid values");
+/* =========================================================
+   RENDER CALCULATOR
+========================================================= */
 
-    const bmi = (w / (h * h)).toFixed(1);
-    result = `BMI = <strong>${bmi}</strong>`;
-  }
+function renderCalculator(key) {
+  activeCalc = key;
+  const calc = CALCULATORS[key];
 
-  if (calcSelect.value === "crcl") {
-    const age = Number(document.getElementById("age").value);
-    const w = Number(document.getElementById("weight").value);
-    const scr = Number(document.getElementById("scr").value);
-    const sex = document.getElementById("sex").value;
+  document.querySelectorAll(".calc-item").forEach(item => {
+    item.classList.toggle("active", item.dataset.calc === key);
+  });
 
-    if (!age || !w || !scr) return alert("Please enter valid values");
+  titleEl.textContent = calc.title;
+  descEl.textContent = calc.description;
 
-    let crcl = ((140 - age) * w) / (72 * scr);
-    if (sex === "female") crcl *= 0.85;
+  form.innerHTML = "";
 
-    result = `Creatinine Clearance = <strong>${crcl.toFixed(1)} mL/min</strong>`;
-  }
+  calc.fields.forEach(field => {
+    const div = document.createElement("div");
+    div.className = "form-group";
 
-  if (calcSelect.value === "calcium") {
-    const ca = Number(document.getElementById("calcium").value);
-    const alb = Number(document.getElementById("albumin").value);
+    const label = document.createElement("label");
+    label.textContent = field.label;
 
-    if (!ca || !alb) return alert("Please enter valid values");
+    let input;
+    if (field.type === "select") {
+      input = document.createElement("select");
+      field.options.forEach(opt => {
+        const o = document.createElement("option");
+        o.value = opt;
+        o.textContent = opt;
+        input.appendChild(o);
+      });
+    } else {
+      input = document.createElement("input");
+      input.type = field.type;
+      if (field.step) input.step = field.step;
+    }
 
-    const corr = ca + 0.8 * (4 - alb);
-    result = `Corrected Calcium = <strong>${corr.toFixed(2)} mg/dL</strong>`;
-  }
+    input.id = field.id;
+    div.appendChild(label);
+    div.appendChild(input);
+    form.appendChild(div);
+  });
 
-  if (calcSelect.value === "parkland") {
-    const w = Number(document.getElementById("weight").value);
-    const tbsa = Number(document.getElementById("tbsa").value);
-
-    if (!w || !tbsa) return alert("Please enter valid values");
-
-    const total = 4 * w * tbsa;
-    const first8 = total / 2;
-    const next16 = total / 2;
-
-    result = `
-      Total Fluids: <strong>${total} mL</strong><br>
-      First 8h: ${first8} mL<br>
-      Next 16h: ${next16} mL
-    `;
-  }
-
-  resultDiv.innerHTML = result;
-  resultDiv.style.display = "block";
+  resultBox.style.display = "none";
 }
+
+/* =========================================================
+   EVENTS
+========================================================= */
+
+calcList.onclick = e => {
+  const item = e.target.closest(".calc-item");
+  if (!item) return;
+  renderCalculator(item.dataset.calc);
+};
+
+calcBtn.onclick = () => {
+  const calc = CALCULATORS[activeCalc];
+  const data = {};
+
+  calc.fields.forEach(f => {
+    const el = document.getElementById(f.id);
+    if (!el.value) return alert("Please fill all fields");
+    data[f.id] = f.type === "number" ? Number(el.value) : el.value;
+  });
+
+  const result = calc.calculate(data);
+  resultValue.innerHTML = result;
+  resultBox.style.display = "block";
+};
+
+resetBtn.onclick = () => {
+  renderCalculator(activeCalc);
+};
+
+/* INIT */
+renderCalculator(activeCalc);
+
 </script>
 
 </body>
 </html>
+
