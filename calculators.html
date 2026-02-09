@@ -5,17 +5,17 @@
 <title>Medora | Medical Calculators</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- =========================================================
+<!-- =================================================================
      MEDORA MEDICAL CALCULATORS
-     Single File – Split into TWO TEXT PARTS by line count only
-     PART 1 (Lines 1 → ~260)
-========================================================= -->
+     SINGLE FILE – SPLIT INTO 4 TEXT PARTS (LINE-BASED ONLY)
+     PART 1 / 4
+================================================================= -->
 
 <style>
 
-/* =========================================================
-   ROOT VARIABLES – MEDICAL THEME
-========================================================= */
+/* ================================================================
+   ROOT VARIABLES – MEDICAL DARK THEME
+================================================================ */
 :root {
   --bg-main: #020617;
   --bg-panel: #0b132b;
@@ -30,9 +30,9 @@
   --border-soft: rgba(255,255,255,0.08);
 }
 
-/* =========================================================
-   RESET & BASE
-========================================================= */
+/* ================================================================
+   RESET & BASE STYLES
+================================================================ */
 * {
   box-sizing: border-box;
 }
@@ -48,27 +48,27 @@ body {
   align-items: center;
 }
 
-/* =========================================================
-   APP CONTAINER
-========================================================= */
+/* ================================================================
+   MAIN APP CONTAINER
+================================================================ */
 .app {
-  width: 1000px;
+  width: 1100px;
   max-width: 96%;
   background: linear-gradient(180deg, #1c2541, #0b132b);
-  border-radius: 22px;
-  padding: 30px;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.65);
+  border-radius: 24px;
+  padding: 32px;
   border: 1px solid var(--border-soft);
+  box-shadow: 0 40px 90px rgba(0,0,0,0.65);
 }
 
-/* =========================================================
+/* ================================================================
    HEADER
-========================================================= */
+================================================================ */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 28px;
+  margin-bottom: 32px;
 }
 
 .brand {
@@ -78,9 +78,9 @@ body {
 }
 
 .brand-icon {
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
   background: linear-gradient(135deg, var(--primary), var(--accent));
   display: flex;
   align-items: center;
@@ -89,7 +89,8 @@ body {
 }
 
 .brand-text strong {
-  font-size: 20px;
+  font-size: 22px;
+  letter-spacing: 0.3px;
 }
 
 .brand-text span {
@@ -97,34 +98,35 @@ body {
   color: var(--text-muted);
 }
 
-/* =========================================================
-   MAIN LAYOUT
-========================================================= */
+/* ================================================================
+   LAYOUT GRID
+================================================================ */
 .main {
   display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 28px;
+  grid-template-columns: 340px 1fr;
+  gap: 30px;
 }
 
-/* =========================================================
+/* ================================================================
    SIDEBAR
-========================================================= */
+================================================================ */
 .sidebar {
   background: var(--bg-panel);
-  border-radius: 18px;
-  padding: 20px;
+  border-radius: 20px;
+  padding: 22px;
   border: 1px solid var(--border-soft);
 }
 
 .sidebar h3 {
   margin-top: 0;
   font-size: 16px;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
+  color: var(--text-main);
 }
 
-/* =========================================================
+/* ================================================================
    CALCULATOR LIST
-========================================================= */
+================================================================ */
 .calc-list {
   display: flex;
   flex-direction: column;
@@ -132,13 +134,13 @@ body {
 }
 
 .calc-item {
-  padding: 12px 14px;
-  border-radius: 12px;
+  padding: 13px 15px;
+  border-radius: 14px;
   background: transparent;
   border: 1px solid var(--border-soft);
   color: var(--text-main);
   cursor: pointer;
-  transition: 0.25s;
+  transition: all 0.25s ease;
   font-size: 14px;
 }
 
@@ -152,24 +154,24 @@ body {
   font-weight: 600;
 }
 
-/* =========================================================
+/* ================================================================
    CONTENT PANEL
-========================================================= */
+================================================================ */
 .content {
   background: var(--bg-panel);
-  border-radius: 18px;
-  padding: 24px;
+  border-radius: 20px;
+  padding: 26px;
   border: 1px solid var(--border-soft);
   display: flex;
   flex-direction: column;
 }
 
-/* =========================================================
+/* ================================================================
    CONTENT HEADER
-========================================================= */
+================================================================ */
 .content-header h2 {
   margin: 0;
-  font-size: 22px;
+  font-size: 24px;
 }
 
 .content-header p {
@@ -178,14 +180,14 @@ body {
   color: var(--text-muted);
 }
 
-/* =========================================================
+/* ================================================================
    FORM GRID
-========================================================= */
+================================================================ */
 .form {
-  margin-top: 26px;
+  margin-top: 28px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 18px;
 }
 
 .form-group {
@@ -205,16 +207,17 @@ body {
 
 .form-group input,
 .form-group select {
-  padding: 10px 12px;
-  border-radius: 10px;
+  padding: 11px 13px;
+  border-radius: 12px;
   border: none;
   background: #24355c;
   color: white;
+  font-size: 14px;
 }
 
-/* =========================================================
+/* ================================================================
    ACTION BUTTONS
-========================================================= */
+================================================================ */
 .actions {
   margin-top: auto;
   display: flex;
@@ -223,8 +226,8 @@ body {
 }
 
 .actions button {
-  padding: 12px 18px;
-  border-radius: 12px;
+  padding: 12px 20px;
+  border-radius: 14px;
   border: none;
   cursor: pointer;
   font-size: 14px;
@@ -242,13 +245,13 @@ body {
   border: 1px solid var(--border-soft);
 }
 
-/* =========================================================
+/* ================================================================
    RESULT BOX
-========================================================= */
+================================================================ */
 .result-box {
-  margin-top: 24px;
-  padding: 18px;
-  border-radius: 14px;
+  margin-top: 26px;
+  padding: 20px;
+  border-radius: 16px;
   background: #020617;
   border: 1px solid var(--border-soft);
   display: none;
@@ -260,14 +263,14 @@ body {
 
 .result-value {
   font-size: 26px;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
-/* =========================================================
+/* ================================================================
    FOOTER
-========================================================= */
+================================================================ */
 .footer {
-  margin-top: 26px;
+  margin-top: 28px;
   text-align: center;
 }
 
@@ -291,7 +294,7 @@ body {
       <div class="brand-icon">🧮</div>
       <div class="brand-text">
         <strong>Medora</strong><br>
-        <span>Medical Calculators</span>
+        <span>Advanced Medical Calculators</span>
       </div>
     </div>
   </div>
@@ -302,11 +305,15 @@ body {
       <h3>Calculators</h3>
       <div class="calc-list" id="calcList">
         <div class="calc-item active" data-calc="bmi">BMI</div>
+        <div class="calc-item" data-calc="bsa">BSA</div>
         <div class="calc-item" data-calc="crcl">Creatinine Clearance</div>
+        <div class="calc-item" data-calc="egfr">eGFR</div>
         <div class="calc-item" data-calc="calcium">Corrected Calcium</div>
         <div class="calc-item" data-calc="parkland">Parkland Formula</div>
         <div class="calc-item" data-calc="aniongap">Anion Gap</div>
-        <div class="calc-item" data-calc="map">Mean Arterial Pressure</div>
+        <div class="calc-item" data-calc="map">MAP</div>
+        <div class="calc-item" data-calc="osm">Osmolarity</div>
+        <div class="calc-item" data-calc="ldl">LDL</div>
       </div>
     </div>
 
@@ -318,8 +325,7 @@ body {
       </div>
 
       <div class="form" id="dynamicForm">
-        <!-- inputs will continue here -->
-              </div>
+        <!-- dynamic inputs continue here -->      </div>
 
       <!-- ACTION BUTTONS -->
       <div class="actions">
@@ -343,28 +349,59 @@ body {
 </div>
 
 <script>
-/* =========================================================
-   CALCULATOR DEFINITIONS
-========================================================= */
+/* ================================================================
+   CALCULATOR DEFINITIONS (EXTENSIBLE REGISTRY)
+================================================================ */
+
+/*
+  NOTE:
+  - This registry holds ALL calculators.
+  - Each calculator defines:
+    title, description, fields[], calculate()
+  - More calculators will be added in PART 3.
+*/
 
 const CALCULATORS = {
 
+  /* ============================================================
+     BMI
+  ============================================================ */
   bmi: {
-    title: "BMI",
-    description: "Body Mass Index based on weight and height.",
+    title: "Body Mass Index (BMI)",
+    description: "Weight-to-height ratio used to classify body mass.",
     fields: [
       { id: "weight", label: "Weight (kg)", type: "number" },
       { id: "height", label: "Height (cm)", type: "number" }
     ],
-    calculate(data) {
-      const h = data.height / 100;
-      return (data.weight / (h * h)).toFixed(2);
+    calculate(d) {
+      const h = d.height / 100;
+      const bmi = d.weight / (h * h);
+      return bmi.toFixed(2);
     }
   },
 
+  /* ============================================================
+     BSA – Body Surface Area (Mosteller)
+  ============================================================ */
+  bsa: {
+    title: "Body Surface Area (BSA)",
+    description: "Mosteller formula used for drug dosing.",
+    fields: [
+      { id: "weight", label: "Weight (kg)", type: "number" },
+      { id: "height", label: "Height (cm)", type: "number" }
+    ],
+    calculate(d) {
+      const bsa = Math.sqrt((d.height * d.weight) / 3600);
+      return bsa.toFixed(2) + " m²";
+    }
+  },
+
+  /* ============================================================
+     Creatinine Clearance – Cockcroft–Gault
+  ============================================================ */
   crcl: {
     title: "Creatinine Clearance",
-    description: "Cockcroft–Gault equation.",
+    description: "Cockcroft–Gault estimation of renal function.",
     fields: [
       { id: "age", label: "Age (years)", type: "number" },
       { id: "weight", label: "Weight (kg)", type: "number" },
@@ -378,65 +415,132 @@ const CALCULATORS = {
     }
   },
 
+  /* ============================================================
+     eGFR – MDRD (Simplified)
+  ============================================================ */
+  egfr: {
+    title: "eGFR (MDRD)",
+    description: "Estimated glomerular filtration rate.",
+    fields: [
+      { id: "age", label: "Age (years)", type: "number" },
+      { id: "scr", label: "Serum Creatinine (mg/dL)", type: "number", step: "0.1" },
+      { id: "sex", label: "Sex", type: "select", options: ["male", "female"] }
+    ],
+    calculate(d) {
+      let gfr = 175 * Math.pow(d.scr, -1.154) * Math.pow(d.age, -0.203);
+      if (d.sex === "female") gfr *= 0.742;
+      return gfr.toFixed(1) + " mL/min/1.73m²";
+    }
+  },
+
+  /* ============================================================
+     Corrected Calcium
+  ============================================================ */
   calcium: {
     title: "Corrected Calcium",
-    description: "Corrected calcium based on albumin.",
+    description: "Corrects calcium level based on albumin.",
     fields: [
       { id: "calcium", label: "Total Calcium (mg/dL)", type: "number", step: "0.1" },
       { id: "albumin", label: "Albumin (g/dL)", type: "number", step: "0.1" }
     ],
     calculate(d) {
-      return (d.calcium + 0.8 * (4 - d.albumin)).toFixed(2) + " mg/dL";
+      const corrected = d.calcium + 0.8 * (4 - d.albumin);
+      return corrected.toFixed(2) + " mg/dL";
     }
   },
 
+  /* ============================================================
+     Parkland Formula
+  ============================================================ */
   parkland: {
     title: "Parkland Formula",
-    description: "Fluid resuscitation in burns.",
+    description: "Fluid resuscitation calculation for burns.",
     fields: [
       { id: "weight", label: "Weight (kg)", type: "number" },
-      { id: "tbsa", label: "% TBSA Burn", type: "number" }
+      { id: "tbsa", label: "TBSA Burn (%)", type: "number" }
     ],
     calculate(d) {
       const total = 4 * d.weight * d.tbsa;
       return `
-        Total: ${total} mL<br>
-        First 8h: ${total / 2} mL<br>
-        Next 16h: ${total / 2} mL
+        Total fluids: ${total} mL<br>
+        First 8 hours: ${total / 2} mL<br>
+        Next 16 hours: ${total / 2} mL
       `;
     }
   },
 
+  /* ============================================================
+     Anion Gap
+  ============================================================ */
   aniongap: {
     title: "Anion Gap",
-    description: "Na - (Cl + HCO3)",
+    description: "Na − (Cl + HCO₃)",
     fields: [
       { id: "na", label: "Sodium (mEq/L)", type: "number" },
       { id: "cl", label: "Chloride (mEq/L)", type: "number" },
       { id: "hco3", label: "Bicarbonate (mEq/L)", type: "number" }
     ],
     calculate(d) {
-      return (d.na - (d.cl + d.hco3)) + " mEq/L";
+      const ag = d.na - (d.cl + d.hco3);
+      return ag + " mEq/L";
     }
   },
 
+  /* ============================================================
+     Mean Arterial Pressure
+  ============================================================ */
   map: {
     title: "Mean Arterial Pressure",
     description: "MAP = (SBP + 2×DBP) / 3",
     fields: [
-      { id: "sbp", label: "Systolic BP", type: "number" },
-      { id: "dbp", label: "Diastolic BP", type: "number" }
+      { id: "sbp", label: "Systolic BP (mmHg)", type: "number" },
+      { id: "dbp", label: "Diastolic BP (mmHg)", type: "number" }
     ],
     calculate(d) {
-      return ((d.sbp + 2 * d.dbp) / 3).toFixed(1) + " mmHg";
+      const map = (d.sbp + 2 * d.dbp) / 3;
+      return map.toFixed(1) + " mmHg";
+    }
+  },
+
+  /* ============================================================
+     Osmolarity
+  ============================================================ */
+  osm: {
+    title: "Serum Osmolarity",
+    description: "Calculated serum osmolarity.",
+    fields: [
+      { id: "na", label: "Sodium (mEq/L)", type: "number" },
+      { id: "glucose", label: "Glucose (mg/dL)", type: "number" },
+      { id: "bun", label: "BUN (mg/dL)", type: "number" }
+    ],
+    calculate(d) {
+      const osm = 2 * d.na + d.glucose / 18 + d.bun / 2.8;
+      return osm.toFixed(1) + " mOsm/kg";
+    }
+  },
+
+  /* ============================================================
+     LDL – Friedewald Formula
+  ============================================================ */
+  ldl: {
+    title: "LDL Cholesterol",
+    description: "Friedewald equation.",
+    fields: [
+      { id: "tc", label: "Total Cholesterol (mg/dL)", type: "number" },
+      { id: "hdl", label: "HDL (mg/dL)", type: "number" },
+      { id: "tg", label: "Triglycerides (mg/dL)", type: "number" }
+    ],
+    calculate(d) {
+      const ldl = d.tc - d.hdl - d.tg / 5;
+      return ldl.toFixed(1) + " mg/dL";
     }
   }
 
-};
+}; // END REGISTRY (continues in PART 3)
 
-/* =========================================================
-   STATE & ELEMENTS
-========================================================= */
+/* ================================================================
+   STATE & DOM REFERENCES
+================================================================ */
 
 let activeCalc = "bmi";
 
@@ -449,9 +553,9 @@ const resultValue = document.getElementById("resultValue");
 const calcBtn = document.getElementById("calcBtn");
 const resetBtn = document.getElementById("resetBtn");
 
-/* =========================================================
-   RENDER CALCULATOR
-========================================================= */
+/* ================================================================
+   RENDER CALCULATOR (UI BUILDER)
+================================================================ */
 
 function renderCalculator(key) {
   activeCalc = key;
@@ -497,10 +601,9 @@ function renderCalculator(key) {
   resultBox.style.display = "none";
 }
 
-/* =========================================================
-   EVENTS
-========================================================= */
-
+/* ================================================================
+   EVENTS (CONTINUES IN PART 3)
+================================================================ */
 calcList.onclick = e => {
   const item = e.target.closest(".calc-item");
   if (!item) return;
@@ -511,11 +614,15 @@ calcBtn.onclick = () => {
   const calc = CALCULATORS[activeCalc];
   const data = {};
 
-  calc.fields.forEach(f => {
-    const el = document.getElementById(f.id);
-    if (!el.value) return alert("Please fill all fields");
-    data[f.id] = f.type === "number" ? Number(el.value) : el.value;
-  });
+  for (let field of calc.fields) {
+    const el = document.getElementById(field.id);
+    if (!el || el.value === "") {
+      alert("Please fill all fields");
+      return;
+    }
+    data[field.id] =
+      field.type === "number" ? Number(el.value) : el.value;
+  }
 
   const result = calc.calculate(data);
   resultValue.innerHTML = result;
@@ -526,7 +633,152 @@ resetBtn.onclick = () => {
   renderCalculator(activeCalc);
 };
 
-/* INIT */
+CALCULATORS.childpugh = {
+  title: "Child-Pugh Score",
+  description: "Assessment of liver disease severity.",
+  fields: [
+    { id: "bilirubin", label: "Bilirubin (mg/dL)", type: "number" },
+    { id: "albumin", label: "Albumin (g/dL)", type: "number" },
+    { id: "inr", label: "INR", type: "number" },
+    { id: "ascites", label: "Ascites", type: "select", options: ["none", "mild", "severe"] },
+    { id: "encephalopathy", label: "Encephalopathy", type: "select", options: ["none", "grade1-2", "grade3-4"] }
+  ],
+  calculate(d) {
+    let score = 0;
+    score += d.bilirubin < 2 ? 1 : d.bilirubin <= 3 ? 2 : 3;
+    score += d.albumin > 3.5 ? 1 : d.albumin >= 2.8 ? 2 : 3;
+    score += d.inr < 1.7 ? 1 : d.inr <= 2.3 ? 2 : 3;
+    score += d.ascites === "none" ? 1 : d.ascites === "mild" ? 2 : 3;
+    score += d.encephalopathy === "none" ? 1 : d.encephalopathy === "grade1-2" ? 2 : 3;
+    const cls = score <= 6 ? "Class A" : score <= 9 ? "Class B" : "Class C";
+    return `Score: ${score}<br>${cls}`;
+  }
+};
+
+CALCULATORS.meld = {
+  title: "MELD Score",
+  description: "Model for End-Stage Liver Disease.",
+  fields: [
+    { id: "bilirubin", label: "Bilirubin (mg/dL)", type: "number" },
+    { id: "inr", label: "INR", type: "number" },
+    { id: "creatinine", label: "Creatinine (mg/dL)", type: "number" }
+  ],
+  calculate(d) {
+    const meld =
+      3.78 * Math.log(d.bilirubin) +
+      11.2 * Math.log(d.inr) +
+      9.57 * Math.log(d.creatinine) +
+      6.43;
+    return Math.round(meld);
+  }
+};
+
+CALCULATORS.curb65 = {
+  title: "CURB-65",
+  description: "Pneumonia severity score.",
+  fields: [
+    { id: "confusion", label: "Confusion", type: "select", options: ["no", "yes"] },
+    { id: "urea", label: "Urea > 7 mmol/L", type: "select", options: ["no", "yes"] },
+    { id: "rr", label: "RR ≥ 30", type: "select", options: ["no", "yes"] },
+    { id: "bp", label: "Low BP", type: "select", options: ["no", "yes"] },
+    { id: "age", label: "Age ≥ 65", type: "select", options: ["no", "yes"] }
+  ],
+  calculate(d) {
+    let score = 0;
+    Object.values(d).forEach(v => v === "yes" && score++);
+    return score;
+  }
+};
+CALCULATORS.cha2ds2vasc = {
+  title: "CHA₂DS₂-VASc",
+  description: "Stroke risk in atrial fibrillation.",
+  fields: [
+    { id: "age75", label: "Age ≥ 75", type: "select", options: ["no", "yes"] },
+    { id: "age65", label: "Age 65–74", type: "select", options: ["no", "yes"] },
+    { id: "female", label: "Female Sex", type: "select", options: ["no", "yes"] },
+    { id: "htn", label: "Hypertension", type: "select", options: ["no", "yes"] },
+    { id: "dm", label: "Diabetes", type: "select", options: ["no", "yes"] },
+    { id: "stroke", label: "Stroke/TIA", type: "select", options: ["no", "yes"] },
+    { id: "vasc", label: "Vascular Disease", type: "select", options: ["no", "yes"] }
+  ],
+  calculate(d) {
+    let score = 0;
+    if (d.age75 === "yes") score += 2;
+    else if (d.age65 === "yes") score += 1;
+    if (d.female === "yes") score += 1;
+    if (d.htn === "yes") score += 1;
+    if (d.dm === "yes") score += 1;
+    if (d.stroke === "yes") score += 2;
+    if (d.vasc === "yes") score += 1;
+    return score;
+  }
+};
+
+CALCULATORS.wells_dvt = {
+  title: "Wells Score (DVT)",
+  description: "Pretest probability for DVT.",
+  fields: [
+    { id: "cancer", label: "Active cancer", type: "select", options: ["no", "yes"] },
+    { id: "paralysis", label: "Paralysis/immobilization", type: "select", options: ["no", "yes"] },
+    { id: "tenderness", label: "Localized tenderness", type: "select", options: ["no", "yes"] },
+    { id: "swelling", label: "Leg swelling", type: "select", options: ["no", "yes"] },
+    { id: "collateral", label: "Collateral veins", type: "select", options: ["no", "yes"] },
+    { id: "alt", label: "Alternative diagnosis", type: "select", options: ["yes", "no"] }
+  ],
+  calculate(d) {
+    let score = 0;
+    Object.entries(d).forEach(([k, v]) => {
+      if (k === "alt" && v === "yes") score -= 2;
+      else if (v === "yes") score += 1;
+    });
+    return score;
+  }
+};
+
+CALCULATORS.nihss = {
+  title: "NIH Stroke Scale (Simplified)",
+  description: "Neurological deficit severity.",
+  fields: [
+    { id: "loc", label: "LOC", type: "number" },
+    { id: "gaze", label: "Gaze", type: "number" },
+    { id: "motor", label: "Motor", type: "number" },
+    { id: "speech", label: "Speech", type: "number" }
+  ],
+  calculate(d) {
+    const score = d.loc + d.gaze + d.motor + d.speech;
+    return score;
+  }
+};
+
+/* ================================================================
+   SIDEBAR EXTENSION (ADD NEW ITEMS)
+================================================================ */
+
+const extraSidebarItems = [
+  { key: "childpugh", label: "Child-Pugh" },
+  { key: "meld", label: "MELD" },
+  { key: "cha2ds2vasc", label: "CHA₂DS₂-VASc" },
+  { key: "curb65", label: "CURB-65" },
+  { key: "wells_dvt", label: "Wells (DVT)" },
+  { key: "nihss", label: "NIHSS" }
+];
+
+extraSidebarItems.forEach(item => {
+  const div = document.createElement("div");
+  div.className = "calc-item";
+  div.dataset.calc = item.key;
+  div.textContent = item.label;
+  calcList.appendChild(div);
+});
+
+/* ================================================================
+   SAFETY INIT
+================================================================ */
+
+if (!CALCULATORS[activeCalc]) {
+  activeCalc = Object.keys(CALCULATORS)[0];
+}
+
 renderCalculator(activeCalc);
 
 </script>
