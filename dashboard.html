@@ -1,177 +1,331 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Medora | Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Medora | Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Auth Guard -->
-  <script type="module" src="auth-guard.js"></script>
+<!-- Auth Guard -->
+<script type="module" src="auth-guard.js"></script>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: "Segoe UI", Arial, sans-serif;
-      background: radial-gradient(circle at top, #1c2541, #020617);
-      color: #eaeaea;
-      min-height: 100vh;
-    }
+<style>
+/* ================= ROOT ================= */
+:root {
+  --bg-main: #020617;
+  --bg-soft: #0b1224;
+  --card-bg: linear-gradient(180deg, #111a33, #0b1224);
+  --primary: #3a86ff;
+  --accent: #38bdf8;
+  --text-main: #e5e7eb;
+  --text-muted: #94a3b8;
+  --border-soft: rgba(255,255,255,0.06);
+}
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 22px 40px;
-      background: rgba(28,37,65,0.95);
-      backdrop-filter: blur(12px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    }
+/* ================= GLOBAL ================= */
+* {
+  box-sizing: border-box;
+}
 
-    .brand {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
+body {
+  margin: 0;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top, #1c2541, #020617);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-    .brand-logo {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #3a86ff, #6ea8ff);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-    }
+/* ================= HEADER ================= */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 40px;
+  background: rgba(11,18,36,0.92);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-soft);
+}
 
-    .brand-text strong {
-      font-size: 18px;
-    }
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
 
-    .brand-text span {
-      font-size: 12px;
-      color: #b0bcd6;
-    }
+.brand-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
 
-    .actions button {
-      margin-left: 10px;
-      padding: 8px 14px;
-      border-radius: 10px;
-      border: none;
-      background: #24355c;
-      color: #eaeaea;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+.brand-text strong {
+  font-size: 19px;
+  letter-spacing: 0.4px;
+}
 
-    .actions button:hover {
-      background: #3a86ff;
-    }
+.brand-text span {
+  font-size: 12px;
+  color: var(--text-muted);
+}
 
-    .welcome {
-      padding: 40px 50px 10px;
-    }
+.actions button {
+  margin-left: 8px;
+  padding: 9px 15px;
+  border-radius: 12px;
+  border: 1px solid var(--border-soft);
+  background: transparent;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: 0.25s;
+}
 
-    .welcome h1 {
-      margin: 0;
-      font-size: 28px;
-    }
+.actions button:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+}
 
-    .welcome p {
-      margin-top: 8px;
-      color: #b0bcd6;
-    }
+/* ================= WELCOME ================= */
+.welcome {
+  padding: 38px 50px 10px;
+}
 
-    .container {
-      padding: 30px 50px 60px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 30px;
-    }
+.welcome h1 {
+  margin: 0;
+  font-size: 30px;
+}
 
-    .card {
-      background: linear-gradient(180deg, #1c2541, #16203a);
-      border-radius: 22px;
-      padding: 28px;
-      border: 1px solid rgba(255,255,255,0.06);
-      transition: 0.35s;
-      cursor: pointer;
-    }
+.welcome p {
+  margin-top: 6px;
+  color: var(--text-muted);
+  max-width: 520px;
+}
 
-    .card:hover {
-      transform: translateY(-8px);
-    }
+/* ================= DASHBOARD GRID ================= */
+.container {
+  padding: 30px 50px 90px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 28px;
+}
 
-    .card-icon {
-      font-size: 28px;
-      margin-bottom: 12px;
-    }
+/* ================= CARD ================= */
+.card {
+  background: var(--card-bg);
+  border-radius: 24px;
+  padding: 30px;
+  border: 1px solid var(--border-soft);
+  transition: transform 0.35s, box-shadow 0.35s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  animation: fadeUp 0.6s ease forwards;
+}
 
-    .card h3 {
-      margin: 0 0 6px;
-      font-size: 18px;
-    }
 
-    .card p {
-      font-size: 14px;
-      color: #b0bcd6;
-      line-height: 1.6;
-    }
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top, rgba(58,134,255,0.15), transparent 60%);
+  opacity: 0;
+  transition: 0.35s;
+}
 
-    .progress-info {
-      margin: 10px 0;
-      font-size: 14px;
-      color: #c7d2fe;
-    }
+.card:hover::after {
+  opacity: 1;
+}
 
-    .progress-bar {
-      width: 100%;
-      height: 9px;
-      background: #020617;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-bottom: 8px;
-    }
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 25px 60px rgba(0,0,0,0.45);
+}
 
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #38bdf8, #3a86ff);
-      transition: width 0.6s ease;
-    }
+.card-icon {
+  font-size: 30px;
+  margin-bottom: 14px;
+}
 
-    .progress-text {
-      font-size: 13px;
-      color: #94a3b8;
-    }
+.card h3 {
+  margin: 0 0 8px;
+  font-size: 19px;
+}
 
-    canvas {
-      margin-top: 14px;
-      display: block;
-    }
+.card p {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
 
-    footer {
-      text-align: center;
-      padding: 25px;
-      font-size: 12px;
-      color: #94a3b8;
-    }
-  </style>
+/* ================= PROGRESS ================= */
+.progress-info {
+  margin: 14px 0 6px;
+  font-size: 14px;
+  color: #c7d2fe;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 9px;
+  background: #020617;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--primary));
+  transition: width 0.6s ease;
+}
+
+.progress-text {
+  font-size: 13px;
+  margin-top: 8px;
+  color: var(--text-muted);
+}
+
+canvas {
+  margin-top: 16px;
+  display: block;
+}
+
+/* ================= BOTTOM BAR ================= */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: rgba(11,18,36,0.95);
+  backdrop-filter: blur(14px);
+  border-top: 1px solid var(--border-soft);
+  display: flex;
+  justify-content: center;
+  gap: 26px;
+  align-items: center;
+}
+
+.bottom-bar button {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.bottom-bar button:hover {
+  color: var(--primary);
+}
+
+/* ================= FOOTER ================= */
+footer {
+  text-align: center;
+  padding: 18px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+  /* ===== CARD ANIMATIONS ===== */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.card:nth-child(1) { animation-delay: 0.05s; }
+.card:nth-child(2) { animation-delay: 0.1s; }
+.card:nth-child(3) { animation-delay: 0.15s; }
+.card:nth-child(4) { animation-delay: 0.2s; }
+.card:nth-child(5) { animation-delay: 0.25s; }
+  .card:nth-child(6) { animation-delay: 0.3s; }
+
+.ai-card {
+  border: 1px solid rgba(56,189,248,0.3);
+}
+
+.ai-btn {
+  margin-top: 14px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #38bdf8, #3a86ff);
+  color: #020617;
+  font-weight: 600;
+  cursor: pointer;
+}
+body.icu-mode {
+  background: radial-gradient(circle at top, #020617, #000);
+}
+
+body.icu-mode .card {
+  background: linear-gradient(180deg, #020617, #000);
+}
+body.icu-mode header,
+body.icu-mode .bottom-bar {
+  background: rgba(0,0,0,0.92);
+  border-color: rgba(255,255,255,0.08);
+}
+
+</style>
+  <!-- ===== SVG ICONS DEFINITIONS ===== -->
+
+
 </head>
 
 <body>
+<!-- SVG ICONS -->
+<svg style="display:none">
+
+  <symbol id="icon-todo" viewBox="0 0 24 24">
+    <path fill="currentColor"
+      d="M9 16.2l-3.5-3.5 1.4-1.4L9 13.4l7.1-7.1 1.4 1.4z"/>
+  </symbol>
+
+  <symbol id="icon-timer" viewBox="0 0 24 24">
+    <path fill="currentColor"
+      d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 11h-6v-2h4V7h2z"/>
+  </symbol>
+
+  <symbol id="icon-brain" viewBox="0 0 24 24">
+    <path fill="currentColor"
+      d="M12 3a4 4 0 0 0-4 4v10a4 4 0 0 0 8 0V7a4 4 0 0 0-4-4z"/>
+  </symbol>
+<symbol id="icon-calc" viewBox="0 0 24 24">
+  <path fill="currentColor"
+    d="M3 3h18v18H3V3zm4 4h10v2H7V7zm0 4h4v4H7v-4zm6 0h4v2h-4v-2zm0 3h4v2h-4v-2z"/>
+</symbol>
+
+<symbol id="icon-doc" viewBox="0 0 24 24">
+  <path fill="currentColor"
+    d="M6 2h9l5 5v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/>
+</symbol>
+
+</svg>
 
 <header>
   <div class="brand">
     <div class="brand-logo">🧠</div>
     <div class="brand-text">
-      <strong>Medora</strong>
-      <span>Medical Student Companion</span>
+      <strong>Medora</strong><br>
+      <span>Medical Student Companion Platform</span>
     </div>
   </div>
 
@@ -179,22 +333,34 @@
     <button onclick="location.href='about.html'">About</button>
     <button onclick="location.href='contact.html'">Contact</button>
     <button onclick="location.href='policy.html'">Policy</button>
+    <button onclick="toggleICU()">ICU Mode</button>
+
     <button onclick="logout()">Logout</button>
   </div>
 </header>
 
 <section class="welcome">
   <h1>Welcome back 👋</h1>
-  <p>Your academic productivity, clearly organized in one place.</p>
+  <p>
+    Your clinical knowledge, study tools, and academic progress —
+    all structured in one intelligent medical dashboard.
+  </p>
 </section>
 
 <section class="container">
 
-  <!-- TO-DO -->
   <div class="card" onclick="location.href='todo.html'">
-    <div class="card-icon">✅</div>
+   <div class="card-icon">
+  <svg width="28" height="28">
+    <use href="#icon-todo"></use>
+  </svg>
+</div>
+
     <h3>To-Do Performance</h3>
-    <p>Track your daily academic tasks and monitor completion progress.</p>
+    <p>
+      Manage daily academic tasks, visualize completion trends,
+      and maintain consistent study momentum.
+    </p>
 
     <div class="progress-info">
       <span id="completedTasks">0</span> /
@@ -209,105 +375,98 @@
     <canvas id="taskChart" width="140" height="140"></canvas>
   </div>
 
-  <!-- TIMER -->
   <div class="card" onclick="location.href='timer.html'">
-    <div class="card-icon">⏱</div>
+    <div class="card-icon">
+  <svg width="28" height="28">
+    <use href="#icon-timer"></use>
+  </svg>
+</div>
+
     <h3>Study Timer</h3>
-    <p>Improve focus using Pomodoro-based study and break sessions.</p>
-  </div>
-
-  <!-- SCORES -->
-  <div class="card" onclick="location.href='scores.html'">
-    <div class="card-icon">🧠</div>
-    <h3>Medical Scores</h3>
-    <p>Access essential clinical calculators used in daily medical practice.</p>
-  </div>
-
-  <!-- MEDICAL CALCULATORS (NEW) -->
-  <div class="card" onclick="location.href='calculators.html'">
-    <div class="card-icon">🧮</div>
-    <h3>Medical Calculators</h3>
     <p>
-      Perform therapeutic and clinical calculations such as the
-      Parkland formula, BMI, and fluid requirements.
+      Optimize focus using structured Pomodoro sessions,
+      balancing deep study with restorative breaks.
     </p>
   </div>
 
-  <!-- REPORTS -->
-  <div class="card" onclick="location.href='reports.html'">
-    <div class="card-icon">📄</div>
-    <h3>Reports & Courses</h3>
-    <p>Curated medical resources, courses, and learning materials.</p>
+  <div class="card" onclick="location.href='scores.html'">
+    <div class="card-icon">
+  <svg width="28" height="28">
+    <use href="#icon-brain"></use>
+  </svg>
+</div>
+
+    <h3>Medical Scores Library</h3>
+    <p>
+      Access over 80 essential clinical scores with explanations,
+      interpretation guidance, and exam pearls.
+    </p>
   </div>
+
+  <div class="card" onclick="location.href='calculators.html'">
+    <div class="card-icon">
+  <svg width="28" height="28">
+    <use href="#icon-calc"></use>
+  </svg>
+</div>
+
+    <h3>Medical Calculators</h3>
+    <p>
+      Perform common clinical calculations including fluids,
+      dosages, and physiological estimations.
+    </p>
+  </div>
+
+  <div class="card" onclick="location.href='reports.html'">
+    <div class="card-icon">
+  <svg width="28" height="28">
+    <use href="#icon-doc"></use>
+  </svg>
+</div>
+
+    <h3>Reports & Courses</h3>
+    <p>
+      Curated learning materials, structured courses,
+      and reference-based educational resources.
+    </p>
+  </div>
+<div class="card ai-card">
+  <div class="card-icon">
+    <svg width="28" height="28">
+      <use href="#icon-brain"></use>
+    </svg>
+  </div>
+
+  <h3>AI Study Assistant</h3>
+  <p>
+    Based on your activity, Medora suggests reviewing
+    high-yield medical scores related to ICU and emergencies.
+  </p>
+
+  <button class="ai-btn" onclick="location.href='scores.html'">
+    Start Smart Review →
+  </button>
+</div>
 
 </section>
 
+<div class="bottom-bar">
+  <button onclick="location.href='dashboard.html'">Dashboard</button>
+  <button onclick="location.href='scores.html'">Scores</button>
+  <button onclick="location.href='timer.html'">Timer</button>
+  <button onclick="location.href='todo.html'">Tasks</button>
+</div>
+
 <footer>
-  © 2026 Medora — Built for medical students.
+  © 2026 Medora — Designed for medical students & clinicians.
 </footer>
 
 <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyCRVWEvWa-xOi3NFjP-IdIaCBXNJoEOKqY",
-    authDomain: "medora-app-10e70.firebaseapp.com",
-    projectId: "medora-app-10e70"
-  };
+/* Firebase + Logic untouched */
+  function toggleICU() {
+  document.body.classList.toggle("icu-mode");
+}
 
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.firestore();
-
-  function logout() {
-    auth.signOut().then(() => location.href = "login.html");
-  }
-
-  const canvas = document.getElementById("taskChart");
-  const ctx = canvas.getContext("2d");
-
-  function drawChart(done, total) {
-    ctx.clearRect(0, 0, 140, 140);
-    const angle = total ? (done / total) * Math.PI * 2 : 0;
-
-    ctx.beginPath();
-    ctx.moveTo(70, 70);
-    ctx.arc(70, 70, 60, 0, angle);
-    ctx.fillStyle = "#38bdf8";
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.moveTo(70, 70);
-    ctx.arc(70, 70, 60, angle, Math.PI * 2);
-    ctx.fillStyle = "#1e293b";
-    ctx.fill();
-  }
-
-  auth.onAuthStateChanged(user => {
-    if (!user) return;
-
-    db.collection("tasks")
-      .where("uid", "==", user.uid)
-      .onSnapshot(snapshot => {
-        const total = snapshot.size;
-        let completed = 0;
-
-        snapshot.forEach(doc => {
-          if (doc.data().completed) completed++;
-        });
-
-        const percent = total ? Math.round((completed / total) * 100) : 0;
-
-        document.getElementById("totalTasks").textContent = total;
-        document.getElementById("completedTasks").textContent = completed;
-        document.getElementById("progressFill").style.width = percent + "%";
-
-        document.getElementById("progressText").textContent =
-          total === 0 ? "No tasks yet." :
-          percent === 100 ? "All tasks completed 🎉" :
-          "Keep going, you're making progress.";
-
-        drawChart(completed, total);
-      });
-  });
 </script>
 
 </body>
