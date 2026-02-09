@@ -31,7 +31,6 @@ h1{
   overflow:hidden;
   cursor:pointer;
   transition:.3s;
-  text-align:center;
 }
 
 .card:hover{
@@ -43,17 +42,20 @@ h1{
   width:100%;
   height:160px;
   object-fit:cover;
+  background:#0f172a;
 }
 
 .card h3{
   margin:12px;
   font-size:16px;
+  text-align:center;
 }
 
-/* ===== REPORT ===== */
+/* ===== REPORT PAGE ===== */
 .report{
   display:none;
-  margin-top:40px;
+  max-width:900px;
+  margin:auto;
   background:#0b132b;
   padding:30px;
   border-radius:16px;
@@ -61,7 +63,7 @@ h1{
 
 .report img{
   width:100%;
-  max-height:300px;
+  max-height:280px;
   object-fit:cover;
   border-radius:12px;
   margin-bottom:20px;
@@ -71,10 +73,10 @@ h1{
   margin-top:0;
 }
 
-.report a{
-  color:#3a86ff;
-  text-decoration:none;
-  font-weight:bold;
+.placeholder{
+  opacity:.7;
+  font-style:italic;
+  line-height:1.8;
 }
 
 .back{
@@ -92,161 +94,67 @@ h1{
 
 <h1>Medical Courses</h1>
 
-<!-- ================= GRID ================= -->
-<div class="grid">
+<!-- ================= COURSES GRID ================= -->
+<div class="grid" id="grid">
 
-  <!-- ===== COURSE 1 ===== -->
-  <div class="card" onclick="openReport(1)">
-    <img src="">
-    <h3>HMS</h3>
+  <div class="card" onclick="openReport('hms')">
+    <img src="images/hms.jpg" onerror="this.src='images/default.jpg'">
+    <h3>Harvard Medical School</h3>
   </div>
 
-  <!-- ===== COURSE 2 ===== -->
-  <div class="card" onclick="openReport(2)">
-    <img src="images/ecg.jpg">
+  <div class="card" onclick="openReport('ecg')">
+    <img src="images/ecg.jpg" onerror="this.src='images/default.jpg'">
     <h3>ECG Interpretation</h3>
   </div>
 
-  <!-- ===== COURSE 3 ===== -->
-  <div class="card" onclick="openReport(3)">
-    <img src="images/sepsis.jpg">
+  <div class="card" onclick="openReport('sepsis')">
+    <img src="images/sepsis.jpg" onerror="this.src='images/default.jpg'">
     <h3>Sepsis & Shock</h3>
   </div>
 
 </div>
 
-<!-- ================= REPORT 1 ================= -->
-<div class="report" id="report1">
-  <img src="images/icu.jpg">
+<!-- ================= REPORT TEMPLATE ================= -->
+<div class="report" id="report">
 
-  <h2>Harvard Medical School (HMS) Online Education</h2>
+  <img id="reportImg" src="">
+  <h2 id="reportTitle"></h2>
 
-  <!-- ✏️✏️✏️ الصق تقرير كورس ICU هنا -->
-  <p>
-   Harvard Medical School offers a diverse range of digital programs designed for students, healthcare professionals, and industry leaders. These programs are delivered through various specialized platforms, each catering to different career stages and educational needs.
-
-1. HMX: Online Learning
-HMX is HMS's premier platform for foundational and advanced medical sciences. It uses high-quality visualizations, animations, and real-world clinical applications to teach complex concepts.
-
-HMX Fundamentals: Designed for students (pre-med, nursing, PA) and professionals looking for a refresh. Key courses include:
-
-Immunology: Mechanisms of the immune system.
-
-Genetics: From molecular biology to clinical inheritance.
-
-Biochemistry: Essential metabolic pathways and molecular functions.
-
-Physiology: Integration of organ systems (Cardiovascular, Renal, Respiratory).
-
-HMX Pro: Advanced courses for professionals in biotech, pharma, or clinical practice.
-
-Cancer Genomics & Precision Oncology.
-
-Immuno-oncology.
-
-Drug Discovery and Development.
-
-AI in Medicine: Understanding the integration of machine learning in diagnostics and treatment.
-
-2. Executive Education & Health Care Leadership
-These programs are tailored for clinicians, administrators, and policy-makers who want to lead organizational change.
-
-Artificial Intelligence in Health Care: A high-impact program focusing on implementing AI strategies in clinical settings.
-
-Health Care Economics: Analyzing cost-drivers, insurance models, and economic incentives in health systems.
-
-Leading Digital Transformation: Strategies for managing the shift toward digital-first healthcare delivery.
-
-The Business of Health Care: Combining medical excellence with operational efficiency and financial management.
-
-3. Continuing Medical Education (CME)
-HMS provides accredited learning for practicing physicians to stay current with medical advancements and maintain their licenses.
-
-Updates in Clinical Medicine: Comprehensive annual reviews in Internal Medicine, Neurology, Pediatrics, and more.
-
-Specialized Masterclasses: Deep dives into niche topics like Psychopharmacology, Infectious Diseases, and Geriatric Medicine.
-
-Accreditation: Most courses offer AMA PRA Category 1 Credits™.
-
-4. Global Programs & Postgraduate Certificates
-Longer-term, intensive online and hybrid certificates for international medical professionals.
-
-Global Clinical Scholars Research Training (GCSRT): A one-year program for clinicians looking to excel in clinical research.
-
-Safety, Quality, Informatics and Leadership (SQIL): Focused on patient safety and healthcare quality management.
-
-Postgraduate Medical Education (PGME): High-level training for global health leaders.
-
-Key Features of HMS Online Learning
-Visual Pedagogy: Utilization of 3D animations and cinematic medical illustrations to explain cellular processes.
-
-Clinical Integration: Every scientific concept is tied to a real patient case study to demonstrate its importance in the field.
-
-Harvard Certification: Participants receive certificates of completion from Harvard Medical School, and some programs grant "Associate Member" status in the Harvard Medical Alumni Association.
-
-Flexibility: Most courses are designed to be completed alongside a full-time professional schedule.
+  <p class="placeholder">
+    📌 This is a course report template.<br>
+    You can paste your content here later (text, lists, guidelines, links).
   </p>
 
-  <!-- 🔗 رابط خارجي (اختياري) -->
-  <p>
-    <a href="https://learn.hms.harvard.edu/programs" target="_blank">
-      Open Course Material
-    </a>
-  </p>
-
-  <button class="back" onclick="closeAll()">← back</button>
-</div>
-
-<!-- ================= REPORT 2 ================= -->
-<div class="report" id="report2">
-  <img src="images/ecg.jpg">
-
-  <h2>ECG Interpretation</h2>
-
-  <!-- ✏️✏️✏️ الصق تقرير كورس ECG هنا -->
-  <p>
-    الصق تقرير ECG هنا
-  </p>
-
-  <p>
-    <a href="https://example.com" target="_blank">
-      View ECG Slides
-    </a>
-  </p>
-
-  <button class="back" onclick="closeAll()">← رجوع</button>
-</div>
-
-<!-- ================= REPORT 3 ================= -->
-<div class="report" id="report3">
-  <img src="images/sepsis.jpg">
-
-  <h2>Sepsis & Shock</h2>
-
-  <!-- ✏️✏️✏️ الصق تقرير كورس Sepsis هنا -->
-  <p>
-    الصق تقرير الكورس هنا
-  </p>
-
-  <p>
-    <a href="https://example.com" target="_blank">
-      Open Guidelines
-    </a>
-  </p>
-
-  <button class="back" onclick="closeAll()">← رجوع</button>
+  <button class="back" onclick="goBack()">← Back to courses</button>
 </div>
 
 <script>
-function openReport(n){
-  closeAll();
-  document.getElementById("report"+n).style.display="block";
+const data = {
+  hms:{
+    title:"Harvard Medical School",
+    img:"images/hms.jpg"
+  },
+  ecg:{
+    title:"ECG Interpretation",
+    img:"images/ecg.jpg"
+  },
+  sepsis:{
+    title:"Sepsis & Shock",
+    img:"images/sepsis.jpg"
+  }
+};
+
+function openReport(key){
+  document.getElementById("grid").style.display="none";
+  document.getElementById("report").style.display="block";
+
+  document.getElementById("reportTitle").innerText = data[key].title;
+  document.getElementById("reportImg").src = data[key].img;
 }
 
-function closeAll(){
-  document.querySelectorAll(".report").forEach(r=>{
-    r.style.display="none";
-  });
+function goBack(){
+  document.getElementById("report").style.display="none";
+  document.getElementById("grid").style.display="grid";
 }
 </script>
 
