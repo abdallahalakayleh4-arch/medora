@@ -1,119 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Medora | Study Timer</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Medora | Study Timer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Auth Guard -->
-  <script type="module" src="auth-guard.js"></script>
+<!-- Auth Guard -->
+<script type="module" src="auth-guard.js"></script>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0b132b;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: radial-gradient(circle at top, #1c2541, #020617);
+  color: #e5e7eb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-    .box {
-      background: #1c2541;
-      width: 400px;
-      padding: 30px;
-      border-radius: 14px;
-      text-align: center;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-    }
+.box {
+  width: 460px;
+  background: linear-gradient(180deg, #1c2541, #0b132b);
+  padding: 30px;
+  border-radius: 18px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+}
 
-    h2 {
-      margin-top: 0;
-    }
+h2 {
+  margin: 0;
+  text-align: center;
+  font-size: 22px;
+}
 
-    .modes {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin-bottom: 15px;
-    }
+/* ===== MODES ===== */
+.modes {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
 
-    .modes button {
-      flex: 1;
-      padding: 8px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      background: #3a506b;
-      color: white;
-    }
+.modes button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: #24355c;
+  color: white;
+  cursor: pointer;
+}
 
-    .modes button.active {
-      background: #3a86ff;
-    }
+.modes button.active {
+  background: linear-gradient(135deg, #38bdf8, #3a86ff);
+}
 
-    .mode-text {
-      margin: 10px 0;
-      font-size: 14px;
-      color: #b0bcd6;
-    }
+/* ===== PATH ===== */
+.path-container {
+  margin: 30px 0 10px;
+}
 
-    .time {
-      font-size: 52px;
-      margin: 20px 0;
-      font-weight: bold;
-      letter-spacing: 2px;
-    }
+.path {
+  position: relative;
+  height: 16px;
+  background: #020617;
+  border-radius: 10px;
+  overflow: hidden;
+}
 
-    .buttons {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin-top: 20px;
-    }
+.finish {
+  position: absolute;
+  right: 0;
+  top: -14px;
+  font-size: 20px;
+}
 
-    button {
-      padding: 10px 16px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-    }
+.doctor {
+  position: absolute;
+  top: -22px;
+  left: 0;
+  font-size: 26px;
+  transition: left 0.5s ease;
+}
 
-    .start {
-      background: #3a86ff;
-      color: white;
-    }
+/* ===== TIME ===== */
+.mode-text {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #b0bcd6;
+}
 
-    .pause {
-      background: #3a506b;
-      color: white;
-    }
+.time {
+  text-align: center;
+  font-size: 52px;
+  margin: 12px 0;
+  letter-spacing: 2px;
+}
 
-    .reset {
-      background: #ff5c5c;
-      color: white;
-    }
+/* ===== BUTTONS ===== */
+.buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
 
-    button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
+.buttons button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
 
-    .footer {
-      margin-top: 20px;
-    }
+.start { background: #3a86ff; color: white; }
+.pause { background: #24355c; color: white; }
+.reset { background: #ff5c5c; color: white; }
 
-    .footer button {
-      background: transparent;
-      color: #b0bcd6;
-      border: none;
-      cursor: pointer;
-      font-size: 13px;
-    }
-  </style>
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  text-align: center;
+  margin-top: 18px;
+}
+
+.footer button {
+  background: transparent;
+  color: #94a3b8;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+}
+</style>
 </head>
 
 <body>
@@ -121,10 +144,18 @@
 <div class="box">
   <h2>Study Timer</h2>
 
-  <!-- MODE SELECT -->
+  <!-- MODES -->
   <div class="modes">
     <button id="mode25" class="active">25 min</button>
     <button id="mode50">50 min</button>
+  </div>
+
+  <!-- PATH -->
+  <div class="path-container">
+    <div class="path">
+      <div class="doctor" id="doctor">👨‍⚕️</div>
+      <div class="finish">🏁</div>
+    </div>
   </div>
 
   <div class="mode-text" id="modeText">Study Session</div>
@@ -142,101 +173,109 @@
 </div>
 
 <script>
-  let STUDY_TIME = 25 * 60;
-  let BREAK_TIME = 5 * 60;
+let STUDY_TIME = 25 * 60;
+let BREAK_TIME = 5 * 60;
+let timeLeft = STUDY_TIME;
+let totalTime = STUDY_TIME;
+let timer = null;
+let isStudy = true;
 
-  let timeLeft = STUDY_TIME;
-  let timer = null;
-  let isStudy = true;
+const timeEl = document.getElementById("time");
+const modeText = document.getElementById("modeText");
+const doctor = document.getElementById("doctor");
 
-  const timeEl = document.getElementById("time");
-  const modeText = document.getElementById("modeText");
+const startBtn = document.getElementById("startBtn");
+const pauseBtn = document.getElementById("pauseBtn");
+const resetBtn = document.getElementById("resetBtn");
 
-  const startBtn = document.getElementById("startBtn");
-  const pauseBtn = document.getElementById("pauseBtn");
-  const resetBtn = document.getElementById("resetBtn");
+const mode25 = document.getElementById("mode25");
+const mode50 = document.getElementById("mode50");
 
-  const mode25 = document.getElementById("mode25");
-  const mode50 = document.getElementById("mode50");
+function updateDisplay() {
+  const m = String(Math.floor(timeLeft / 60)).padStart(2, "0");
+  const s = String(timeLeft % 60).padStart(2, "0");
+  timeEl.innerText = `${m}:${s}`;
 
-  function updateDisplay() {
-    const m = String(Math.floor(timeLeft / 60)).padStart(2, "0");
-    const s = String(timeLeft % 60).padStart(2, "0");
-    timeEl.innerText = `${m}:${s}`;
-  }
+  const percent = 1 - timeLeft / totalTime;
+  doctor.style.left = `calc(${percent * 100}% - 14px)`;
+}
 
-  function setMode(minutes) {
-    clearInterval(timer);
-    timer = null;
-    isStudy = true;
+function setMode(minutes) {
+  clearInterval(timer);
+  timer = null;
+  isStudy = true;
 
-    STUDY_TIME = minutes * 60;
-    BREAK_TIME = minutes === 25 ? 5 * 60 : 10 * 60;
+  STUDY_TIME = minutes * 60;
+  BREAK_TIME = minutes === 25 ? 5 * 60 : 10 * 60;
+  totalTime = STUDY_TIME;
+  timeLeft = STUDY_TIME;
 
-    timeLeft = STUDY_TIME;
-    modeText.innerText = "Study Session";
-    updateDisplay();
-
-    startBtn.disabled = false;
-    pauseBtn.disabled = true;
-
-    mode25.classList.toggle("active", minutes === 25);
-    mode50.classList.toggle("active", minutes === 50);
-  }
-
-  function startTimer() {
-    if (timer) return;
-
-    startBtn.disabled = true;
-    pauseBtn.disabled = false;
-
-    timer = setInterval(() => {
-      timeLeft--;
-      updateDisplay();
-
-      if (timeLeft <= 0) {
-        clearInterval(timer);
-        timer = null;
-
-        isStudy = !isStudy;
-        timeLeft = isStudy ? STUDY_TIME : BREAK_TIME;
-        modeText.innerText = isStudy ? "Study Session" : "Break Time";
-
-        alert(isStudy ? "Break finished! Back to study 💪" : "Study finished! Take a break ☕");
-
-        updateDisplay();
-        startBtn.disabled = false;
-        pauseBtn.disabled = true;
-      }
-    }, 1000);
-  }
-
-  function pauseTimer() {
-    clearInterval(timer);
-    timer = null;
-    startBtn.disabled = false;
-    pauseBtn.disabled = true;
-  }
-
-  function resetTimer() {
-    clearInterval(timer);
-    timer = null;
-    isStudy = true;
-    timeLeft = STUDY_TIME;
-    modeText.innerText = "Study Session";
-    updateDisplay();
-    startBtn.disabled = false;
-    pauseBtn.disabled = true;
-  }
-
-  // Events
-  mode25.onclick = () => setMode(25);
-  mode50.onclick = () => setMode(50);
-  startBtn.onclick = startTimer;
-  pauseBtn.onclick = pauseTimer;
-  resetBtn.onclick = resetTimer;
-
+  modeText.innerText = "Study Session";
+  doctor.style.left = "0%";
   updateDisplay();
+
+  startBtn.disabled = false;
+  pauseBtn.disabled = true;
+
+  mode25.classList.toggle("active", minutes === 25);
+  mode50.classList.toggle("active", minutes === 50);
+}
+
+function startTimer() {
+  if (timer) return;
+
+  startBtn.disabled = true;
+  pauseBtn.disabled = false;
+
+  timer = setInterval(() => {
+    timeLeft--;
+    updateDisplay();
+
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      timer = null;
+
+      isStudy = !isStudy;
+      totalTime = isStudy ? STUDY_TIME : BREAK_TIME;
+      timeLeft = totalTime;
+      doctor.style.left = "0%";
+      modeText.innerText = isStudy ? "Study Session" : "Break Time";
+
+      alert(isStudy ? "Break finished! Back to study 💪" : "Study finished! Take a break ☕");
+
+      startBtn.disabled = false;
+      pauseBtn.disabled = true;
+    }
+  }, 1000);
+}
+
+function pauseTimer() {
+  clearInterval(timer);
+  timer = null;
+  startBtn.disabled = false;
+  pauseBtn.disabled = true;
+}
+
+function resetTimer() {
+  clearInterval(timer);
+  timer = null;
+  isStudy = true;
+  totalTime = STUDY_TIME;
+  timeLeft = STUDY_TIME;
+  modeText.innerText = "Study Session";
+  doctor.style.left = "0%";
+  updateDisplay();
+  startBtn.disabled = false;
+  pauseBtn.disabled = true;
+}
+
+mode25.onclick = () => setMode(25);
+mode50.onclick = () => setMode(50);
+startBtn.onclick = startTimer;
+pauseBtn.onclick = pauseTimer;
+resetBtn.onclick = resetTimer;
+
+updateDisplay();
 </script>
 
 </body>
