@@ -30,22 +30,22 @@ h2 {
   text-align: center;
 }
 
+label {
+  font-size: 13px;
+  color: #b0bcd6;
+}
+
 select, input {
   width: 100%;
   padding: 10px;
-  margin-bottom: 12px;
+  margin: 6px 0 12px;
   border-radius: 10px;
   border: none;
   background: #24355c;
   color: white;
 }
 
-label {
-  font-size: 13px;
-  color: #b0bcd6;
-}
-
-button {
+button.calculate {
   width: 100%;
   padding: 12px;
   border-radius: 12px;
@@ -91,7 +91,7 @@ button {
   <select id="calculator">
     <option value="">-- Choose --</option>
     <option value="bmi">BMI</option>
-    <option value="crcl">Creatinine Clearance</option>
+    <option value="crcl">Creatinine Clearance (Cockcroft–Gault)</option>
     <option value="calcium">Corrected Calcium</option>
     <option value="parkland">Parkland Formula</option>
   </select>
@@ -99,7 +99,7 @@ button {
   <!-- Dynamic Inputs -->
   <div id="inputs"></div>
 
-  <button onclick="calculate()">Calculate</button>
+  <button class="calculate" onclick="calculate()">Calculate</button>
 
   <div class="result" id="result"></div>
 
@@ -170,18 +170,28 @@ calcSelect.onchange = () => {
 function calculate() {
   let result = "";
 
+  if (calcSelect.value === "") {
+    alert("Please select a calculator first");
+    return;
+  }
+
   if (calcSelect.value === "bmi") {
-    const w = +weight.value;
-    const h = +height.value / 100;
+    const w = Number(document.getElementById("weight").value);
+    const h = Number(document.getElementById("height").value) / 100;
+
+    if (!w || !h) return alert("Please enter valid values");
+
     const bmi = (w / (h * h)).toFixed(1);
     result = `BMI = <strong>${bmi}</strong>`;
   }
 
   if (calcSelect.value === "crcl") {
-    const age = +age.value;
-    const w = +weight.value;
-    const scr = +scr.value;
+    const age = Number(document.getElementById("age").value);
+    const w = Number(document.getElementById("weight").value);
+    const scr = Number(document.getElementById("scr").value);
     const sex = document.getElementById("sex").value;
+
+    if (!age || !w || !scr) return alert("Please enter valid values");
 
     let crcl = ((140 - age) * w) / (72 * scr);
     if (sex === "female") crcl *= 0.85;
@@ -190,16 +200,20 @@ function calculate() {
   }
 
   if (calcSelect.value === "calcium") {
-    const ca = +calcium.value;
-    const alb = +albumin.value;
-    const corr = ca + 0.8 * (4 - alb);
+    const ca = Number(document.getElementById("calcium").value);
+    const alb = Number(document.getElementById("albumin").value);
 
+    if (!ca || !alb) return alert("Please enter valid values");
+
+    const corr = ca + 0.8 * (4 - alb);
     result = `Corrected Calcium = <strong>${corr.toFixed(2)} mg/dL</strong>`;
   }
 
   if (calcSelect.value === "parkland") {
-    const w = +weight.value;
-    const tbsa = +tbsa.value;
+    const w = Number(document.getElementById("weight").value);
+    const tbsa = Number(document.getElementById("tbsa").value);
+
+    if (!w || !tbsa) return alert("Please enter valid values");
 
     const total = 4 * w * tbsa;
     const first8 = total / 2;
