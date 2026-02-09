@@ -139,57 +139,246 @@ input{
 const scores = [
 {
 name:"APGAR Score",
-keywords:["apgar","newborn","neonatal","birth","resuscitation"],
-html:`<h4>Definition</h4><p>Rapid assessment of newborn adaptation after birth.</p>
-<h4>Score</h4><p>0–10 at 1 and 5 minutes.</p>
-<h4>Exam Pearl</h4><p>5-minute APGAR is more prognostic.</p>`
+keywords:["apgar","newborn","neonatal"],
+html:`
+<h4>Definition</h4>
+<p>The APGAR score is a rapid clinical assessment tool used to evaluate the physiological adaptation of a newborn immediately after birth.</p>
+
+<h4>Historical Background</h4>
+<p>Developed in 1952 by Dr. Virginia Apgar, an anesthesiologist.</p>
+
+<h4>Components (0–2 each)</h4>
+<ul>
+<li><b>Appearance:</b> Blue/pale → pink</li>
+<li><b>Pulse:</b> Absent → ≥100 bpm</li>
+<li><b>Grimace:</b> No response → Cry</li>
+<li><b>Activity:</b> Limp → Active motion</li>
+<li><b>Respiration:</b> Absent → Good cry</li>
+</ul>
+
+<h4>Scoring</h4>
+<p>Total: 0–10 at 1 and 5 minutes.</p>
+
+<h4>Interpretation</h4>
+<ul>
+<li>7–10: Normal</li>
+<li>4–6: Moderate depression</li>
+<li>0–3: Severe distress</li>
+</ul>
+
+<h4>Clinical Use</h4>
+<ul>
+<li>Immediate neonatal resuscitation</li>
+<li>Outcome comparison</li>
+</ul>
+
+<h4>Limitations</h4>
+<ul>
+<li>Not predictive of long-term outcomes</li>
+<li>Affected by prematurity & drugs</li>
+</ul>
+
+<h4>Exam Pearl</h4>
+<p>5-minute APGAR is more prognostic.</p>
+`
 },
+
 {
 name:"Glasgow Coma Scale (GCS)",
-keywords:["gcs","coma","trauma","neuro","consciousness"],
-html:`<h4>Score</h4><p>3–15</p><h4>Exam Pearl</h4><p>GCS ≤8 → intubate.</p>`
+keywords:["gcs","coma","neurology","trauma"],
+html:`
+<h4>Definition</h4>
+<p>Standardized assessment of consciousness.</p>
+
+<h4>Components</h4>
+<ul>
+<li><b>Eye (E):</b> 4–1</li>
+<li><b>Verbal (V):</b> 5–1</li>
+<li><b>Motor (M):</b> 6–1</li>
+</ul>
+
+<h4>Total Score</h4>
+<p>3–15</p>
+
+<h4>Severity</h4>
+<ul>
+<li>13–15: Mild</li>
+<li>9–12: Moderate</li>
+<li>≤8: Severe (coma)</li>
+</ul>
+
+<h4>Clinical Use</h4>
+<ul>
+<li>Trauma</li>
+<li>ICU monitoring</li>
+<li>Coma prognosis</li>
+</ul>
+
+<h4>Limitations</h4>
+<ul>
+<li>Intubation affects verbal score</li>
+<li>Sedatives confound results</li>
+</ul>
+
+<h4>Exam Pearl</h4>
+<p>GCS ≤8 → Intubate.</p>
+`
 },
+
 {
 name:"Bishop Score",
-keywords:["bishop","labor","induction","obstetrics"],
-html:`<h4>Purpose</h4><p>Predicts success of labor induction.</p>`
+keywords:["bishop","labor","induction"],
+html:`
+<h4>Definition</h4>
+<p>Predicts success of labor induction.</p>
+
+<h4>Components</h4>
+<ul>
+<li>Dilation</li>
+<li>Effacement</li>
+<li>Station</li>
+<li>Consistency</li>
+<li>Position</li>
+</ul>
+
+<h4>Total Score</h4>
+<p>0–13</p>
+
+<h4>Interpretation</h4>
+<ul>
+<li>≤5: Unfavorable</li>
+<li>≥8: Favorable</li>
+</ul>
+
+<h4>Clinical Use</h4>
+<p>Guides induction strategy.</p>
+
+<h4>Limitations</h4>
+<p>Subjective examiner variability.</p>
+
+<h4>Exam Pearl</h4>
+<p>Low score → cervical ripening.</p>
+`
 },
+
 {
-name:"Wells Score – DVT",
-keywords:["wells","dvt","thrombosis","leg"],
-html:`<h4>Use</h4><p>Pre-test probability of DVT.</p>`
+name:"Wells Score – Deep Vein Thrombosis",
+keywords:["wells dvt","dvt","thrombosis"],
+html:`
+<h4>Purpose</h4>
+<p>Estimates pre-test probability of DVT.</p>
+
+<h4>Interpretation</h4>
+<ul>
+<li>≤0: Low</li>
+<li>1–2: Moderate</li>
+<li>≥3: High</li>
+</ul>
+
+<h4>Clinical Algorithm</h4>
+<ul>
+<li>Low → D-dimer</li>
+<li>High → Ultrasound</li>
+</ul>
+
+<h4>Limitation</h4>
+<p>Not diagnostic alone.</p>
+`
 },
+
 {
 name:"Wells Score – Pulmonary Embolism",
-keywords:["wells","pe","embolism","lung"],
-html:`<h4>Use</h4><p>Assess PE probability.</p>`
+keywords:["wells pe","pulmonary embolism"],
+html:`
+<h4>Purpose</h4>
+<p>Estimates probability of pulmonary embolism.</p>
+
+<h4>Interpretation</h4>
+<ul>
+<li>≤4: PE unlikely</li>
+<li>>4: PE likely</li>
+</ul>
+
+<h4>Clinical Use</h4>
+<p>Guides need for CT pulmonary angiography.</p>
+`
 },
+
 {
-name:"CHA₂DS₂-VASc",
-keywords:["cha2ds2","af","stroke","anticoagulation"],
-html:`<h4>Use</h4><p>Stroke risk in AF.</p>`
+name:"CHA₂DS₂-VASc Score",
+keywords:["cha2ds2vasc","af","stroke"],
+html:`
+<h4>Purpose</h4>
+<p>Estimates stroke risk in atrial fibrillation.</p>
+
+<h4>Interpretation</h4>
+<ul>
+<li>0: No anticoagulation</li>
+<li>1: Consider</li>
+<li>≥2: Anticoagulation indicated</li>
+</ul>
+
+<h4>Exam Pearl</h4>
+<p>More sensitive than CHADS₂.</p>
+`
 },
+
 {
-name:"HAS-BLED",
-keywords:["hasbled","bleeding","af"],
-html:`<h4>Use</h4><p>Bleeding risk assessment.</p>`
+name:"HAS-BLED Score",
+keywords:["has-bled","bleeding","af"],
+html:`
+<h4>Purpose</h4>
+<p>Assesses bleeding risk in AF patients.</p>
+
+<h4>Interpretation</h4>
+<p>Score ≥3 → high bleeding risk (not contraindication).</p>
+`
 },
+
 {
-name:"CURB-65",
-keywords:["curb65","pneumonia","infection"],
-html:`<h4>Use</h4><p>Pneumonia severity.</p>`
+name:"CURB-65 Score",
+keywords:["curb-65","pneumonia"],
+html:`
+<h4>Purpose</h4>
+<p>Pneumonia severity assessment.</p>
+
+<h4>Management</h4>
+<ul>
+<li>0–1: Outpatient</li>
+<li>2: Admit</li>
+<li>≥3: ICU</li>
+</ul>
+`
 },
+
 {
 name:"SOFA Score",
-keywords:["sofa","sepsis","icu","organ failure"],
-html:`<h4>Use</h4><p>Organ dysfunction.</p>`
+keywords:["sofa","sepsis","organ failure"],
+html:`
+<h4>Purpose</h4>
+<p>Quantifies organ failure severity.</p>
+
+<h4>Key Concept</h4>
+<p>Increase ≥2 points = organ dysfunction.</p>
+`
 },
+
 {
 name:"qSOFA",
-keywords:["qsofa","sepsis","shock"],
-html:`<h4>Criteria</h4><p>RR ≥22, SBP ≤100, AMS.</p>`
-}
-,
+keywords:["qsofa","sepsis","icu"],
+html:`
+<h4>Criteria</h4>
+<ul>
+<li>RR ≥22</li>
+<li>SBP ≤100</li>
+<li>Altered mental status</li>
+</ul>
+
+<h4>Interpretation</h4>
+<p>≥2 → high mortality risk.</p>
+`
+},
+
 {
 name:"APACHE II Score",
 keywords:["apache","apache ii","icu","mortality","critical care","severity"],
