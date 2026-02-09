@@ -6,204 +6,235 @@
 
 <style>
 body{
-  font-family:Arial;
+  margin:0;
+  font-family:Arial, sans-serif;
   background:#020617;
-  color:white;
-  padding:30px;
+  color:#e5e7eb;
+  padding:40px;
 }
+
+h1{
+  margin-bottom:25px;
+}
+
+/* ===== GRID ===== */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:20px;
+}
+
+/* ===== COURSE CARD ===== */
 .card{
   background:#1c2541;
-  padding:15px;
-  margin:10px 0;
+  border-radius:16px;
+  overflow:hidden;
   cursor:pointer;
-  border-radius:10px;
+  transition:.3s;
+  text-align:center;
 }
+
+.card:hover{
+  transform:translateY(-6px);
+  background:#24355c;
+}
+
+.card img{
+  width:100%;
+  height:160px;
+  object-fit:cover;
+}
+
+.card h3{
+  margin:12px;
+  font-size:16px;
+}
+
+/* ===== REPORT ===== */
 .report{
   display:none;
+  margin-top:40px;
   background:#0b132b;
-  padding:20px;
-  margin-top:20px;
-  border-radius:10px;
+  padding:30px;
+  border-radius:16px;
 }
-button{
-  margin-top:20px;
+
+.report img{
+  width:100%;
+  max-height:300px;
+  object-fit:cover;
+  border-radius:12px;
+  margin-bottom:20px;
+}
+
+.report h2{
+  margin-top:0;
+}
+
+.report a{
+  color:#3a86ff;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.back{
+  margin-top:25px;
+  background:none;
+  border:none;
+  color:#3a86ff;
+  cursor:pointer;
+  font-size:14px;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Courses</h1>
+<h1>Medical Courses</h1>
 
-<!-- ====== أزرار الكورسات ====== -->
-<div class="card" onclick="openReport(1)">Course 1</div>
-<div class="card" onclick="openReport(2)">Course 2</div>
-<div class="card" onclick="openReport(3)">Course 3</div>
+<!-- ================= GRID ================= -->
+<div class="grid">
 
-<!-- ====== تقرير كورس 1 ====== -->
+  <!-- ===== COURSE 1 ===== -->
+  <div class="card" onclick="openReport(1)">
+    <img src="images/icu.jpg">
+    <h3>ICU Basics</h3>
+  </div>
+
+  <!-- ===== COURSE 2 ===== -->
+  <div class="card" onclick="openReport(2)">
+    <img src="images/ecg.jpg">
+    <h3>ECG Interpretation</h3>
+  </div>
+
+  <!-- ===== COURSE 3 ===== -->
+  <div class="card" onclick="openReport(3)">
+    <img src="images/sepsis.jpg">
+    <h3>Sepsis & Shock</h3>
+  </div>
+
+</div>
+
+<!-- ================= REPORT 1 ================= -->
 <div class="report" id="report1">
-<h2>Course 1</h2>
+  <img src="images/icu.jpg">
 
-Harvard University – Harvard Online / HarvardX
-Overview
+  <h2>Harvard Medical School (HMS) Online Education</h2>
 
-Harvard University is one of the most prestigious universities in the world. Through Harvard Online and HarvardX, the university provides high-quality online education designed for both professionals and students worldwide.
+  <!-- ✏️✏️✏️ الصق تقرير كورس ICU هنا -->
+  <p>
+   Harvard Medical School offers a diverse range of digital programs designed for students, healthcare professionals, and industry leaders. These programs are delivered through various specialized platforms, each catering to different career stages and educational needs.
 
-Platforms Used
+1. HMX: Online Learning
+HMX is HMS's premier platform for foundational and advanced medical sciences. It uses high-quality visualizations, animations, and real-world clinical applications to teach complex concepts.
 
-Harvard Online (official portal)
+HMX Fundamentals: Designed for students (pre-med, nursing, PA) and professionals looking for a refresh. Key courses include:
 
-edX (for HarvardX programs)
+Immunology: Mechanisms of the immune system.
 
-Fields of Study
+Genetics: From molecular biology to clinical inheritance.
 
-Computer Science (CS50, AI, Data Science)
+Biochemistry: Essential metabolic pathways and molecular functions.
 
-Medicine & Public Health
+Physiology: Integration of organ systems (Cardiovascular, Renal, Respiratory).
 
-Business & Leadership
+HMX Pro: Advanced courses for professionals in biotech, pharma, or clinical practice.
 
-Law, Ethics, and Social Sciences
+Cancer Genomics & Precision Oncology.
 
-Education and Sustainability
+Immuno-oncology.
 
-Course Structure
+Drug Discovery and Development.
 
-Video lectures by Harvard professors
+AI in Medicine: Understanding the integration of machine learning in diagnostics and treatment.
 
-Reading materials and case studies
+2. Executive Education & Health Care Leadership
+These programs are tailored for clinicians, administrators, and policy-makers who want to lead organizational change.
 
-Assignments, quizzes, and projects
+Artificial Intelligence in Health Care: A high-impact program focusing on implementing AI strategies in clinical settings.
 
-Final assessments (graded)
+Health Care Economics: Analyzing cost-drivers, insurance models, and economic incentives in health systems.
 
-Certificates
+Leading Digital Transformation: Strategies for managing the shift toward digital-first healthcare delivery.
 
-Verified Certificates issued by Harvard University
+The Business of Health Care: Combining medical excellence with operational efficiency and financial management.
 
-Digital certificates (shareable on LinkedIn)
+3. Continuing Medical Education (CME)
+HMS provides accredited learning for practicing physicians to stay current with medical advancements and maintain their licenses.
 
-Identity-verified (passport or ID required)
+Updates in Clinical Medicine: Comprehensive annual reviews in Internal Medicine, Neurology, Pediatrics, and more.
 
-Cost
+Specialized Masterclasses: Deep dives into niche topics like Psychopharmacology, Infectious Diseases, and Geriatric Medicine.
 
-Course content: often free
+Accreditation: Most courses offer AMA PRA Category 1 Credits™.
 
-Certificate: usually $50–$300 USD
+4. Global Programs & Postgraduate Certificates
+Longer-term, intensive online and hybrid certificates for international medical professionals.
 
-Recognition & Value
+Global Clinical Scholars Research Training (GCSRT): A one-year program for clinicians looking to excel in clinical research.
 
-Highly respected by employers worldwide
+Safety, Quality, Informatics and Leadership (SQIL): Focused on patient safety and healthcare quality management.
 
-Strong academic credibility
+Postgraduate Medical Education (PGME): High-level training for global health leaders.
 
-Excellent for graduate school applications and professional portfolios
+Key Features of HMS Online Learning
+Visual Pedagogy: Utilization of 3D animations and cinematic medical illustrations to explain cellular processes.
 
-Best For
+Clinical Integration: Every scientific concept is tied to a real patient case study to demonstrate its importance in the field.
 
-Learners seeking elite academic branding
+Harvard Certification: Participants receive certificates of completion from Harvard Medical School, and some programs grant "Associate Member" status in the Harvard Medical Alumni Association.
 
-Professionals upgrading theoretical knowledge
+Flexibility: Most courses are designed to be completed alongside a full-time professional schedule.
+  </p>
 
-Students building a strong international CV
-<p>
-الصق تقريرك هنا  
-انسخ التقرير كامل من أي مكان  
-والصقه هنا  
-ولا تغيّر أي شي ثاني
-</p>
+  <!-- 🔗 رابط خارجي (اختياري) -->
+  <p>
+    <a href="https://learn.hms.harvard.edu/programs" target="_blank">
+      Open Course Material
+    </a>
+  </p>
 
-<button onclick="closeAll()">رجوع</button>
+  <button class="back" onclick="closeAll()">← back</button>
 </div>
 
-<!-- ====== تقرير كورس 2 ====== -->
+<!-- ================= REPORT 2 ================= -->
 <div class="report" id="report2">
-<h2>Course 2</h2>
+  <img src="images/ecg.jpg">
 
-coursera 
-  . Coursera
-Overview
+  <h2>ECG Interpretation</h2>
 
-Coursera is one of the largest online learning platforms globally, partnering with top universities and companies to deliver professional and academic courses.
+  <!-- ✏️✏️✏️ الصق تقرير كورس ECG هنا -->
+  <p>
+    الصق تقرير ECG هنا
+  </p>
 
-Major Partners
+  <p>
+    <a href="https://example.com" target="_blank">
+      View ECG Slides
+    </a>
+  </p>
 
-Stanford University
-
-University of London
-
-Google, IBM, Meta, Microsoft
-
-DeepLearning.AI
-
-Fields of Study
-
-Data Science & Machine Learning
-
-Computer Programming
-
-Business Administration (MBA-level courses)
-
-Health Sciences
-
-Cloud Computing & Cybersecurity
-
-Course Types
-
-Single Courses
-
-Specializations (series of courses)
-
-Professional Certificates
-
-Online Degrees (Bachelor’s & Master’s)
-
-Certificates
-
-University-branded certificates
-
-Industry-recognized certificates (Google, IBM, Meta)
-
-Verifiable and LinkedIn-shareable
-
-Cost
-
-$39–$79 per month (subscription-based)
-
-Financial Aid available (up to 100%)
-
-Recognition & Value
-
-Strong professional and industry recognition
-
-Widely accepted by employers
-
-Practical, job-ready skills
-
-Best For
-
-Career changers
-
-Tech and business professionals
-
-Learners who want practical + academic balance
-<p>
-الصق تقرير الكورس الثاني هنا
-</p>
-
-<button onclick="closeAll()">رجوع</button>
+  <button class="back" onclick="closeAll()">← رجوع</button>
 </div>
 
-<!-- ====== تقرير كورس 3 ====== -->
+<!-- ================= REPORT 3 ================= -->
 <div class="report" id="report3">
-<h2>Course 3</h2>
+  <img src="images/sepsis.jpg">
 
-<!-- ✏️✏️✏️ الصق تقرير الكورس الثالث هنا فقط -->
-<p>
-الصق تقرير الكورس الثالث هنا
-</p>
+  <h2>Sepsis & Shock</h2>
 
-<button onclick="closeAll()">رجوع</button>
+  <!-- ✏️✏️✏️ الصق تقرير كورس Sepsis هنا -->
+  <p>
+    الصق تقرير الكورس هنا
+  </p>
+
+  <p>
+    <a href="https://example.com" target="_blank">
+      Open Guidelines
+    </a>
+  </p>
+
+  <button class="back" onclick="closeAll()">← رجوع</button>
 </div>
 
 <script>
@@ -211,8 +242,11 @@ function openReport(n){
   closeAll();
   document.getElementById("report"+n).style.display="block";
 }
+
 function closeAll(){
-  document.querySelectorAll(".report").forEach(r=>r.style.display="none");
+  document.querySelectorAll(".report").forEach(r=>{
+    r.style.display="none";
+  });
 }
 </script>
 
