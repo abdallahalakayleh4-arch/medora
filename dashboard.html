@@ -5,15 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medora | The Future of Medical Learning</title>
     
-    <!-- Google Fonts -->
+    <script src="auth-guard.js"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* 
-           MEDORA CORE DESIGN SYSTEM 
+        /* MEDORA CORE DESIGN SYSTEM 
            Designed by Medora AI v3
         */
         :root {
@@ -92,6 +91,7 @@
             display: flex;
             align-items: center;
             gap: 15px;
+            cursor: pointer;
         }
 
         .medora-logo {
@@ -370,9 +370,8 @@
 
     <div class="page-overlay"></div>
 
-    <!-- Top Navigation -->
     <nav class="top-nav">
-        <div class="logo-area">
+        <div class="logo-area" onclick="location.href='index.html'">
             <div class="medora-logo">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4Z" stroke="white" stroke-width="2"/>
@@ -390,18 +389,16 @@
                 <span id="theme-text">Morning Mode</span>
             </button>
             <div class="user-profile">
-                <img src="https://ui-avatars.com/api/?name=Med+Student&background=2563eb&color=fff" style="width: 40px; border-radius: 50%; border: 2px solid var(--primary);" alt="Profile">
+                <img src="https://ui-avatars.com/api/?name=Med+Student&background=2563eb&color=fff" style="width: 40px; border-radius: 50%; border: 2px solid var(--primary); cursor: pointer;" alt="Profile" onclick="alert('Profile Settings coming soon!')">
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <section class="hero">
         <span class="badge">Welcome to the Future of Clinical Excellence</span>
         <h2>Hello, Doctor in Progress.</h2>
         <p>Your centralized clinical hub for productivity, calculations, and evidence-based knowledge. How can Medora help you today?</p>
         
-        <!-- Tool 6: Medora Knowledge Search (Integrated into Hero) -->
         <div class="knowledge-search-container">
             <div class="search-wrapper">
                 <i class="fas fa-search" style="margin: auto 10px auto 20px; color: var(--text-muted);"></i>
@@ -411,11 +408,9 @@
         </div>
     </section>
 
-    <!-- Dashboard Container -->
     <main class="dashboard-container">
 
-        <!-- Tool 1: To-Do List -->
-        <div class="med-card" onclick="location.href='#todo'">
+        <div class="med-card" onclick="location.href='todo.html'">
             <i class="fas fa-tasks"></i>
             <h3>To-Do Performance</h3>
             <p>Sync your clinical rounds, lectures, and daily goals with smart prioritization.</p>
@@ -426,17 +421,15 @@
             </div>
         </div>
 
-        <!-- Tool 2: Pomodoro -->
-        <div class="med-card" onclick="location.href='#timer'">
+        <div class="med-card" onclick="location.href='timer.html'">
             <i class="fas fa-stopwatch"></i>
             <h3>Deep Study Timer</h3>
             <p>Clinically proven Pomodoro sessions designed for high-intensity medical focus.</p>
             <div class="pomo-timer">25:00</div>
-            <button style="width:100%; margin-top:15px; background:var(--primary); color:white; border:none; padding:10px; border-radius:12px; cursor:pointer;">Start Session</button>
+            <button onclick="event.stopPropagation(); location.href='timer.html'" style="width:100%; margin-top:15px; background:var(--primary); color:white; border:none; padding:10px; border-radius:12px; cursor:pointer;">Start Session</button>
         </div>
 
-        <!-- Tool 3: Medical Scores -->
-        <div class="med-card" onclick="location.href='#scores'">
+        <div class="med-card" onclick="location.href='scores.html'">
             <i class="fas fa-file-medical-alt"></i>
             <h3>Medical Scores</h3>
             <p>Quick reference for GCS, APGAR, CURB-65, and over 80+ essential clinical scores.</p>
@@ -448,19 +441,17 @@
             </div>
         </div>
 
-        <!-- Tool 4: Medical Calculators -->
-        <div class="med-card" onclick="location.href='#calculators'">
+        <div class="med-card" onclick="location.href='calculators.html'">
             <i class="fas fa-calculator"></i>
             <h3>Med-Calculators</h3>
             <p>Precise calculators for BMI, GFR, CrCl, and pediatric dosage estimations.</p>
             <div class="calc-input-group">
-                <input type="text" placeholder="Select Equation (e.g. GFR)...">
-                <input type="number" placeholder="Enter Value (e.g. Creatinine)">
+                <input type="text" placeholder="Select Equation (e.g. GFR)..." onclick="event.stopPropagation(); location.href='calculators.html'">
+                <input type="number" placeholder="Enter Value (e.g. Creatinine)" onclick="event.stopPropagation(); location.href='calculators.html'">
             </div>
         </div>
 
-        <!-- Tool 5: Reports & Courses -->
-        <div class="med-card" onclick="location.href='#courses'">
+        <div class="med-card" onclick="location.href='reports.html'">
             <i class="fas fa-graduation-cap"></i>
             <h3>Global Certifications</h3>
             <p>Latest training reports from Harvard Medical, Stanford, and Mayo Clinic.</p>
@@ -472,8 +463,7 @@
             </div>
         </div>
 
-        <!-- Tool 6 Special Feature: Medora AI Assistant -->
-        <div class="med-card" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white;">
+        <div class="med-card" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white;" onclick="alert('AI Feature linking coming soon!')">
             <i class="fas fa-robot" style="color: white;"></i>
             <h3>AI Diagnostic Tutor</h3>
             <p style="color: rgba(255,255,255,0.8);">Ask me anything about clinical cases or differential diagnosis for real-time tutoring.</p>
@@ -482,15 +472,13 @@
 
     </main>
 
-    <!-- Bottom Navigation Bar -->
     <div class="bottom-nav">
-        <a href="#" class="active"><i class="fas fa-home"></i>Dashboard</a>
-        <a href="#"><i class="fas fa-book-medical"></i>Library</a>
-        <a href="#"><i class="fas fa-chart-line"></i>Analytics</a>
-        <a href="#"><i class="fas fa-cog"></i>Settings</a>
+        <a href="index.html" class="active"><i class="fas fa-home"></i>Dashboard</a>
+        <a href="reports.html"><i class="fas fa-book-medical"></i>Library</a>
+        <a href="scores.html"><i class="fas fa-chart-line"></i>Scores</a>
+        <a href="login.html"><i class="fas fa-sign-out-alt"></i>Logout</a>
     </div>
 
-    <!-- Footer -->
     <footer>
         <p>&copy; 2026 Medora Medical Platform | Built for the next generation of doctors.</p>
         <div style="margin-top: 10px;">
@@ -534,13 +522,6 @@
         let seconds = 1500;
         const timerDisplay = document.querySelector('.pomo-timer');
         
-        // This is a placeholder for real timer logic
-        function updateTimer() {
-            let mins = Math.floor(seconds / 60);
-            let secs = seconds % 60;
-            timerDisplay.innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-        }
-
         // Dynamic 3D effect on Mouse Move
         document.querySelectorAll('.med-card').forEach(card => {
             card.addEventListener('mousemove', (e) => {
@@ -562,4 +543,3 @@
     </script>
 </body>
 </html>
-
