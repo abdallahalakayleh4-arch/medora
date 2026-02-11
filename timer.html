@@ -1,282 +1,355 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Medora | Study Timer</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medora | Precision Study Timer</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="auth-guard.js"></script>
 
-<!-- Auth Guard -->
-<script type="module" src="auth-guard.js"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #3b82f6;
+            --accent: #10b981;
+            --bg-overlay: rgba(255, 255, 255, 0.85);
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: rgba(226, 232, 240, 0.8);
+            --glass-blur: 20px;
+        }
 
-<style>
-body {
-  margin: 0;
-  font-family: "Segoe UI", Arial, sans-serif;
-  background: radial-gradient(circle at top, #1c2541, #020617);
-  color: #e5e7eb;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
+        [data-theme="icu"] {
+            --primary: #38bdf8;
+            --secondary: #818cf8;
+            --accent: #fb7185;
+            --bg-overlay: rgba(2, 6, 23, 0.92);
+            --card-bg: rgba(15, 23, 42, 0.7);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: rgba(51, 65, 85, 0.5);
+        }
 
-.box {
-  width: 460px;
-  background: linear-gradient(180deg, #1c2541, #0b132b);
-  padding: 30px;
-  border-radius: 18px;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-}
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=2070&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-main);
+            overflow: hidden;
+        }
 
-h2 {
-  margin: 0;
-  text-align: center;
-  font-size: 22px;
-}
+        .page-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-overlay);
+            backdrop-filter: blur(var(--glass-blur));
+            z-index: -1;
+        }
 
-/* ===== MODES ===== */
-.modes {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-}
+        /* Timer Card */
+        .timer-container {
+            width: 100%;
+            max-width: 450px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            padding: 40px;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.1);
+            text-align: center;
+            backdrop-filter: blur(15px);
+            position: relative;
+        }
 
-.modes button {
-  flex: 1;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.08);
-  background: #24355c;
-  color: white;
-  cursor: pointer;
-}
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
 
-.modes button.active {
-  background: linear-gradient(135deg, #38bdf8, #3a86ff);
-}
+        h2 { font-weight: 800; font-size: 28px; margin-bottom: 30px; }
 
-/* ===== PATH ===== */
-.path-container {
-  margin: 30px 0 10px;
-}
+        /* Modes Switcher */
+        .timer-modes {
+            display: flex;
+            background: rgba(0,0,0,0.05);
+            padding: 6px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+        }
 
-.path {
-  position: relative;
-  height: 16px;
-  background: #020617;
-  border-radius: 10px;
-  overflow: hidden;
-}
+        .mode-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-weight: 700;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-.finish {
-  position: absolute;
-  right: 0;
-  top: -14px;
-  font-size: 20px;
-}
+        .mode-btn.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
 
-.doctor {
-  position: absolute;
-  top: -22px;
-  left: 0;
-  font-size: 26px;
-  transition: left 0.5s ease;
-}
+        /* Circular Progress Area */
+        .timer-display-area {
+            position: relative;
+            width: 240px;
+            height: 240px;
+            margin: 0 auto 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-/* ===== TIME ===== */
-.mode-text {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 14px;
-  color: #b0bcd6;
-}
+        .circle-svg {
+            position: absolute;
+            transform: rotate(-90deg);
+            width: 100%;
+            height: 100%;
+        }
 
-.time {
-  text-align: center;
-  font-size: 52px;
-  margin: 12px 0;
-  letter-spacing: 2px;
-}
+        .circle-bg {
+            fill: none;
+            stroke: var(--border);
+            stroke-width: 8;
+        }
 
-/* ===== BUTTONS ===== */
-.buttons {
-  display: flex;
-  gap: 10px;
-  margin-top: 15px;
-}
+        .circle-progress {
+            fill: none;
+            stroke: var(--primary);
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-dasharray: 691; /* 2 * PI * r (r=110) */
+            stroke-dashoffset: 0;
+            transition: stroke-dashoffset 1s linear;
+        }
 
-.buttons button {
-  flex: 1;
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-}
+        .timer-values {
+            z-index: 10;
+        }
 
-.start { background: #3a86ff; color: white; }
-.pause { background: #24355c; color: white; }
-.reset { background: #ff5c5c; color: white; }
+        #time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 54px;
+            font-weight: 700;
+            color: var(--text-main);
+            display: block;
+        }
 
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
+        #mode-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
 
-/* ===== FOOTER ===== */
-.footer {
-  text-align: center;
-  margin-top: 18px;
-}
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 15px;
+        }
 
-.footer button {
-  background: transparent;
-  color: #94a3b8;
-  border: none;
-  cursor: pointer;
-  font-size: 13px;
-}
-</style>
+        .btn-main {
+            flex: 2;
+            padding: 18px;
+            border-radius: 20px;
+            border: none;
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: 0.3s;
+        }
+
+        .btn-start { background: var(--primary); color: white; }
+        .btn-start:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3); }
+
+        .btn-reset {
+            flex: 1;
+            background: rgba(0,0,0,0.05);
+            color: var(--text-main);
+        }
+
+        .btn-reset:hover { background: rgba(255, 92, 92, 0.1); color: #ff5c5c; }
+
+        .back-link {
+            margin-top: 30px;
+            display: block;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .back-link:hover { color: var(--primary); }
+
+        /* Doctor Path Miniature */
+        .doctor-mini-path {
+            width: 100%;
+            height: 4px;
+            background: var(--border);
+            border-radius: 10px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        #doctor-icon {
+            position: absolute;
+            top: -20px;
+            left: 0%;
+            font-size: 20px;
+            transition: left 1s linear;
+        }
+
+    </style>
 </head>
-
 <body>
 
-<div class="box">
-  <h2>Study Timer</h2>
+    <div class="page-overlay"></div>
 
-  <!-- MODES -->
-  <div class="modes">
-    <button id="mode25" class="active">25 min</button>
-    <button id="mode50">50 min</button>
-  </div>
+    <div class="timer-container">
+        <span class="badge" id="session-count">Session 1 of 4</span>
+        <h2>Study Timer</h2>
 
-  <!-- PATH -->
-  <div class="path-container">
-    <div class="path">
-      <div class="doctor" id="doctor">👨‍⚕️</div>
-      <div class="finish">🏁</div>
+        <div class="timer-modes">
+            <button class="mode-btn active" onclick="setMode(25, this)">25 min</button>
+            <button class="mode-btn" onclick="setMode(50, this)">50 min</button>
+            <button class="mode-btn" onclick="setMode(5, this, true)">Break</button>
+        </div>
+
+        <div class="timer-display-area">
+            <svg class="circle-svg">
+                <circle class="circle-bg" cx="120" cy="120" r="110"></circle>
+                <circle id="progress-bar" class="circle-progress" cx="120" cy="120" r="110"></circle>
+            </svg>
+            <div class="timer-values">
+                <span id="time">25:00</span>
+                <span id="mode-label">DEEP FOCUS</span>
+            </div>
+        </div>
+
+        <div class="doctor-mini-path">
+            <div id="doctor-icon">👨‍⚕️</div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 10px; margin-top: 5px; color: var(--text-muted);">
+            <span>START</span>
+            <span>EXCELLENCE</span>
+        </div>
+
+        <div class="controls" style="margin-top: 30px;">
+            <button id="startBtn" class="btn-main btn-start" onclick="toggleTimer()">
+                <i class="fas fa-play"></i> <span>Start Session</span>
+            </button>
+            <button class="btn-main btn-reset" onclick="resetTimer()">
+                <i class="fas fa-undo"></i>
+            </button>
+        </div>
+
+        <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
     </div>
-  </div>
 
-  <div class="mode-text" id="modeText">Study Session</div>
-  <div class="time" id="time">25:00</div>
+    <script>
+        let timeLeft = 25 * 60;
+        let totalTime = 25 * 60;
+        let timer = null;
+        let isRunning = false;
+        let sessionNum = 1;
 
-  <div class="buttons">
-    <button id="startBtn" class="start">Start</button>
-    <button id="pauseBtn" class="pause" disabled>Pause</button>
-    <button id="resetBtn" class="reset">Reset</button>
-  </div>
+        const timeDisplay = document.getElementById('time');
+        const progressBar = document.getElementById('progress-bar');
+        const doctorIcon = document.getElementById('doctor-icon');
+        const startBtn = document.getElementById('startBtn');
+        const modeLabel = document.getElementById('mode-label');
+        const circleTotal = 691; // circumference
 
-  <div class="footer">
-    <button onclick="location.href='dashboard.html'">← Back to Dashboard</button>
-  </div>
-</div>
+        function updateDisplay() {
+            const mins = Math.floor(timeLeft / 60);
+            const secs = timeLeft % 60;
+            timeDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            
+            // Update Circular Progress
+            const offset = circleTotal - (timeLeft / totalTime) * circleTotal;
+            progressBar.style.strokeDashoffset = offset;
 
-<script>
-let STUDY_TIME = 25 * 60;
-let BREAK_TIME = 5 * 60;
-let timeLeft = STUDY_TIME;
-let totalTime = STUDY_TIME;
-let timer = null;
-let isStudy = true;
+            // Update Doctor Position
+            const percent = ((totalTime - timeLeft) / totalTime) * 100;
+            doctorIcon.style.left = `calc(${percent}% - 10px)`;
+        }
 
-const timeEl = document.getElementById("time");
-const modeText = document.getElementById("modeText");
-const doctor = document.getElementById("doctor");
+        function setMode(mins, btn, isBreak = false) {
+            resetTimer();
+            timeLeft = mins * 60;
+            totalTime = timeLeft;
+            modeLabel.textContent = isBreak ? "REST TIME" : "DEEP FOCUS";
+            
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            updateDisplay();
+        }
 
-const startBtn = document.getElementById("startBtn");
-const pauseBtn = document.getElementById("pauseBtn");
-const resetBtn = document.getElementById("resetBtn");
+        function toggleTimer() {
+            if (isRunning) {
+                clearInterval(timer);
+                startBtn.innerHTML = '<i class="fas fa-play"></i> <span>Resume</span>';
+                isRunning = false;
+            } else {
+                isRunning = true;
+                startBtn.innerHTML = '<i class="fas fa-pause"></i> <span>Pause</span>';
+                timer = setInterval(() => {
+                    timeLeft--;
+                    updateDisplay();
+                    if (timeLeft <= 0) {
+                        clearInterval(timer);
+                        completeSession();
+                    }
+                }, 1000);
+            }
+        }
 
-const mode25 = document.getElementById("mode25");
-const mode50 = document.getElementById("mode50");
+        function resetTimer() {
+            clearInterval(timer);
+            isRunning = false;
+            timeLeft = totalTime;
+            startBtn.innerHTML = '<i class="fas fa-play"></i> <span>Start Session</span>';
+            updateDisplay();
+        }
 
-function updateDisplay() {
-  const m = String(Math.floor(timeLeft / 60)).padStart(2, "0");
-  const s = String(timeLeft % 60).padStart(2, "0");
-  timeEl.innerText = `${m}:${s}`;
+        function completeSession() {
+            alert("Session Complete, Doctor! Time for a quick review or a short break.");
+            sessionNum++;
+            document.getElementById('session-count').textContent = `Session ${sessionNum} of 4`;
+            resetTimer();
+        }
 
-  const percent = 1 - timeLeft / totalTime;
-  doctor.style.left = `calc(${percent * 100}% - 14px)`;
-}
+        // Initialize theme from dashboard preference
+        if (localStorage.getItem('medora-theme') === 'icu') {
+            document.body.setAttribute('data-theme', 'icu');
+        }
 
-function setMode(minutes) {
-  clearInterval(timer);
-  timer = null;
-  isStudy = true;
-
-  STUDY_TIME = minutes * 60;
-  BREAK_TIME = minutes === 25 ? 5 * 60 : 10 * 60;
-  totalTime = STUDY_TIME;
-  timeLeft = STUDY_TIME;
-
-  modeText.innerText = "Study Session";
-  doctor.style.left = "0%";
-  updateDisplay();
-
-  startBtn.disabled = false;
-  pauseBtn.disabled = true;
-
-  mode25.classList.toggle("active", minutes === 25);
-  mode50.classList.toggle("active", minutes === 50);
-}
-
-function startTimer() {
-  if (timer) return;
-
-  startBtn.disabled = true;
-  pauseBtn.disabled = false;
-
-  timer = setInterval(() => {
-    timeLeft--;
-    updateDisplay();
-
-    if (timeLeft <= 0) {
-      clearInterval(timer);
-      timer = null;
-
-      isStudy = !isStudy;
-      totalTime = isStudy ? STUDY_TIME : BREAK_TIME;
-      timeLeft = totalTime;
-      doctor.style.left = "0%";
-      modeText.innerText = isStudy ? "Study Session" : "Break Time";
-
-      alert(isStudy ? "Break finished! Back to study 💪" : "Study finished! Take a break ☕");
-
-      startBtn.disabled = false;
-      pauseBtn.disabled = true;
-    }
-  }, 1000);
-}
-
-function pauseTimer() {
-  clearInterval(timer);
-  timer = null;
-  startBtn.disabled = false;
-  pauseBtn.disabled = true;
-}
-
-function resetTimer() {
-  clearInterval(timer);
-  timer = null;
-  isStudy = true;
-  totalTime = STUDY_TIME;
-  timeLeft = STUDY_TIME;
-  modeText.innerText = "Study Session";
-  doctor.style.left = "0%";
-  updateDisplay();
-  startBtn.disabled = false;
-  pauseBtn.disabled = true;
-}
-
-mode25.onclick = () => setMode(25);
-mode50.onclick = () => setMode(50);
-startBtn.onclick = startTimer;
-pauseBtn.onclick = pauseTimer;
-resetBtn.onclick = resetTimer;
-
-updateDisplay();
-</script>
-
+        updateDisplay();
+    </script>
 </body>
 </html>
