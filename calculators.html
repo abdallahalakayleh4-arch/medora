@@ -4,685 +4,801 @@
     <meta charset="UTF-8">
     <title>Medora | Professional Medical Calculators</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/dist/css/all.min.css">
+    
+    <script src="auth-guard.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         /* =====================================================
-           COLOR SYSTEM & VARIABLES
+           1. CORE VARIABLES & RESET
         ===================================================== */
         :root {
-            --bg-body: #020617;
-            --bg-app: rgba(15, 23, 42, 0.8);
-            --primary: #3a86ff;
-            --primary-glow: rgba(58, 134, 255, 0.3);
-            --accent: #38bdf8;
-            --text-main: #f8fafc;
+            --bg-body: #0f172a;
+            --bg-nav: rgba(15, 23, 42, 0.95);
+            --bg-card: rgba(30, 41, 59, 0.6);
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --accent: #06b6d4;
+            --text-main: #f1f5f9;
             --text-muted: #94a3b8;
-            --input-bg: rgba(2, 6, 23, 0.6);
-            --border: rgba(255, 255, 255, 0.08);
-            --success: #22c55e;
-            --glass-blur: blur(16px);
-            --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --border: rgba(255, 255, 255, 0.1);
+            --input-bg: rgba(15, 23, 42, 0.8);
+            --success: #10b981;
+            --glass: blur(16px);
+            --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
         }
 
-        /* =====================================================
-           BASE STYLES & ANIMATIONS
-        ===================================================== */
         * {
             box-sizing: border-box;
-            -webkit-font-smoothing: antialiased;
+            outline: none;
         }
 
         body {
             margin: 0;
-            padding: 20px;
-            font-family: var(--font-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
             background: radial-gradient(circle at top right, #1e293b, #020617), 
-                        radial-gradient(circle at bottom left, #0f172a, #020617);
+                        radial-gradient(circle at bottom left, #0f172a, #000000);
             color: var(--text-main);
             min-height: 100vh;
+            padding-top: 90px; /* Space for Navbar */
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
         }
 
-        @keyframes fadeInUp {
+        /* =====================================================
+           2. NAVIGATION BAR
+        ===================================================== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            background: var(--bg-nav);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 50px;
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 800;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-brand i {
+            color: var(--primary);
+            filter: drop-shadow(0 0 8px var(--primary));
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 10px 16px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #fff;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .nav-link.active i {
+            color: var(--primary);
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            padding: 2px;
+            cursor: pointer;
+        }
+
+        /* =====================================================
+           3. MAIN APP CONTAINER
+        ===================================================== */
+        .app-container {
+            width: 100%;
+            max-width: 650px;
+            background: var(--bg-card);
+            backdrop-filter: var(--glass);
+            -webkit-backdrop-filter: var(--glass);
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            margin-bottom: 50px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* =====================================================
-           APP CONTAINER (GLASSMOPRHISM)
-        ===================================================== */
-        .app {
-            width: 100%;
-            max-width: 580px;
-            background: var(--bg-app);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border-radius: 32px;
-            padding: 40px;
-            border: 1px solid var(--border);
-            box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.7);
-            animation: fadeInUp 0.6s ease-out;
-        }
-
-        /* =====================================================
-           HEADER DESIGN
-        ==================================================== */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* Tool Header */
+        .tool-header {
+            text-align: center;
             margin-bottom: 35px;
         }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        .tool-header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .logo-box {
-            width: 52px;
-            height: 52px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            box-shadow: 0 10px 20px var(--primary-glow);
-        }
-
-        .brand-text strong {
-            display: block;
-            font-size: 24px;
-            letter-spacing: 0.5px;
-        }
-
-        .brand-text span {
-            font-size: 13px;
+        .tool-header p {
+            margin: 8px 0 0;
             color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .back-link {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 20px;
-            transition: 0.3s;
-        }
-
-        .back-link:hover {
-            color: var(--primary);
-            transform: scale(1.1);
+            font-size: 15px;
         }
 
         /* =====================================================
-           DROPDOWN SELECTOR
+           4. FORM ELEMENTS
         ===================================================== */
-        .selector-wrapper {
-            margin-bottom: 30px;
+        /* Dropdown */
+        .select-wrapper {
             position: relative;
+            margin-bottom: 30px;
         }
 
         select {
             width: 100%;
             padding: 18px 20px;
-            border-radius: 18px;
-            border: 1px solid var(--border);
-            background: var(--input-bg);
-            color: #fff;
+            font-family: inherit;
             font-size: 16px;
+            color: #fff;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
             appearance: none;
             cursor: pointer;
             transition: 0.3s;
-            outline: none;
         }
 
         select:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px var(--primary-glow);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
         }
 
-        .selector-wrapper::after {
-            content: '\f078';
-            font-family: 'Font Awesome 5 Free';
-            font-weight: 900;
+        .select-arrow {
             position: absolute;
             right: 20px;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--text-muted);
             pointer-events: none;
+            color: var(--text-muted);
         }
 
-        /* =====================================================
-           DYNAMIC FORM FIELDS
-        ===================================================== */
-        .form {
+        /* Dynamic Inputs */
+        .form-grid {
             display: grid;
             gap: 20px;
             margin-bottom: 30px;
         }
 
-        .form-group {
+        .input-group {
             display: flex;
             flex-direction: column;
             gap: 8px;
-            animation: fadeInUp 0.4s ease-out;
+            animation: fadeIn 0.3s ease;
         }
 
-        .form-group label {
-            font-size: 14px;
-            font-weight: 500;
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .input-group label {
+            font-size: 13px;
+            font-weight: 600;
             color: var(--text-muted);
-            padding-left: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 5px;
         }
 
-        .form-group input {
-            padding: 15px 18px;
-            border-radius: 14px;
-            border: 1px solid var(--border);
+        .input-group input {
+            padding: 16px;
             background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
             color: #fff;
             font-size: 16px;
             transition: 0.3s;
-            outline: none;
         }
 
-        .form-group input:focus {
+        .input-group input:focus {
             border-color: var(--accent);
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255,255,255,0.05);
         }
 
         /* =====================================================
-           ACTION BUTTONS
+           5. ACTION BUTTONS
         ===================================================== */
         .actions {
             display: grid;
             grid-template-columns: 1fr 2fr;
             gap: 15px;
-            margin-bottom: 30px;
+            margin-top: 20px;
         }
 
         .btn {
             padding: 16px;
-            border-radius: 18px;
-            border: none;
-            font-size: 15px;
-            font-weight: 600;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
             cursor: pointer;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
         }
 
-        .btn-calc {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: #fff;
-            box-shadow: 0 10px 20px rgba(58, 134, 255, 0.3);
-        }
-
-        .btn-calc:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(58, 134, 255, 0.4);
-        }
-
         .btn-reset {
-            background: var(--border);
-            color: var(--text-main);
+            background: transparent;
             border: 1px solid var(--border);
+            color: var(--text-muted);
         }
 
         .btn-reset:hover {
-            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--text-muted);
+            color: #fff;
+        }
+
+        .btn-calc {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #fff;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .btn-calc:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
         }
 
         /* =====================================================
-           RESULT PANEL
+           6. RESULT BOX
         ===================================================== */
-        .result {
-            padding: 25px;
-            border-radius: 22px;
-            background: linear-gradient(145deg, rgba(34, 197, 94, 0.1), rgba(2, 6, 23, 0.8));
-            border: 1px solid rgba(34, 197, 94, 0.2);
-            display: none;
+        .result-box {
+            margin-top: 30px;
+            padding: 30px;
+            background: linear-gradient(145deg, rgba(16, 185, 129, 0.1), rgba(15, 23, 42, 0.8));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 20px;
             text-align: center;
-            margin-top: 10px;
+            display: none; /* Hidden by default */
         }
 
-        .result-title {
+        .result-label {
+            display: block;
             color: var(--success);
-            font-size: 14px;
+            font-size: 13px;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 10px;
-            display: block;
         }
 
         .result-value {
-            font-size: 28px;
-            font-weight: 700;
+            font-size: 32px;
+            font-weight: 800;
             color: #fff;
             line-height: 1.4;
         }
 
-        /* =====================================================
-           FOOTER
-        ===================================================== */
-        .footer {
-            margin-top: 30px;
-            padding-top: 25px;
-            border-top: 1px solid var(--border);
-            text-align: center;
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .navbar { padding: 0 20px; }
+            .nav-link span { display: none; } /* Hide text on mobile nav */
+            .app-container { padding: 25px; margin: 20px; }
         }
-
-        .footer p {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg-body); }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-
     </style>
 </head>
-
 <body>
 
-<div class="app">
+    <nav class="navbar">
+        <a href="dashboard.html" class="nav-brand">
+            <i class="fas fa-heartbeat"></i> &nbsp;Medora
+        </a>
 
-    <div class="header">
-        <div class="brand">
-            <div class="logo-box"><i class="fas fa-calculator"></i></div>
-            <div class="brand-text">
-                <strong>Medora</strong>
-                <span>Clinical Calculators</span>
+        <div class="nav-menu">
+            <a href="dashboard.html" class="nav-link">
+                <i class="fas fa-th-large"></i> <span>Dashboard</span>
+            </a>
+            <a href="knowledge.html" class="nav-link">
+                <i class="fas fa-book-medical"></i> <span>Knowledge</span>
+            </a>
+            <a href="calculators.html" class="nav-link active">
+                <i class="fas fa-calculator"></i> <span>Calculators</span>
+            </a>
+            <a href="ai-chat.html" class="nav-link">
+                <i class="fas fa-robot"></i> <span>AI Assistant</span>
+            </a>
+        </div>
+
+        <div class="user-profile">
+            <img src="https://ui-avatars.com/api/?name=Doc&background=3b82f6&color=fff" class="user-avatar" alt="Profile">
+        </div>
+    </nav>
+
+    <div class="app-container">
+        
+        <div class="tool-header">
+            <h1>Clinical Calculators</h1>
+            <p>Evidence-based tools for daily medical practice.</p>
+        </div>
+
+        <div class="select-wrapper">
+            <select id="calculatorSelect">
+                <option value="">-- Select a Calculator --</option>
+                <optgroup label="General & Vitals">
+                    <option value="bmi">Body Mass Index (BMI)</option>
+                    <option value="bsa">Body Surface Area (BSA)</option>
+                    <option value="map">Mean Arterial Pressure (MAP)</option>
+                </optgroup>
+                <optgroup label="Renal & Electrolytes">
+                    <option value="crcl">Creatinine Clearance (Cockcroft-Gault)</option>
+                    <option value="egfr">eGFR (MDRD)</option>
+                    <option value="aniongap">Serum Anion Gap</option>
+                    <option value="osm">Serum Osmolarity</option>
+                    <option value="sodium">Corrected Sodium (Hyperglycemia)</option>
+                    <option value="calcium">Corrected Calcium (Hypoalbuminemia)</option>
+                </optgroup>
+                <optgroup label="Emergency & Trauma">
+                    <option value="parkland">Parkland Formula (Burn Fluid)</option>
+                    <option value="gcs">Glasgow Coma Scale (GCS)</option> </optgroup>
+                <optgroup label="Cardiology & Scores">
+                    <option value="wells">Wells Score (DVT Probability)</option>
+                    <option value="cha2ds2vasc">CHA₂DS₂-VASc (Afib Risk)</option>
+                    <option value="curb65">CURB-65 (Pneumonia Severity)</option>
+                    <option value="nihss">NIH Stroke Scale (NIHSS)</option>
+                    <option value="apache">APACHE II Score</option>
+                </optgroup>
+                <optgroup label="Hepatic & Labs">
+                    <option value="childpugh">Child-Pugh Score</option>
+                    <option value="meld">MELD Score</option>
+                    <option value="ldl">LDL Cholesterol (Friedewald)</option>
+                </optgroup>
+            </select>
+            <div class="select-arrow"><i class="fas fa-chevron-down"></i></div>
+        </div>
+
+        <div class="form-grid" id="form-container">
+            <div style="text-align:center; padding: 40px; color: var(--text-muted); border: 2px dashed var(--border); border-radius: 16px;">
+                <i class="fas fa-calculator" style="font-size: 32px; margin-bottom: 15px; display:block;"></i>
+                Please select a calculator from the menu above to begin.
             </div>
         </div>
-        <a href="dashboard.html" class="back-link" title="Dashboard">
-            <i class="fas fa-th-large"></i>
-        </a>
-    </div>
 
-    <div class="selector-wrapper">
-        <select id="calculatorSelect">
-            <option value="">Select a Tool...</option>
-            <option value="bmi">Body Mass Index (BMI)</option>
-            <option value="bsa">Body Surface Area (BSA)</option>
-            <option value="crcl">Creatinine Clearance (Cockcroft-Gault)</option>
-            <option value="egfr">eGFR (MDRD Equation)</option>
-            <option value="calcium">Corrected Calcium</option>
-            <option value="parkland">Parkland Formula (Burns)</option>
-            <option value="aniongap">Serum Anion Gap</option>
-            <option value="map">Mean Arterial Pressure (MAP)</option>
-            <option value="sodium">Corrected Sodium (Glucose)</option>
-            <option value="osm">Serum Osmolarity</option>
-            <option value="ldl">LDL Cholesterol (Friedewald)</option>
-            <option value="childpugh">Child-Pugh Classification</option>
-            <option value="meld">MELD Score</option>
-            <option value="cha2ds2vasc">CHA₂DS₂-VASc Score</option>
-            <option value="curb65">CURB-65 Pneumonia Score</option>
-            <option value="wells">Wells Criteria (DVT/PE)</option>
-            <option value="apache">APACHE II Score</option>
-            <option value="nihss">NIH Stroke Scale</option>
-        </select>
-    </div>
-
-    <div class="form" id="form">
-        <div style="text-align: center; color: var(--text-muted); padding: 40px 0;">
-            <i class="fas fa-hand-pointer" style="font-size: 30px; margin-bottom: 15px; display: block;"></i>
-            Please choose a calculator from the dropdown above to begin.
+        <div class="actions">
+            <button class="btn btn-reset" id="resetBtn">
+                <i class="fas fa-undo"></i> Reset
+            </button>
+            <button class="btn btn-calc" id="calcBtn">
+                <i class="fas fa-bolt"></i> Calculate
+            </button>
         </div>
+
+        <div class="result-box" id="resultBox">
+            <span class="result-label">Calculated Result</span>
+            <div class="result-value" id="resultValue">--</div>
+        </div>
+
     </div>
 
-    <div class="actions">
-        <button class="btn btn-reset" id="resetBtn">
-            <i class="fas fa-undo"></i> Reset
-        </button>
-        <button class="btn btn-calc" id="calcBtn">
-            <i class="fas fa-bolt"></i> Calculate
-        </button>
-    </div>
+    <script>
+        // DOM Elements
+        const select = document.getElementById('calculatorSelect');
+        const formContainer = document.getElementById('form-container');
+        const resultBox = document.getElementById('resultBox');
+        const resultValue = document.getElementById('resultValue');
+        const calcBtn = document.getElementById('calcBtn');
+        const resetBtn = document.getElementById('resetBtn');
 
-    <div class="result" id="result">
-        <span class="result-title">Calculation Result</span>
-        <div class="result-value" id="resultValue"></div>
-    </div>
+        let activeCalc = null;
 
-    <div class="footer">
-        <p>&copy; 2024 Medora Medical Systems • Evidence-Based Tools</p>
-    </div>
+        /* CALCULATOR DEFINITIONS 
+           Each object contains:
+           - title: Display Name
+           - inputs: Array of fields {id, label, placeholder, type}
+           - logic: Function to compute the result
+        */
+        const CALCULATORS = {
+            
+            // --- 1. BMI ---
+            bmi: {
+                inputs: [
+                    { id: 'w', label: 'Weight (kg)', type: 'number' },
+                    { id: 'h', label: 'Height (cm)', type: 'number' }
+                ],
+                logic: (data) => {
+                    const h_m = data.h / 100;
+                    const bmi = data.w / (h_m * h_m);
+                    let cat = bmi < 18.5 ? "Underweight" : bmi < 25 ? "Normal" : bmi < 30 ? "Overweight" : "Obese";
+                    return `${bmi.toFixed(2)} kg/m²<br><span style="font-size:16px; opacity:0.7">Category: ${cat}</span>`;
+                }
+            },
 
-</div>
+            // --- 2. BSA (Mosteller) ---
+            bsa: {
+                inputs: [
+                    { id: 'w', label: 'Weight (kg)', type: 'number' },
+                    { id: 'h', label: 'Height (cm)', type: 'number' }
+                ],
+                logic: (data) => {
+                    const bsa = Math.sqrt((data.w * data.h) / 3600);
+                    return `${bsa.toFixed(2)} m²`;
+                }
+            },
 
-<script>
-/* -------------------------
-   DOM ELEMENTS
-------------------------- */
-const selector = document.getElementById("calculatorSelect");
-const form = document.getElementById("form");
-const resultBox = document.getElementById("result");
-const resultValue = document.getElementById("resultValue");
-const calcBtn = document.getElementById("calcBtn");
-const resetBtn = document.getElementById("resetBtn");
+            // --- 3. MAP ---
+            map: {
+                inputs: [
+                    { id: 'sbp', label: 'Systolic BP (mmHg)', type: 'number' },
+                    { id: 'dbp', label: 'Diastolic BP (mmHg)', type: 'number' }
+                ],
+                logic: (data) => {
+                    const map = (data.sbp + (2 * data.dbp)) / 3;
+                    return `${map.toFixed(1)} mmHg`;
+                }
+            },
 
-/* -------------------------
-   STATE
-------------------------- */
-let currentCalculator = null;
+            // --- 4. Creatinine Clearance ---
+            crcl: {
+                inputs: [
+                    { id: 'age', label: 'Age (years)', type: 'number' },
+                    { id: 'w', label: 'Weight (kg)', type: 'number' },
+                    { id: 'cr', label: 'Serum Creatinine (mg/dL)', type: 'number' },
+                    { id: 'g', label: 'Gender (1=Male, 0=Female)', type: 'number', placeholder: '1 or 0' }
+                ],
+                logic: (data) => {
+                    let crcl = ((140 - data.age) * data.w) / (72 * data.cr);
+                    if (data.g == 0) crcl *= 0.85; // Female correction
+                    return `${crcl.toFixed(1)} mL/min`;
+                }
+            },
 
-/* -------------------------
-   CALCULATOR DEFINITIONS (PART 2)
-------------------------- */
-const CALCULATORS = {
-    bmi: {
-        title: "Body Mass Index",
-        fields: [
-            { id: "weight", label: "Weight (kg)" },
-            { id: "height", label: "Height (cm)" }
-        ],
-        calculate(d) {
-            const h = d.height / 100;
-            return (d.weight / (h * h)).toFixed(2) + " kg/m²";
-        }
-    },
-    bsa: {
-        title: "Body Surface Area",
-        fields: [
-            { id: "weight", label: "Weight (kg)" },
-            { id: "height", label: "Height (cm)" }
-        ],
-        calculate(d) {
-            return Math.sqrt((d.height * d.weight) / 3600).toFixed(2) + " m²";
-        }
-    },
-    parkland: {
-        title: "Parkland Formula",
-        fields: [
-            { id: "weight", label: "Weight (kg)" },
-            { id: "tbsa", label: "TBSA Burn (%)" }
-        ],
-        calculate(d) {
-            const total = 4 * d.weight * d.tbsa;
-            return `Total: ${total} mL | 1st 8h: ${total / 2} mL | Next 16h: ${total / 2} mL`;
-        }
-    }
-};
+            // --- 5. eGFR (MDRD) ---
+            egfr: {
+                inputs: [
+                    { id: 'age', label: 'Age (years)', type: 'number' },
+                    { id: 'cr', label: 'Serum Creatinine (mg/dL)', type: 'number' },
+                    { id: 'g', label: 'Gender (1=Male, 0=Female)', type: 'number', placeholder: '1 or 0' },
+                    { id: 'aa', label: 'African American? (1=Yes, 0=No)', type: 'number', placeholder: '1 or 0' }
+                ],
+                logic: (data) => {
+                    let egfr = 175 * Math.pow(data.cr, -1.154) * Math.pow(data.age, -0.203);
+                    if (data.g == 0) egfr *= 0.742; // Female
+                    if (data.aa == 1) egfr *= 1.212; // African American
+                    return `${egfr.toFixed(1)} mL/min/1.73m²`;
+                }
+            },
 
-/* -------------------------
-   SCRIPTS - PART 3 (CLINICAL & LAB)
-------------------------- */
-CALCULATORS.crcl = {
-    title: "Creatinine Clearance (Cockcroft–Gault)",
-    fields: [
-        { id: "age", label: "Age (years)" },
-        { id: "weight", label: "Weight (kg)" },
-        { id: "scr", label: "Serum Creatinine (mg/dL)" },
-        { id: "sex", label: "Sex (1 = Male, 0.85 = Female)" }
-    ],
-    calculate(d) {
-        let crcl = ((140 - d.age) * d.weight) / (72 * d.scr);
-        if (d.sex < 1) crcl *= 0.85;
-        return crcl.toFixed(1) + " mL/min";
-    }
-};
+            // --- 6. Anion Gap ---
+            aniongap: {
+                inputs: [
+                    { id: 'na', label: 'Sodium (Na+)', type: 'number' },
+                    { id: 'cl', label: 'Chloride (Cl-)', type: 'number' },
+                    { id: 'hco3', label: 'Bicarbonate (HCO3-)', type: 'number' }
+                ],
+                logic: (data) => {
+                    const ag = data.na - (data.cl + data.hco3);
+                    return `${ag.toFixed(1)} mEq/L`;
+                }
+            },
 
-CALCULATORS.egfr = {
-    title: "eGFR (MDRD)",
-    fields: [
-        { id: "age", label: "Age (years)" },
-        { id: "scr", label: "Serum Creatinine (mg/dL)" },
-        { id: "female", label: "Female? (1 = Yes, 0 = No)" }
-    ],
-    calculate(d) {
-        let gfr = 175 * Math.pow(d.scr, -1.154) * Math.pow(d.age, -0.203);
-        if (d.female === 1) gfr *= 0.742;
-        return gfr.toFixed(1) + " mL/min/1.73m²";
-    }
-};
+            // --- 7. Osmolarity ---
+            osm: {
+                inputs: [
+                    { id: 'na', label: 'Sodium (mEq/L)', type: 'number' },
+                    { id: 'glu', label: 'Glucose (mg/dL)', type: 'number' },
+                    { id: 'bun', label: 'BUN (mg/dL)', type: 'number' }
+                ],
+                logic: (data) => {
+                    const osm = (2 * data.na) + (data.glu / 18) + (data.bun / 2.8);
+                    return `${osm.toFixed(1)} mOsm/kg`;
+                }
+            },
 
-CALCULATORS.calcium = {
-    title: "Corrected Calcium",
-    fields: [
-        { id: "calcium", label: "Measured Calcium (mg/dL)" },
-        { id: "albumin", label: "Albumin (g/dL)" }
-    ],
-    calculate(d) {
-        const corrected = d.calcium + 0.8 * (4 - d.albumin);
-        return corrected.toFixed(2) + " mg/dL";
-    }
-};
+            // --- 8. Corrected Sodium ---
+            sodium: {
+                inputs: [
+                    { id: 'na', label: 'Measured Sodium (mEq/L)', type: 'number' },
+                    { id: 'glu', label: 'Serum Glucose (mg/dL)', type: 'number' }
+                ],
+                logic: (data) => {
+                    const corr = data.na + 0.016 * (data.glu - 100);
+                    return `${corr.toFixed(1)} mEq/L`;
+                }
+            },
 
-CALCULATORS.aniongap = {
-    title: "Anion Gap",
-    fields: [
-        { id: "na", label: "Sodium Na⁺ (mEq/L)" },
-        { id: "cl", label: "Chloride Cl⁻ (mEq/L)" },
-        { id: "hco3", label: "Bicarbonate HCO₃⁻ (mEq/L)" }
-    ],
-    calculate(d) {
-        return (d.na - (d.cl + d.hco3)) + " mEq/L";
-    }
-};
+            // --- 9. Corrected Calcium ---
+            calcium: {
+                inputs: [
+                    { id: 'ca', label: 'Measured Calcium (mg/dL)', type: 'number' },
+                    { id: 'alb', label: 'Serum Albumin (g/dL)', type: 'number' }
+                ],
+                logic: (data) => {
+                    const corr = data.ca + 0.8 * (4.0 - data.alb);
+                    return `${corr.toFixed(2)} mg/dL`;
+                }
+            },
 
-CALCULATORS.map = {
-    title: "Mean Arterial Pressure (MAP)",
-    fields: [
-        { id: "sbp", label: "Systolic BP (mmHg)" },
-        { id: "dbp", label: "Diastolic BP (mmHg)" }
-    ],
-    calculate(d) {
-        return ((d.sbp + 2 * d.dbp) / 3).toFixed(1) + " mmHg";
-    }
-};
+            // --- 10. Parkland Formula ---
+            parkland: {
+                inputs: [
+                    { id: 'w', label: 'Weight (kg)', type: 'number' },
+                    { id: 'tbsa', label: 'TBSA Burned (%)', type: 'number' }
+                ],
+                logic: (data) => {
+                    const total = 4 * data.w * data.tbsa;
+                    return `${total} mL <span style="font-size:14px; display:block; opacity:0.8">(1st 8h: ${total/2} mL | Next 16h: ${total/2} mL)</span>`;
+                }
+            },
 
-/* -------------------------
-   SCRIPTS - PART 4 (LIVER & ADVANCED)
-------------------------- */
-CALCULATORS.sodium = {
-    title: "Corrected Sodium",
-    fields: [
-        { id: "na", label: "Measured Sodium (mEq/L)" },
-        { id: "glucose", label: "Glucose (mg/dL)" }
-    ],
-    calculate(d) {
-        return (d.na + 0.016 * (d.glucose - 100)).toFixed(2) + " mEq/L";
-    }
-};
+            // --- 11. Wells Score (DVT) - Simplified for Input ---
+            wells: {
+                inputs: [
+                    { id: 'ca', label: 'Active Cancer (+1)', type: 'number', placeholder: '1 if Yes, 0 if No' },
+                    { id: 'par', label: 'Paralysis/Immobilization (+1)', type: 'number', placeholder: '1 or 0' },
+                    { id: 'bed', label: 'Bedridden >3d / Major Surg (+1)', type: 'number', placeholder: '1 or 0' },
+                    { id: 'ten', label: 'Tenderness along veins (+1)', type: 'number', placeholder: '1 or 0' },
+                    { id: 'swell', label: 'Entire leg swollen (+1)', type: 'number', placeholder: '1 or 0' },
+                    { id: 'calf', label: 'Calf swelling >3cm (+1)', type: 'number', placeholder: '1 or 0' },
+                    { id: 'pit', label: 'Pitting edema (+1)', type: 'number', placeholder: '1 or 0' },
+                    { id: 'coll', label: 'Collateral veins (+1)', type: 'number', placeholder: '1 or 0' },
+                    { id: 'alt', label: 'Alternative diagnosis likely (-2)', type: 'number', placeholder: '1 or 0' }
+                ],
+                logic: (data) => {
+                    let score = data.ca + data.par + data.bed + data.ten + data.swell + data.calf + data.pit + data.coll;
+                    if(data.alt === 1) score -= 2;
+                    
+                    let risk = score <= 0 ? "Low Probability" : score <= 2 ? "Moderate Probability" : "High Probability";
+                    return `Score: ${score}<br><span style="font-size:16px;">${risk}</span>`;
+                }
+            },
 
-CALCULATORS.osm = {
-    title: "Serum Osmolarity",
-    fields: [
-        { id: "na", label: "Sodium (mEq/L)" },
-        { id: "glucose", label: "Glucose (mg/dL)" },
-        { id: "bun", label: "BUN (mg/dL)" }
-    ],
-    calculate(d) {
-        return (2 * d.na + d.glucose / 18 + d.bun / 2.8).toFixed(1) + " mOsm/kg";
-    }
-};
+            // --- 12. CHA2DS2-VASc ---
+            cha2ds2vasc: {
+                inputs: [
+                    { id: 'c', label: 'CHF (+1)', type: 'number', placeholder: '1/0' },
+                    { id: 'h', label: 'Hypertension (+1)', type: 'number', placeholder: '1/0' },
+                    { id: 'a2', label: 'Age ≥ 75 (+2)', type: 'number', placeholder: '1/0' },
+                    { id: 'd', label: 'Diabetes (+1)', type: 'number', placeholder: '1/0' },
+                    { id: 's2', label: 'Stroke/TIA (+2)', type: 'number', placeholder: '1/0' },
+                    { id: 'v', label: 'Vascular Disease (+1)', type: 'number', placeholder: '1/0' },
+                    { id: 'a', label: 'Age 65-74 (+1)', type: 'number', placeholder: '1/0' },
+                    { id: 'sc', label: 'Sex Category (Female +1)', type: 'number', placeholder: '1/0' }
+                ],
+                logic: (data) => {
+                    // Logic: Multipliers for inputs that represent Yes/No
+                    const score = data.c + data.h + (data.a2 * 2) + data.d + (data.s2 * 2) + data.v + data.a + data.sc;
+                    return `Score: ${score}<br><span style="font-size:16px;">Annual Stroke Risk increases with score</span>`;
+                }
+            },
 
-CALCULATORS.ldl = {
-    title: "LDL Cholesterol",
-    fields: [
-        { id: "tc", label: "Total Cholesterol (mg/dL)" },
-        { id: "hdl", label: "HDL (mg/dL)" },
-        { id: "tg", label: "Triglycerides (mg/dL)" }
-    ],
-    calculate(d) {
-        if (d.tg >= 400) return "Error: TG ≥ 400";
-        return (d.tc - d.hdl - d.tg / 5).toFixed(1) + " mg/dL";
-    }
-};
+            // --- 13. Child-Pugh ---
+            childpugh: {
+                inputs: [
+                    { id: 'bil', label: 'Bilirubin (mg/dL)', type: 'number' },
+                    { id: 'alb', label: 'Albumin (g/dL)', type: 'number' },
+                    { id: 'inr', label: 'INR', type: 'number' },
+                    { id: 'asc', label: 'Ascites (1=None, 2=Mild, 3=Mod/Sev)', type: 'number' },
+                    { id: 'enc', label: 'Encephalopathy (1=None, 2=Gr1-2, 3=Gr3-4)', type: 'number' }
+                ],
+                logic: (data) => {
+                    let score = 0;
+                    // Bilirubin
+                    if(data.bil < 2) score+=1; else if(data.bil <= 3) score+=2; else score+=3;
+                    // Albumin
+                    if(data.alb > 3.5) score+=1; else if(data.alb >= 2.8) score+=2; else score+=3;
+                    // INR
+                    if(data.inr < 1.7) score+=1; else if(data.inr <= 2.3) score+=2; else score+=3;
+                    // Ascites & Enceph (Direct points input)
+                    score += data.asc + data.enc;
 
-CALCULATORS.childpugh = {
-    title: "Child–Pugh Score",
-    fields: [
-        { id: "bilirubin", label: "Bilirubin (mg/dL)" },
-        { id: "albumin", label: "Albumin (g/dL)" },
-        { id: "inr", label: "INR" },
-        { id: "ascites", label: "Ascites (1=None, 2=Mild, 3=Severe)" },
-        { id: "enceph", label: "Encephalopathy (1=None, 2=I–II, 3=III–IV)" }
-    ],
-    calculate(d) {
-        let score = 0;
-        score += d.bilirubin < 2 ? 1 : d.bilirubin <= 3 ? 2 : 3;
-        score += d.albumin > 3.5 ? 1 : d.albumin >= 2.8 ? 2 : 3;
-        score += d.inr < 1.7 ? 1 : d.inr <= 2.3 ? 2 : 3;
-        score += Number(d.ascites);
-        score += Number(d.enceph);
-        let cls = score <= 6 ? "Class A" : score <= 9 ? "Class B" : "Class C";
-        return `Score: ${score} (${cls})`;
-    }
-};
+                    let grade = score <= 6 ? "A" : score <= 9 ? "B" : "C";
+                    return `Score: ${score}<br>Class: ${grade}`;
+                }
+            },
 
-CALCULATORS.meld = {
-    title: "MELD Score",
-    fields: [
-        { id: "bilirubin", label: "Bilirubin (mg/dL)" },
-        { id: "inr", label: "INR" },
-        { id: "creatinine", label: "Creatinine (mg/dL)" }
-    ],
-    calculate(d) {
-        const meld = 3.78 * Math.log(d.bilirubin) + 11.2 * Math.log(d.inr) + 9.57 * Math.log(d.creatinine) + 6.43;
-        return "MELD Score: " + Math.round(meld);
-    }
-};
+            // --- 14. MELD Score ---
+            meld: {
+                inputs: [
+                    { id: 'bil', label: 'Bilirubin (mg/dL)', type: 'number' },
+                    { id: 'inr', label: 'INR', type: 'number' },
+                    { id: 'cr', label: 'Creatinine (mg/dL)', type: 'number' }
+                ],
+                logic: (data) => {
+                    // MELD = 3.78×ln(bilirubin) + 11.2×ln(INR) + 9.57×ln(creatinine) + 6.43
+                    // Lower limit for any value is 1 to avoid ln(0) or negatives
+                    let b = data.bil < 1 ? 1 : data.bil;
+                    let i = data.inr < 1 ? 1 : data.inr;
+                    let c = data.cr < 1 ? 1 : data.cr;
+                    
+                    const meld = 3.78 * Math.log(b) + 11.2 * Math.log(i) + 9.57 * Math.log(c) + 6.43;
+                    return Math.round(meld);
+                }
+            },
 
-/* -------------------------
-   SCRIPTS - PART 5 (CLINICAL SCORES)
-------------------------- */
-CALCULATORS.cha2ds2vasc = {
-    title: "CHA₂DS₂-VASc",
-    fields: [
-        { id: "congestive", label: "Congestive HF (1=yes,0=no)" },
-        { id: "htn", label: "Hypertension (1=yes,0=no)" },
-        { id: "age75", label: "Age ≥75 (2=yes,0=no)" },
-        { id: "dm", label: "Diabetes (1=yes,0=no)" },
-        { id: "stroke", label: "Stroke/TIA (2=yes,0=no)" },
-        { id: "vascular", label: "Vascular disease (1=yes,0=no)" },
-        { id: "age65", label: "Age 65–74 (1=yes,0=no)" },
-        { id: "sex", label: "Female sex (1=yes,0=no)" }
-    ],
-    calculate(d) {
-        const score = d.congestive + d.htn + d.age75 + d.dm + d.stroke + d.vascular + d.age65 + d.sex;
-        return `Score: ${score}`;
-    }
-};
+            // --- 15. LDL (Friedewald) ---
+            ldl: {
+                inputs: [
+                    { id: 'tc', label: 'Total Cholesterol (mg/dL)', type: 'number' },
+                    { id: 'hdl', label: 'HDL Cholesterol (mg/dL)', type: 'number' },
+                    { id: 'tg', label: 'Triglycerides (mg/dL)', type: 'number' }
+                ],
+                logic: (data) => {
+                    if (data.tg >= 400) return "Invalid (Trigs ≥ 400)";
+                    const ldl = data.tc - data.hdl - (data.tg / 5);
+                    return `${ldl.toFixed(1)} mg/dL`;
+                }
+            },
 
-CALCULATORS.curb65 = {
-    title: "CURB-65",
-    fields: [
-        { id: "confusion", label: "Confusion (1=yes,0=no)" },
-        { id: "urea", label: "Urea >7 mmol/L (1=yes,0=no)" },
-        { id: "rr", label: "RR ≥30 (1=yes,0=no)" },
-        { id: "bp", label: "Low BP (1=yes,0=no)" },
-        { id: "age", label: "Age ≥65 (1=yes,0=no)" }
-    ],
-    calculate(d) {
-        const score = d.confusion + d.urea + d.rr + d.bp + d.age;
-        let risk = score <= 1 ? "Low risk" : score === 2 ? "Moderate risk" : "High risk";
-        return `Score: ${score} (${risk})`;
-    }
-};
+            // --- 16. CURB-65 ---
+            curb65: {
+                inputs: [
+                    { id: 'c', label: 'Confusion (1=Yes)', type: 'number', placeholder:'1 or 0' },
+                    { id: 'u', label: 'Urea > 7 mmol/L (1=Yes)', type: 'number', placeholder:'1 or 0' },
+                    { id: 'r', label: 'RR ≥ 30 (1=Yes)', type: 'number', placeholder:'1 or 0' },
+                    { id: 'b', label: 'BP < 90/60 (1=Yes)', type: 'number', placeholder:'1 or 0' },
+                    { id: 'a', label: 'Age ≥ 65 (1=Yes)', type: 'number', placeholder:'1 or 0' }
+                ],
+                logic: (data) => {
+                    const score = data.c + data.u + data.r + data.b + data.a;
+                    let risk = score <= 1 ? "Low Risk (Outpatient)" : score == 2 ? "Moderate Risk (Admit)" : "High Risk (ICU)";
+                    return `Score: ${score}<br><span style="font-size:16px;">${risk}</span>`;
+                }
+            },
 
-CALCULATORS.wells = {
-    title: "Wells Score",
-    fields: [
-        { id: "cancer", label: "Active cancer (1=yes,0=no)" },
-        { id: "paralysis", label: "Paralysis (1=yes,0=no)" },
-        { id: "tenderness", label: "Tenderness (1=yes,0=no)" },
-        { id: "swelling", label: "Leg swelling (1=yes,0=no)" },
-        { id: "collateral", label: "Collateral veins (1=yes,0=no)" },
-        { id: "alternative", label: "Alt. diagnosis (−2=yes,0=no)" }
-    ],
-    calculate(d) {
-        let score = d.cancer + d.paralysis + d.tenderness + d.swelling + d.collateral;
-        if (d.alternative === 1) score -= 2;
-        let prob = score < 2 ? "Low probability" : score <= 6 ? "Moderate" : "High probability";
-        return `Score: ${score} (${prob})`;
-    }
-};
+            // --- 17. APACHE II (Simplified Input) ---
+            apache: {
+                inputs: [
+                    { id: 'aps', label: 'Acute Physiology Score (Sum)', type: 'number' },
+                    { id: 'age', label: 'Age Points (0-6)', type: 'number' },
+                    { id: 'chr', label: 'Chronic Health Points (2-5)', type: 'number' }
+                ],
+                logic: (data) => {
+                    return `Total: ${data.aps + data.age + data.chr}`;
+                }
+            },
 
-CALCULATORS.apache = {
-    title: "APACHE II",
-    fields: [
-        { id: "aps", label: "Acute Physiology Score" },
-        { id: "age", label: "Age Points" },
-        { id: "chronic", label: "Chronic Health Points" }
-    ],
-    calculate(d) {
-        return `Total Score: ${d.aps + d.age + d.chronic}`;
-    }
-};
+            // --- 18. NIHSS (Simplified Input) ---
+            nihss: {
+                inputs: [
+                    { id: 'loc', label: 'LOC Score (0-3)', type: 'number' },
+                    { id: 'gaze', label: 'Best Gaze (0-2)', type: 'number' },
+                    { id: 'vis', label: 'Visual (0-3)', type: 'number' },
+                    { id: 'face', label: 'Facial Palsy (0-3)', type: 'number' },
+                    { id: 'mot', label: 'Motor Arms/Legs (Sum 0-16)', type: 'number' },
+                    { id: 'atax', label: 'Limb Ataxia (0-2)', type: 'number' },
+                    { id: 'sens', label: 'Sensory (0-2)', type: 'number' },
+                    { id: 'lang', label: 'Best Language (0-3)', type: 'number' },
+                    { id: 'dys', label: 'Dysarthria (0-2)', type: 'number' },
+                    { id: 'ext', label: 'Extinction/Inattention (0-2)', type: 'number' }
+                ],
+                logic: (data) => {
+                    const score = data.loc + data.gaze + data.vis + data.face + data.mot + data.atax + data.sens + data.lang + data.dys + data.ext;
+                    let sev = score < 5 ? "Minor" : score < 16 ? "Moderate" : score < 21 ? "Mod-Severe" : "Severe";
+                    return `Score: ${score}<br><span style="font-size:16px;">Severity: ${sev} Stroke</span>`;
+                }
+            }
+        };
 
-CALCULATORS.nihss = {
-    title: "NIH Stroke Scale",
-    fields: [
-        { id: "loc", label: "LOC Score" },
-        { id: "motor", label: "Motor Score" },
-        { id: "sensory", label: "Sensory Score" },
-        { id: "language", label: "Language Score" },
-        { id: "visual", label: "Visual Score" }
-    ],
-    calculate(d) {
-        const score = d.loc + d.motor + d.sensory + d.language + d.visual;
-        let severity = score <= 4 ? "Minor" : score <= 15 ? "Moderate" : "Severe";
-        return `Score: ${score} (${severity})`;
-    }
-};
+        // --- Event Listeners ---
 
-/* -------------------------
-   UI RENDERING LOGIC
-------------------------- */
-function renderForm(calcKey) {
-    form.innerHTML = "";
-    resultBox.style.display = "none";
-    const calc = CALCULATORS[calcKey];
-    if (!calc) return;
-    currentCalculator = calcKey;
+        // 1. Render inputs when selection changes
+        select.addEventListener('change', function() {
+            const key = this.value;
+            resultBox.style.display = 'none';
+            formContainer.innerHTML = ''; // Clear previous
 
-    calc.fields.forEach(f => {
-        const group = document.createElement("div");
-        group.className = "form-group";
-        group.innerHTML = `<label>${f.label}</label><input type="number" id="${f.id}" step="any">`;
-        form.appendChild(group);
-    });
-}
+            if (!key || !CALCULATORS[key]) {
+                formContainer.innerHTML = `<div style="text-align:center; padding: 40px; color: var(--text-muted); border: 2px dashed var(--border); border-radius: 16px;">
+                <i class="fas fa-calculator" style="font-size: 32px; margin-bottom: 15px; display:block;"></i>
+                Please select a calculator from the menu above to begin.</div>`;
+                activeCalc = null;
+                return;
+            }
 
-selector.addEventListener("change", () => renderForm(selector.value));
+            activeCalc = CALCULATORS[key];
+            
+            // Create inputs dynamically
+            activeCalc.inputs.forEach(field => {
+                const group = document.createElement('div');
+                group.className = 'input-group';
+                
+                const label = document.createElement('label');
+                label.textContent = field.label;
+                
+                const input = document.createElement('input');
+                input.type = field.type;
+                input.id = field.id;
+                if(field.placeholder) input.placeholder = field.placeholder;
+                input.step = "any"; // allow decimals
 
-calcBtn.addEventListener("click", () => {
-    if (!currentCalculator) return alert("Please select a calculator");
-    const calc = CALCULATORS[currentCalculator];
-    const data = {};
-    for (let f of calc.fields) {
-        const val = document.getElementById(f.id).value;
-        if (val === "") return alert("Please fill all fields");
-        data[f.id] = Number(val);
-    }
-    resultValue.innerHTML = calc.calculate(data);
-    resultBox.style.display = "block";
-    resultBox.scrollIntoView({ behavior: 'smooth' });
-});
+                group.appendChild(label);
+                group.appendChild(input);
+                formContainer.appendChild(group);
+            });
+        });
 
-resetBtn.addEventListener("click", () => {
-    selector.value = "";
-    form.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 40px 0;">
-        <i class="fas fa-hand-pointer" style="font-size: 30px; margin-bottom: 15px; display: block;"></i>
-        Please choose a calculator from the dropdown above to begin.</div>`;
-    resultBox.style.display = "none";
-    currentCalculator = null;
-});
+        // 2. Calculate Button Logic
+        calcBtn.addEventListener('click', function() {
+            if (!activeCalc) {
+                alert("Please select a calculator first.");
+                return;
+            }
 
-</script>
+            // Gather data
+            const inputData = {};
+            let allFilled = true;
+
+            activeCalc.inputs.forEach(field => {
+                const el = document.getElementById(field.id);
+                if (el.value === '') {
+                    allFilled = false;
+                    el.style.borderColor = 'var(--accent)'; // Highlight missing
+                } else {
+                    el.style.borderColor = 'var(--border)';
+                    inputData[field.id] = parseFloat(el.value);
+                }
+            });
+
+            if (!allFilled) {
+                alert("Please fill in all required fields.");
+                return;
+            }
+
+            // Run Logic & Show Result
+            try {
+                const finalResult = activeCalc.logic(inputData);
+                resultValue.innerHTML = finalResult;
+                resultBox.style.display = 'block';
+                resultBox.scrollIntoView({behavior: "smooth"});
+            } catch (error) {
+                console.error(error);
+                resultValue.innerText = "Error in calculation.";
+                resultBox.style.display = 'block';
+            }
+        });
+
+        // 3. Reset Button
+        resetBtn.addEventListener('click', function() {
+            select.value = "";
+            select.dispatchEvent(new Event('change'));
+        });
+
+    </script>
 </body>
 </html>
