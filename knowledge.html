@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medora | Davidson Part 1</title>
+    <title>Medora | Davidson Knowledge Base</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -80,6 +80,7 @@
         .topic-title { font-size: 20px; font-weight: 700; color: var(--accent); }
         .page-badge { font-size: 12px; background: var(--primary); padding: 4px 10px; border-radius: 6px; color: #fff; font-weight: 700; }
         .card-summary { color: var(--text-muted); font-size: 15px; line-height: 1.6; }
+        .highlight { background: rgba(58, 134, 255, 0.3); color: white; padding: 0 4px; border-radius: 4px; }
 
         /* MODAL (POPUP) */
         .modal {
@@ -87,7 +88,7 @@
             background: #020617; z-index: 2000; overflow-y: auto; padding: 40px 20px;
         }
         .modal-content {
-            max-width: 800px; margin: 0 auto; background: rgba(30, 41, 59, 0.4);
+            max-width: 800px; margin: 0 auto; background: rgba(30, 41, 59, 0.8);
             border: 1px solid var(--glass-border); border-radius: 24px; padding: 50px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5); backdrop-filter: blur(15px);
         }
@@ -101,9 +102,6 @@
 
         .full-content h2 { font-size: 36px; color: var(--primary); margin-top: 0; }
         .full-content p { line-height: 1.9; color: #e2e8f0; font-size: 17px; margin-bottom: 25px; }
-        .full-content strong { color: #fff; }
-        .full-content ul { color: #e2e8f0; line-height: 1.8; margin-bottom: 25px; }
-        .full-content li { margin-bottom: 10px; }
 
     </style>
 </head>
@@ -119,15 +117,16 @@
 
     <div class="container">
         <div class="header-text">
-            <h1>Davidson's: Part 1</h1>
-            <p style="color: var(--text-muted);">Search General Principles, Genetics, Immunology, and Acute Medicine (Pages 1-100).</p>
+            <h1>Davidson's Library</h1>
+            <p style="color: var(--text-muted);">Instant search across the entire 1500+ pages database.</p>
         </div>
 
         <div class="search-box">
             <i class="fas fa-search"></i>
-            <input type="text" id="searchInput" placeholder="Search topics (e.g. Shock, Genetics, Pain, Ethics)...">
+            <input type="text" id="searchInput" placeholder="Search for diseases, symptoms (e.g. Asthma, Shock)...">
         </div>
 
+        <div id="status" style="text-align: center; margin-top: 20px; color: #94a3b8; font-size: 14px;">Initializing Database...</div>
         <div id="resultsGrid" class="results-grid"></div>
     </div>
 
@@ -142,138 +141,99 @@
     </div>
 
     <script>
-        /* =========================================================
-           DATABASE: FIRST 100 PAGES (General Principles)
-           =========================================================
-        */
-        const medicalDatabase = [
-            // --- CHAPTER 1: Good Medical Practice ---
-            {
-                topic: "Informed Consent",
-                details: "Principles of obtaining valid consent from patients before interventions.",
-                full_info: "<strong>Definition:</strong> For consent to be valid, the patient must be competent, sufficiently informed, and acting voluntarily.<br><br><strong>Key Components:</strong><br><ul><li><strong>Capacity:</strong> Does the patient understand, retain, and weigh the information?</li><li><strong>Information:</strong> Risks, benefits, and alternatives must be explained clearly.</li><li><strong>Voluntariness:</strong> No coercion from family or medical staff.</li></ul><br><strong>Emergency:</strong> In life-threatening situations where the patient lacks capacity, treat in their 'best interests'.",
-                page: 18,
-                tags: ["Ethics", "Law", "General"]
-            },
-            {
-                topic: "Confidentiality",
-                details: "Rules regarding protecting patient information.",
-                full_info: "<strong>General Rule:</strong> Information should not be disclosed without patient consent.<br><br><strong>Exceptions:</strong><br><ul><li>By court order (legal requirement).</li><li>Public interest (e.g., serious crime, infectious disease notification).</li><li>Implied consent (sharing within the healthcare team for direct care).</li></ul>",
-                page: 22,
-                tags: ["Ethics", "Law"]
-            },
+        let fullDatabase = null;
 
-            // --- CHAPTER 2: Acute Medicine & Shock ---
-            {
-                topic: "Shock (Classification)",
-                details: "Acute circulatory failure with inadequate tissue perfusion.",
-                full_info: "<strong>Definition:</strong> Inadequate delivery of oxygen to tissues.<br><br><strong>Types:</strong><br><ul><li><strong>Hypovolaemic:</strong> Loss of blood or fluid (Trauma, D&V). Low JVP, cold peripheries.</li><li><strong>Cardiogenic:</strong> Pump failure (MI, Arrhythmia). High JVP, pulmonary oedema.</li><li><strong>Distributive:</strong> Vasodilation (Sepsis, Anaphylaxis). Warm peripheries, low BP.</li><li><strong>Obstructive:</strong> Physical block (PE, Tamponade).</li></ul>",
-                page: 88,
-                tags: ["Acute", "Emergency", "Shock"]
-            },
-            {
-                topic: "Anaphylaxis",
-                details: "Severe, life-threatening hypersensitivity reaction.",
-                full_info: "<strong>Mechanism:</strong> IgE-mediated mast cell degranulation (Type 1 Hypersensitivity).<br><br><strong>Clinical Features:</strong> Stridor, wheeze, hypotension, urticaria, angioedema.<br><br><strong>Management (ABCDE):</strong><br>1. Secure Airway.<br>2. IM Adrenaline (0.5mg 1:1000) immediately.<br>3. IV Fluids.<br>4. Chlorphenamine (Antihistamine) and Hydrocortisone (Steroid).",
-                page: 92,
-                tags: ["Acute", "Immunology", "Emergency"]
-            },
-            {
-                topic: "Pain Management (WHO Ladder)",
-                details: "Step-wise approach to analgesia.",
-                full_info: "<strong>Step 1 (Mild):</strong> Non-opioids (Paracetamol, NSAIDs).<br><br><strong>Step 2 (Moderate):</strong> Weak opioids (Codeine, Tramadol) +/- Non-opioids.<br><br><strong>Step 3 (Severe):</strong> Strong opioids (Morphine, Oxycodone) +/- Non-opioids.<br><br><strong>Note:</strong> Always consider adjuvants (e.g., Amitriptyline for neuropathic pain).",
-                page: 65,
-                tags: ["Therapeutics", "Pain", "Drugs"]
-            },
-
-            // --- CHAPTER 3: Genetics ---
-            {
-                topic: "Autosomal Dominant Inheritance",
-                details: "Pattern of genetic inheritance (e.g., Huntington's, Marfan's).",
-                full_info: "<strong>Features:</strong><br><ul><li>Affects every generation (vertical transmission).</li><li>Males and females affected equally.</li><li>50% risk to offspring if one parent is affected.</li></ul><br><strong>Examples:</strong> Huntington's disease, Marfan syndrome, Neurofibromatosis, Polycystic Kidney Disease (ADPKD).",
-                page: 45,
-                tags: ["Genetics", "Inheritance"]
-            },
-            {
-                topic: "Autosomal Recessive Inheritance",
-                details: "Pattern requiring two carrier parents (e.g., CF, Sickle Cell).",
-                full_info: "<strong>Features:</strong><br><ul><li>Often skips generations (horizontal transmission).</li><li>Parents are usually asymptomatic carriers.</li><li>25% risk of affected child if both parents are carriers.</li></ul><br><strong>Examples:</strong> Cystic Fibrosis, Sickle Cell Anaemia, Thalassaemia, Haemochromatosis.",
-                page: 46,
-                tags: ["Genetics", "Inheritance"]
-            },
-            {
-                topic: "Down Syndrome (Trisomy 21)",
-                details: "Most common chromosomal abnormality.",
-                full_info: "<strong>Cause:</strong> Extra copy of chromosome 21 (Nondisjunction). Risk increases with maternal age.<br><br><strong>Clinical Features:</strong> Hypotonia, flat occiput, single palmar crease, upslanting palpebral fissures, Brushfield spots.<br><br><strong>Associated Conditions:</strong> AVSD (heart defects), Duodenal atresia, Hypothyroidism, Early-onset Alzheimer's.",
-                page: 52,
-                tags: ["Genetics", "Chromosomal"]
-            },
-
-            // --- CHAPTER 4: Immunology ---
-            {
-                topic: "Hypersensitivity Reactions",
-                details: "Classification of immune-mediated tissue damage (Gell & Coombs).",
-                full_info: "<strong>Type I (Immediate):</strong> IgE-mediated. Mast cell degranulation. (e.g., Anaphylaxis, Asthma).<br><strong>Type II (Cytotoxic):</strong> IgG/IgM antibodies against cell surface. (e.g., Autoimmune Haemolytic Anaemia).<br><strong>Type III (Immune Complex):</strong> Ag-Ab complexes deposit in tissues. (e.g., SLE, Serum Sickness).<br><strong>Type IV (Delayed):</strong> T-cell mediated. (e.g., Contact Dermatitis, TB test, Transplant rejection).",
-                page: 78,
-                tags: ["Immunology", "Basic Science"]
-            },
-            {
-                topic: "Innate vs Adaptive Immunity",
-                details: "The two arms of the immune system.",
-                full_info: "<strong>Innate Immunity:</strong> Rapid, non-specific. First line of defense. Barriers (skin), Neutrophils, Macrophages, Complement system.<br><br><strong>Adaptive Immunity:</strong> Delayed, specific, has 'memory'.<br>- <em>Humoral:</em> B-cells (Antibodies).<br>- <em>Cell-mediated:</em> T-cells (CD4+ Helper, CD8+ Cytotoxic).",
-                page: 72,
-                tags: ["Immunology", "Basic Science"]
+        /* 1. FETCH THE JSON DATA */
+        async function loadDatabase() {
+            try {
+                // Fetch the file you uploaded to GitHub
+                const response = await fetch('book.json');
+                
+                if (!response.ok) throw new Error("File not found");
+                
+                fullDatabase = await response.json();
+                document.getElementById('status').innerHTML = '<i class="fas fa-check-circle" style="color:#10b981"></i> Database Connected Successfully.';
+            } catch (error) {
+                document.getElementById('status').innerText = 'Error: Make sure book.json is uploaded to your GitHub repository.';
+                console.error(error);
             }
-        ];
+        }
 
-        /* LOGIC */
+        /* 2. SEARCH LOGIC */
         const searchInput = document.getElementById('searchInput');
         const resultsGrid = document.getElementById('resultsGrid');
         const modal = document.getElementById('detailModal');
         const modalBody = document.getElementById('modalBody');
 
-        // Render initial state
-        renderResults("");
-
         searchInput.addEventListener('input', (e) => {
-            renderResults(e.target.value);
+            const query = e.target.value.toLowerCase().trim();
+            resultsGrid.innerHTML = "";
+
+            if (!fullDatabase || query.length < 3) return;
+
+            // Search inside the loaded JSON
+            // Assuming structure: { sections: [ { title, pages: ["content..."] } ] }
+            // OR flat structure based on your Node script. 
+            // This loop is designed to be robust for the structure we discussed.
+            
+            let count = 0;
+            
+            // Adjust this loop based on your exact JSON structure
+            if(fullDatabase.sections) {
+                fullDatabase.sections.forEach(section => {
+                    section.pages.forEach((pageContent, index) => {
+                        if (pageContent.toLowerCase().includes(query) && count < 20) {
+                            createCard(section.title, section.startPage + index, pageContent, query);
+                            count++;
+                        }
+                    });
+                });
+            } else if (Array.isArray(fullDatabase)) {
+                // Fallback if structure is a flat array
+                fullDatabase.forEach(item => {
+                    if ((item.content || item.text || "").toLowerCase().includes(query) && count < 20) {
+                        createCard(item.topic || "General Reference", item.page, item.content || item.text, query);
+                        count++;
+                    }
+                });
+            }
         });
 
-        function renderResults(query) {
-            resultsGrid.innerHTML = "";
-            const q = query.toLowerCase().trim();
+        function createCard(title, page, content, query) {
+            const card = document.createElement('div');
+            card.className = 'result-card';
+            
+            // Highlight logic
+            const regex = new RegExp(`(${query})`, 'gi');
+            // Show snippet around the word
+            const idx = content.toLowerCase().indexOf(query);
+            const start = Math.max(0, idx - 100);
+            const end = Math.min(content.length, idx + 400);
+            const snippet = content.substring(start, end).replace(regex, `<span class="highlight">$1</span>`);
 
-            const filtered = medicalDatabase.filter(item => 
-                item.topic.toLowerCase().includes(q) || 
-                item.tags.some(t => t.toLowerCase().includes(q))
-            );
-
-            if (filtered.length === 0) {
-                resultsGrid.innerHTML = `<div style="text-align:center; color:#64748b; margin-top:40px;">No results found in Part 1 (Pages 1-100).</div>`;
-                return;
-            }
-
-            filtered.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'result-card';
-                card.onclick = () => openModal(item);
-                card.innerHTML = `
-                    <div class="card-header">
-                        <span class="topic-title">${item.topic}</span>
-                        <span class="page-badge">Pg. ${item.page}</span>
-                    </div>
-                    <div class="card-summary">${item.details}</div>
-                `;
-                resultsGrid.appendChild(card);
-            });
+            card.onclick = () => openModal(title, page, content, query);
+            
+            card.innerHTML = `
+                <div class="card-header">
+                    <span class="topic-title">${title}</span>
+                    <span class="page-badge">Pg. ${page}</span>
+                </div>
+                <div class="card-summary">...${snippet}...</div>
+            `;
+            resultsGrid.appendChild(card);
         }
 
-        function openModal(item) {
+        /* 3. MODAL LOGIC */
+        function openModal(title, page, content, query) {
+            // Highlight in full view as well
+            const regex = new RegExp(`(${query})`, 'gi');
+            const highlightedFull = content.replace(regex, `<span class="highlight" style="background:#3a86ff;">$1</span>`);
+
             modalBody.innerHTML = `
-                <h2>${item.topic}</h2>
-                <div style="margin-bottom:20px; color:#94a3b8; font-size:14px;"><strong>Reference:</strong> Davidson's Principles & Practice, Page ${item.page}</div>
+                <h2>${title}</h2>
+                <div style="margin-bottom:20px; color:#94a3b8; font-size:14px;"><strong>Reference:</strong> Davidson's Principles & Practice, Page ${page}</div>
                 <hr style="border-color: rgba(255,255,255,0.1); margin-bottom:25px;">
-                ${item.full_info}
+                <p>${highlightedFull}</p>
             `;
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
@@ -287,6 +247,9 @@
         window.onclick = function(event) {
             if (event.target == modal) closeModal();
         }
+
+        // Initialize
+        loadDatabase();
     </script>
 </body>
 </html>
