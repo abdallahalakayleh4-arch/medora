@@ -104,9 +104,9 @@
             </div>
         </div>
     </div>
-
-    <script>
+<script>
 let medicalDB = null;
+let structuredChapters = [];
 
 async function loadDataIfNeeded() {
     if (medicalDB) return;
@@ -116,6 +116,22 @@ async function loadDataIfNeeded() {
 
     const response = await fetch('book.json');
     medicalDB = await response.json();
+
+    // نجمع النص الكامل
+    let fullText = "";
+    medicalDB.sections.forEach(section => {
+        section.pages.forEach(page => {
+            fullText += page + "\n";
+        });
+    });
+
+    // نقسم حسب كلمة Chapter
+    const chapters = fullText.split(/\nChapter\s+/i);
+
+    structuredChapters = chapters.map((ch, index) => ({
+        number: index,
+        content: ch
+    }));
 
     loader.style.display = "none";
 }
@@ -127,61 +143,49 @@ searchInput.addEventListener('input', async function(e) {
     const query = e.target.value.trim().toLowerCase();
 
     if (query.length < 3) {
-        resultsArea.innerHTML = `
-            <div class="no-results">
-                <p>Type at least 3 letters to search.</p>
-            </div>`;
+        resultsArea.innerHTML = `<div class="no-results"><p>Type at least 3 letters.</p></div>`;
         return;
     }
 
     await loadDataIfNeeded();
 
     let finalHTML = "";
-    let foundCount = 0;
+    let found = 0;
 
-    medicalDB.sections.forEach((section, sectionIndex) => {
-
-        let chapterContent = section.pages.join(" ").toLowerCase();
-
-        if (chapterContent.includes(query) && foundCount < 10) {
-
+    structuredChapters.forEach((chapter, index) => {
+        if (chapter.content.toLowerCase().includes(query) && found < 10) {
             finalHTML += `
                 <div class="result-item">
-                    <span class="med-header">
-                        Chapter ${section.section}
-                    </span>
-
-                    <button onclick="openChapter(${sectionIndex})"
+                    <span class="med-header">Chapter ${index}</span>
+                    <button onclick="openChapter(${index})"
                         style="margin-top:15px; padding:10px 20px; background:#3a86ff; border:none; border-radius:8px; color:white; cursor:pointer;">
                         Open Full Chapter
                     </button>
                 </div>
             `;
-
-            foundCount++;
+            found++;
         }
     });
 
-    resultsArea.innerHTML = finalHTML || `
-        <div class="no-results">
-            <p>No chapters found.</p>
-        </div>`;
+    resultsArea.innerHTML = finalHTML || `<div class="no-results"><p>No results found.</p></div>`;
 });
 
 function openChapter(index) {
-    const section = medicalDB.sections[index];
-    let fullText = section.pages.join("\n\n");
+    const chapter = structuredChapters[index];
 
-    resultsArea.innerHTML = `
-        <div class="result-item">
-            <span class="med-header">Chapter ${section.section}</span>
-            <pre class="med-paragraph" style="white-space: pre-wrap;">
-${fullText}
-            </pre>
-        </div>
+    document.getElementById("modalContent").innerHTML = `
+        <span class="med-header">Chapter ${index}</span>
+        <pre class="med-paragraph" style="white-space: pre-wrap;">
+${chapter.content}
+        </pre>
     `;
+
+    document.getElementById("chapterModal").style.display = "block";
+}
+
+function closeModal() {
+    document.getElementById("chapterModal").style.display = "none";
 }
 </script>
-
 </body>
 </html>
