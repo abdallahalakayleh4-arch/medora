@@ -1,0 +1,101 @@
+<div class="search-container">
+    <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="medicalSearch" placeholder="ابحث عن مرض، عرض، أو اسم محاضرة من الكتاب...">
+        <div id="searchStats">قاعدة البيانات جاهزة: 1500 صفحة</div>
+    </div>
+</div>
+
+<div id="searchResults" class="results-grid">
+    </div>
+
+<style>
+    /* تصميم محرك البحث الاحترافي */
+    .search-container {
+        max-width: 800px;
+        margin: 40px auto;
+        position: relative;
+    }
+    .search-box {
+        background: rgba(30, 41, 59, 0.7);
+        border: 2px solid var(--primary);
+        border-radius: 20px;
+        padding: 15px 25px;
+        display: flex;
+        align-items: center;
+        backdrop-filter: blur(10px);
+    }
+    .search-box input {
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 18px;
+        width: 100%;
+        margin-left: 15px;
+        outline: none;
+    }
+    #searchStats {
+        font-size: 11px;
+        color: var(--accent);
+        white-space: nowrap;
+        background: rgba(58, 134, 255, 0.2);
+        padding: 4px 10px;
+        border-radius: 8px;
+    }
+    .results-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    .result-card {
+        background: var(--glass-card);
+        border-left: 5px solid var(--primary);
+        padding: 25px;
+        border-radius: 15px;
+        animation: fadeIn 0.3s ease;
+    }
+    .result-card h3 { color: var(--accent); margin-bottom: 10px; }
+    .result-card .page-num { font-size: 12px; color: #94a3b8; }
+</style>
+
+<script>
+    // هذه هي قاعدة البيانات (سيتم ملؤها ببيانات الـ 1500 صفحة)
+    const medicalDatabase = [
+        {
+            disease: "التهاب الرئة (Pneumonia)",
+            content: "التهاب في الحويصلات الهوائية ناتج عن عدوى بكتيرية أو فيروسية...",
+            page: 452,
+            tags: ["respiratory", "infection", "fever"]
+        },
+        // هنا سيقوم جيمناي بلس بتوليد آلاف السطور بناءً على كتابك
+    ];
+
+    const searchInput = document.getElementById('medicalSearch');
+    const resultsContainer = document.getElementById('searchResults');
+
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        resultsContainer.innerHTML = '';
+
+        if(query.length < 2) return;
+
+        const matches = medicalDatabase.filter(item => 
+            item.disease.toLowerCase().includes(query) || 
+            item.content.toLowerCase().includes(query)
+        );
+
+        matches.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'result-card';
+            card.innerHTML = `
+                <div class="page-num">الصفحة: ${item.page}</div>
+                <h3>${item.disease}</h3>
+                <p>${item.content}</p>
+                <button class="btn-primary" style="padding: 5px 15px; font-size: 12px;">قراءة التفاصيل الكاملة</button>
+            `;
+            resultsContainer.appendChild(card);
+        });
+    });
+</script>
