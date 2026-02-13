@@ -3,203 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medora | Clinical Reader</title>
+    <title>Medora IQ | Clinical Search</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #3a86ff;
-            --accent: #00d2ff;
             --bg: #020617;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --border: rgba(255, 255, 255, 0.1);
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
+            --card-bg: #0f172a;
+            --border: rgba(255, 255, 255, 0.08);
+            --text-main: #e2e8f0;
+            --accent: #60a5fa;
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #020617;
-            background-attachment: fixed;
-            color: var(--text-main); margin: 0; line-height: 1.6;
+            background-color: var(--bg);
+            color: var(--text-main); margin: 0; line-height: 1.7;
+            overflow-x: hidden;
         }
 
         /* Navbar */
         .navbar {
             position: fixed; top: 0; width: 100%; height: 70px;
-            background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(20px);
+            background: rgba(2, 6, 23, 0.9); backdrop-filter: blur(15px);
             border-bottom: 1px solid var(--border); display: flex;
             align-items: center; justify-content: space-between;
             padding: 0 40px; z-index: 2000; box-sizing: border-box;
         }
 
-        .container { max-width: 900px; margin: 100px auto 50px; padding: 0 20px; }
+        .container { max-width: 850px; margin: 120px auto 50px; padding: 0 20px; }
 
-        /* Search Box */
-        .search-area {
-            background: var(--card-bg); border: 1px solid var(--border);
-            border-radius: 20px; padding: 18px 25px; display: flex; align-items: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5); margin-bottom: 40px;
-            transition: 0.3s;
+        /* Search Interface */
+        .search-wrapper {
+            position: sticky; top: 90px; z-index: 1500; background: var(--bg); padding-bottom: 20px;
         }
-        .search-area:focus-within { border-color: var(--primary); transform: translateY(-2px); }
-        .search-area input {
+        .search-bar {
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 16px; padding: 18px 25px; display: flex; align-items: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+        }
+        .search-bar input {
             background: transparent; border: none; color: white;
             width: 100%; font-size: 18px; outline: none; margin-left: 15px;
         }
 
-        /* Result Cards */
-        .result-card {
-            background: var(--card-bg); border: 1px solid var(--border);
-            border-radius: 18px; padding: 25px; margin-bottom: 20px;
-            cursor: pointer; transition: 0.3s;
+        /* Results Display */
+        .results-container { margin-top: 20px; }
+        .result-item {
+            background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border);
+            padding: 30px; margin-bottom: 25px; transition: 0.3s;
+            animation: slideIn 0.4s ease-out;
         }
-        .result-card:hover { border-color: var(--primary); background: rgba(30, 41, 59, 0.9); }
-        .topic-header { color: var(--accent); font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Modal Structure */
-        .modal {
-            display: none; position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%; background: #020617;
-            z-index: 9999; overflow-y: auto;
+        /* Medical Text Styling */
+        .med-header { 
+            color: var(--primary); font-size: 22px; font-weight: 800; 
+            margin-bottom: 20px; display: block; border-bottom: 2px solid var(--border);
+            padding-bottom: 10px;
         }
-        .modal-content {
-            max-width: 800px; margin: 0 auto; padding: 60px 25px;
-            background: transparent;
-        }
-        
-        .close-bar {
-            position: fixed; top: 0; left: 0; width: 100%; height: 60px;
-            background: rgba(15, 23, 42, 0.95); display: flex; align-items: center;
-            justify-content: space-between; padding: 0 30px; border-bottom: 1px solid var(--border);
-            box-sizing: border-box; z-index: 10000;
-        }
-
-        /* --- Text Formatting Classes --- */
-        .med-para { margin-bottom: 25px; font-size: 17px; color: #cbd5e1; line-height: 1.9; }
-        .med-title { 
-            display: block; color: var(--primary); font-size: 24px; 
-            font-weight: 800; margin: 40px 0 15px 0; border-left: 4px solid var(--primary);
-            padding-left: 15px;
+        .med-paragraph { 
+            margin-bottom: 20px; font-size: 16px; color: #cbd5e1; 
+            display: block; text-align: justify;
         }
         .med-list-item { 
-            display: block; position: relative; padding-left: 25px; 
-            margin-bottom: 12px; color: #e2e8f0;
+            display: block; margin-left: 15px; margin-bottom: 10px; 
+            padding-left: 20px; position: relative; border-left: 2px solid var(--primary);
         }
-        .med-list-item::before {
-            content: "•"; position: absolute; left: 0; color: var(--primary); font-weight: bold;
+        .highlight { background: rgba(58, 134, 255, 0.35); color: #fff; padding: 2px 5px; border-radius: 4px; font-weight: 600; }
+        
+        .page-indicator {
+            font-size: 11px; color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 2px; display: block; margin-bottom: 10px;
         }
-        .highlight { background: rgba(58, 134, 255, 0.4); color: white; padding: 0 3px; border-radius: 4px; }
+
+        .no-results { text-align: center; margin-top: 100px; color: #64748b; }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
-        <div style="font-weight: 800; font-size: 22px;">MEDORA <span style="color:var(--primary)">KNOWLEDGE</span></div>
-        <a href="dashboard.html" style="color: white; text-decoration: none; font-size: 14px; opacity: 0.7;"><i class="fas fa-arrow-left"></i> Exit to Dashboard</a>
+        <div style="font-weight: 800; font-size: 20px; letter-spacing: -1px;">MEDORA <span style="color:var(--primary)">PRO</span></div>
+        <a href="dashboard.html" style="color: white; text-decoration: none; font-size: 13px; opacity: 0.6;"><i class="fas fa-th-large"></i> DASHBOARD</a>
     </nav>
 
     <div class="container">
-        <div class="search-area">
-            <i class="fas fa-search" style="color:var(--primary)"></i>
-            <input type="text" id="searchInput" placeholder="Search by disease or symptom (e.g., Heart Failure)...">
+        <div class="search-wrapper">
+            <div class="search-bar">
+                <i class="fas fa-search" style="color:var(--primary); font-size: 20px;"></i>
+                <input type="text" id="searchInput" placeholder="Search diseases, symptoms, or treatments...">
+            </div>
+            <div id="loader" style="display:none; text-align:center; margin-top:15px; font-size:12px; color:var(--primary);">Searching database...</div>
         </div>
-        <div id="status" style="text-align:center; color: var(--text-muted); margin-bottom: 20px;">Ready for clinical search.</div>
-        <div id="results"></div>
-    </div>
 
-    <div id="readerModal" class="modal">
-        <div class="close-bar">
-            <span id="pageInfo" style="font-weight: 700; color: var(--accent);"></span>
-            <button onclick="closeModal()" style="background:#ef4444; border:none; color:white; padding:8px 20px; border-radius:10px; cursor:pointer; font-weight:bold;">CLOSE (X)</button>
-        </div>
-        <div class="modal-content">
-            <div id="readerBody"></div>
+        <div id="resultsArea" class="results-container">
+            <div class="no-results">
+                <i class="fas fa-book-medical" style="font-size: 40px; margin-bottom: 20px; opacity: 0.2;"></i>
+                <p>Enter at least 3 characters to start searching Davidson's Library.</p>
+            </div>
         </div>
     </div>
 
     <script>
-        let db = null;
+        let medicalDB = null;
 
-        async function init() {
+        // Load Data
+        async function loadData() {
             try {
-                const res = await fetch('book.json');
-                db = await res.json();
-                document.getElementById('status').innerHTML = `<i class="fas fa-check-circle" style="color:#10b981"></i> 1,500 Pages of Davidson Indexed.`;
-            } catch(e) { document.getElementById('status').innerText = "System Error: Database not found."; }
+                const response = await fetch('book.json');
+                medicalDB = await response.json();
+                console.log("Database Loaded Successfully");
+            } catch (e) {
+                document.getElementById('resultsArea').innerHTML = "<p style='color:red'>Error loading book.json. Please ensure it's in the root folder.</p>";
+            }
         }
 
-        // دالة "المعالج الذكي" لتنسيق النص الطبي
-        function formatClinicalText(text, query) {
-            if (!text) return "";
-            
-            // 1. تقسيم النص إلى أسطر
-            let lines = text.split('\n');
-            let formattedHTML = "";
+        // Smart Text Formatter
+        function formatMedicalContent(text, query) {
+            // Split into blocks based on double newlines or common separators
+            let blocks = text.split(/\n\s*\n/);
+            let processedHTML = "";
 
-            lines.forEach(line => {
-                let cleanLine = line.trim();
-                if (cleanLine.length < 2) return;
+            blocks.forEach(block => {
+                let cleanBlock = block.trim();
+                if (!cleanBlock.toLowerCase().includes(query.toLowerCase())) return;
 
-                // تمييز الكلمة المبحوث عنها
-                let highlightedLine = cleanLine.replace(new RegExp(`(${query})`, 'gi'), '<span class="highlight">$1</span>');
-
-                // اكتشاف العناوين (كلمات كلها كبيرة أو سطر قصير جداً وعريض)
-                if (cleanLine === cleanLine.toUpperCase() && cleanLine.length > 3 && cleanLine.length < 50) {
-                    formattedHTML += `<span class="med-title">${highlightedLine}</span>`;
-                } 
-                // اكتشاف القوائم (تبدأ بنقطة أو علامة)
-                else if (cleanLine.startsWith('•') || cleanLine.startsWith('-') || /^\d+\./.test(cleanLine)) {
-                    formattedHTML += `<span class="med-list-item">${highlightedLine}</span>`;
+                // Detect if block is a Header (Short, Uppercase)
+                if (cleanBlock.length < 60 && cleanBlock === cleanBlock.toUpperCase()) {
+                    processedHTML += `<span class="med-header">${highlight(cleanBlock, query)}</span>`;
                 }
-                // نص عادي (فقرة)
+                // Detect Lists (Lines starting with dots, numbers or dashes)
+                else if (cleanBlock.includes('\n') && (cleanBlock.includes('•') || cleanBlock.match(/^\d\./m))) {
+                    let listLines = cleanBlock.split('\n');
+                    listLines.forEach(line => {
+                        if(line.trim()) processedHTML += `<span class="med-list-item">${highlight(line, query)}</span>`;
+                    });
+                }
+                // Regular Paragraph
                 else {
-                    formattedHTML += `<p class="med-para">${highlightedLine}</p>`;
+                    processedHTML += `<p class="med-paragraph">${highlight(cleanBlock, query)}</p>`;
                 }
             });
 
-            return formattedHTML;
+            return processedHTML;
         }
 
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            const query = e.target.value.trim().toLowerCase();
-            const resultsDiv = document.getElementById('results');
-            resultsDiv.innerHTML = "";
-            if (!db || query.length < 3) return;
+        function highlight(text, query) {
+            const regex = new RegExp(`(${query})`, 'gi');
+            return text.replace(regex, `<span class="highlight">$1</span>`);
+        }
 
-            db.sections.forEach(sec => {
-                sec.pages.forEach((content, idx) => {
-                    if (content.toLowerCase().includes(query)) {
-                        const card = document.createElement('div');
-                        card.className = 'result-card';
-                        const pageNum = sec.startPage + idx;
+        // Search Logic
+        const searchInput = document.getElementById('searchInput');
+        const resultsArea = document.getElementById('resultsArea');
+        const loader = document.getElementById('loader');
+
+        searchInput.addEventListener('input', function(e) {
+            const query = e.target.value.trim();
+            
+            if (query.length < 3) {
+                resultsArea.innerHTML = `<div class="no-results"><p>Type more to search...</p></div>`;
+                return;
+            }
+
+            loader.style.display = "block";
+            
+            // Perform Search
+            let finalHTML = "";
+            let foundCount = 0;
+
+            medicalDB.sections.forEach(section => {
+                section.pages.forEach((pageContent, index) => {
+                    if (pageContent.toLowerCase().includes(query.toLowerCase()) && foundCount < 15) {
+                        const pageNum = section.startPage + index;
+                        const formatted = formatMedicalContent(pageContent, query);
                         
-                        card.innerHTML = `
-                            <div class="topic-header">Section ${sec.section || 'Reference'} • Page ${pageNum}</div>
-                            <div style="margin-top:10px; font-size:15px; color:var(--text-muted); line-height:1.5;">
-                                ${content.substring(content.toLowerCase().indexOf(query), content.toLowerCase().indexOf(query) + 150)}...
-                            </div>
-                        `;
-                        card.onclick = () => openReader(pageNum, content, query);
-                        resultsDiv.appendChild(card);
+                        if (formatted) {
+                            finalHTML += `
+                                <div class="result-item">
+                                    <span class="page-indicator">REFERENCE: PAGE ${pageNum}</span>
+                                    ${formatted}
+                                </div>
+                            `;
+                            foundCount++;
+                        }
                     }
                 });
             });
+
+            loader.style.display = "none";
+            resultsArea.innerHTML = finalHTML || `<div class="no-results"><p>No specific matches found for "${query}".</p></div>`;
         });
 
-        function openReader(page, content, query) {
-            document.getElementById('pageInfo').innerText = "DAVIDSON'S REFERENCE - PAGE " + page;
-            document.getElementById('readerBody').innerHTML = formatClinicalText(content, query);
-            document.getElementById('readerModal').style.display = "block";
-            document.body.style.overflow = "hidden";
-        }
-
-        function closeModal() {
-            document.getElementById('readerModal').style.display = "none";
-            document.body.style.overflow = "auto";
-        }
-
-        init();
+        loadData();
     </script>
 </body>
 </html>
