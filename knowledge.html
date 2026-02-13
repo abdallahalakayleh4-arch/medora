@@ -100,13 +100,12 @@
         <div id="resultsArea" class="results-container">
             <div class="no-results">
                 <i class="fas fa-book-medical" style="font-size: 40px; margin-bottom: 20px; opacity: 0.2;"></i>
-                <p>Enter at least 3 characters to start searching Davidson's Library.</p>
+                <p>Enter at least 3 characters to start searching Library.</p>
             </div>
         </div>
     </div>
 <script>
 let medicalDB = null;
-let structuredChapters = [];
 
 async function loadDataIfNeeded() {
     if (medicalDB) return;
@@ -114,24 +113,8 @@ async function loadDataIfNeeded() {
     const loader = document.getElementById('loader');
     loader.style.display = "block";
 
-    const response = await fetch('book.json');
+    const response = await fetch('book_structured.json');
     medicalDB = await response.json();
-
-    // نجمع النص الكامل
-    let fullText = "";
-    medicalDB.sections.forEach(section => {
-        section.pages.forEach(page => {
-            fullText += page + "\n";
-        });
-    });
-
-    // نقسم حسب كلمة Chapter
-    const chapters = fullText.split(/\nChapter\s+/i);
-
-    structuredChapters = chapters.map((ch, index) => ({
-        number: index,
-        content: ch
-    }));
 
     loader.style.display = "none";
 }
@@ -152,11 +135,11 @@ searchInput.addEventListener('input', async function(e) {
     let finalHTML = "";
     let found = 0;
 
-    structuredChapters.forEach((chapter, index) => {
+    medicalDB.chapters.forEach((chapter, index) => {
         if (chapter.content.toLowerCase().includes(query) && found < 10) {
             finalHTML += `
                 <div class="result-item">
-                    <span class="med-header">Chapter ${index}</span>
+                    <span class="med-header">Chapter ${chapter.chapter}</span>
                     <button onclick="openChapter(${index})"
                         style="margin-top:15px; padding:10px 20px; background:#3a86ff; border:none; border-radius:8px; color:white; cursor:pointer;">
                         Open Full Chapter
@@ -171,10 +154,10 @@ searchInput.addEventListener('input', async function(e) {
 });
 
 function openChapter(index) {
-    const chapter = structuredChapters[index];
+    const chapter = medicalDB.chapters[index];
 
     document.getElementById("modalContent").innerHTML = `
-        <span class="med-header">Chapter ${index}</span>
+        <span class="med-header">Chapter ${chapter.chapter}</span>
         <pre class="med-paragraph" style="white-space: pre-wrap;">
 ${chapter.content}
         </pre>
@@ -187,5 +170,6 @@ function closeModal() {
     document.getElementById("chapterModal").style.display = "none";
 }
 </script>
+
 </body>
 </html>
