@@ -1,101 +1,221 @@
-<div class="search-container">
-    <div class="search-box">
-        <i class="fas fa-search"></i>
-        <input type="text" id="medicalSearch" placeholder="ابحث عن مرض، عرض، أو اسم محاضرة من الكتاب...">
-        <div id="searchStats">قاعدة البيانات جاهزة: 1500 صفحة</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medora | Advanced Medical Search</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #3a86ff;
+            --accent: #38bdf8;
+            --bg: #020617;
+            --nav-bg: rgba(15, 23, 42, 0.9);
+            --card-bg: rgba(30, 41, 59, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at top, #1e293b, #020617);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- NAVIGATION BAR --- */
+        .navbar {
+            position: fixed;
+            top: 0; width: 100%; height: 70px;
+            background: var(--nav-bg);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+
+        .nav-left { display: flex; align-items: center; gap: 20px; }
+        .nav-logo { font-weight: 800; font-size: 22px; color: #fff; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .nav-logo i { color: var(--primary); }
+
+        .nav-links { display: flex; gap: 15px; }
+        .btn-nav {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            padding: 8px 18px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-nav:hover { background: var(--primary); border-color: var(--primary); transform: translateY(-2px); }
+        .btn-nav.active { background: var(--primary); }
+
+        /* --- SEARCH SECTION --- */
+        .container { max-width: 900px; margin: 120px auto 60px; padding: 0 20px; }
+
+        .hero-text { text-align: center; margin-bottom: 40px; }
+        .hero-text h1 { font-size: 42px; font-weight: 800; margin: 0; background: linear-gradient(to bottom, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-text p { color: var(--text-muted); font-size: 18px; margin-top: 10px; }
+
+        .search-box-wrapper {
+            position: relative;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 5px 15px;
+            display: flex;
+            align-items: center;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            transition: var(--transition);
+            margin-bottom: 40px;
+        }
+        .search-box-wrapper:focus-within { border-color: var(--primary); box-shadow: 0 0 20px rgba(58, 134, 255, 0.2); }
+        
+        .search-box-wrapper i { color: var(--primary); font-size: 20px; margin-left: 10px; margin-right: 10px; }
+        .search-box-wrapper input {
+            background: transparent; border: none; color: white;
+            font-size: 18px; width: 100%; padding: 15px; outline: none;
+            font-family: inherit;
+        }
+
+        /* --- RESULTS STYLE --- */
+        .results-area { display: grid; gap: 20px; }
+
+        .entry-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 25px;
+            transition: var(--transition);
+            animation: fadeIn 0.5s ease both;
+        }
+        .entry-card:hover { border-color: var(--primary); background: rgba(30, 41, 59, 0.8); transform: translateY(-5px); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        .entry-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .entry-title { font-size: 22px; font-weight: 700; color: var(--accent); margin: 0; }
+        .entry-page { background: rgba(58, 134, 255, 0.15); color: var(--accent); padding: 5px 12px; border-radius: 8px; font-size: 13px; font-weight: 700; border: 1px solid rgba(58, 134, 255, 0.3); }
+
+        .entry-body { color: var(--text-muted); line-height: 1.7; font-size: 15px; margin-bottom: 15px; }
+
+        .entry-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+        .tag { background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); padding: 4px 10px; border-radius: 6px; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .empty-state { text-align: center; padding: 80px 20px; color: var(--text-muted); }
+        .empty-state i { font-size: 48px; margin-bottom: 20px; opacity: 0.3; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="index.html" class="nav-logo"><i class="fas fa-dna"></i> MEDORA</a>
+        </div>
+        <div class="nav-links">
+            <a href="dashboard.html" class="btn-nav"><i class="fas fa-th-large"></i> Dashboard</a>
+            <a href="#" class="btn-nav active"><i class="fas fa-search"></i> Library Tool</a>
+            <a href="courses.html" class="btn-nav"><i class="fas fa-graduation-cap"></i> Courses</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="hero-text">
+            <h1>Medical Intelligence</h1>
+            <p>Search diseases, lectures, and clinical notes from the core database.</p>
+        </header>
+
+        <div class="search-box-wrapper">
+            <i class="fas fa-search"></i>
+            <input type="text" id="dbSearch" placeholder="Search for a topic (e.g. Hypertension, Malaria, Stroke)..." spellcheck="false">
+        </div>
+
+        <div id="resultsGrid" class="results-area">
+            <div class="empty-state">
+                <i class="fas fa-terminal"></i>
+                <p>Waiting for your input... Start typing to explore.</p>
+            </div>
+        </div>
     </div>
-</div>
 
-<div id="searchResults" class="results-grid">
-    </div>
+    <script>
+        /* ==========================================================
+           DATABASE SECTION
+           (Place new batches here)
+        ========================================================== */
+        const medicalDatabase = [
+            // BATCH 1 & 2
+            { topic: "Hypertension", details: "Persistent elevation of systemic arterial blood pressure (≥140/90 mmHg). It's a key risk factor for stroke and renal failure. Management includes lifestyle changes and pharmacological agents like ACE inhibitors.", page: 582, tags: ["CVS", "Primary", "Chronic"] },
+            { topic: "Acute Coronary Syndrome (ACS)", details: "A spectrum of conditions resulting from acute myocardial ischaemia, including STEMI, NSTEMI, and unstable angina. Common symptom: severe central chest pain.", page: 435, tags: ["Cardiology", "Emergency", "MI"] },
+            { topic: "Diabetes Mellitus Type 2", details: "Metabolic disorder characterized by insulin resistance and relative insulin deficiency. Chronic hyperglycemia leads to microvascular and macrovascular complications.", page: 760, tags: ["Endocrine", "Metabolic"] },
+            { topic: "Liver Cirrhosis", details: "Late-stage hepatic fibrosis with regenerative nodules. Leads to portal hypertension and liver failure. Common causes: alcohol, HBV, HCV.", page: 920, tags: ["Liver", "Hepatology"] },
+            { topic: "Stroke (CVA)", details: "Sudden neurological deficit of vascular origin. Ischemic (85%) or Hemorrhagic (15%). Immediate CT scan is vital for management.", page: 1155, tags: ["Neuro", "Emergency"] },
+            
+            /* --- ADD BATCH 3 BELOW THIS LINE --- */
+            
+            /* --- ADD BATCH 4 BELOW THIS LINE --- */
+            
+        ];
 
-<style>
-    /* تصميم محرك البحث الاحترافي */
-    .search-container {
-        max-width: 800px;
-        margin: 40px auto;
-        position: relative;
-    }
-    .search-box {
-        background: rgba(30, 41, 59, 0.7);
-        border: 2px solid var(--primary);
-        border-radius: 20px;
-        padding: 15px 25px;
-        display: flex;
-        align-items: center;
-        backdrop-filter: blur(10px);
-    }
-    .search-box input {
-        background: transparent;
-        border: none;
-        color: white;
-        font-size: 18px;
-        width: 100%;
-        margin-left: 15px;
-        outline: none;
-    }
-    #searchStats {
-        font-size: 11px;
-        color: var(--accent);
-        white-space: nowrap;
-        background: rgba(58, 134, 255, 0.2);
-        padding: 4px 10px;
-        border-radius: 8px;
-    }
-    .results-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 20px;
-        max-width: 900px;
-        margin: 0 auto;
-    }
-    .result-card {
-        background: var(--glass-card);
-        border-left: 5px solid var(--primary);
-        padding: 25px;
-        border-radius: 15px;
-        animation: fadeIn 0.3s ease;
-    }
-    .result-card h3 { color: var(--accent); margin-bottom: 10px; }
-    .result-card .page-num { font-size: 12px; color: #94a3b8; }
-</style>
+        /* ==========================================================
+           SEARCH LOGIC (LIVE SUGGESTIONS)
+        ========================================================== */
+        const searchInput = document.getElementById('dbSearch');
+        const resultsGrid = document.getElementById('resultsGrid');
 
-<script>
-    // هذه هي قاعدة البيانات (سيتم ملؤها ببيانات الـ 1500 صفحة)
-    const medicalDatabase = [
-        {
-            disease: "التهاب الرئة (Pneumonia)",
-            content: "التهاب في الحويصلات الهوائية ناتج عن عدوى بكتيرية أو فيروسية...",
-            page: 452,
-            tags: ["respiratory", "infection", "fever"]
-        },
-        // هنا سيقوم جيمناي بلس بتوليد آلاف السطور بناءً على كتابك
-    ];
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            resultsGrid.innerHTML = '';
 
-    const searchInput = document.getElementById('medicalSearch');
-    const resultsContainer = document.getElementById('searchResults');
+            if (query === "") {
+                resultsGrid.innerHTML = `<div class="empty-state"><i class="fas fa-terminal"></i><p>Waiting for your input... Start typing to explore.</p></div>`;
+                return;
+            }
 
-    searchInput.addEventListener('input', (e) => {
-        const query = e.target.value.toLowerCase();
-        resultsContainer.innerHTML = '';
+            const filtered = medicalDatabase.filter(item => 
+                item.topic.toLowerCase().includes(query) || 
+                item.tags.some(t => t.toLowerCase().includes(query))
+            );
 
-        if(query.length < 2) return;
-
-        const matches = medicalDatabase.filter(item => 
-            item.disease.toLowerCase().includes(query) || 
-            item.content.toLowerCase().includes(query)
-        );
-
-        matches.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'result-card';
-            card.innerHTML = `
-                <div class="page-num">الصفحة: ${item.page}</div>
-                <h3>${item.disease}</h3>
-                <p>${item.content}</p>
-                <button class="btn-primary" style="padding: 5px 15px; font-size: 12px;">قراءة التفاصيل الكاملة</button>
-            `;
-            resultsContainer.appendChild(card);
+            if (filtered.length > 0) {
+                filtered.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'entry-card';
+                    card.innerHTML = `
+                        <div class="entry-header">
+                            <h3 class="entry-title">${item.topic}</h3>
+                            <span class="entry-page">PG. ${item.page}</span>
+                        </div>
+                        <div class="entry-body">${item.details}</div>
+                        <div class="entry-tags">
+                            ${item.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+                        </div>
+                    `;
+                    resultsGrid.appendChild(card);
+                });
+            } else {
+                resultsGrid.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>No matches found in the current database for "${query}".</p></div>`;
+            }
         });
-    });
-</script>
+    </script>
+</body>
+</html>
