@@ -123,52 +123,47 @@ const searchInput = document.getElementById('searchInput');
 const resultsArea = document.getElementById('resultsArea');
 
 searchInput.addEventListener('input', async function(e) {
+
     const query = e.target.value.trim().toLowerCase();
 
     if (query.length < 3) {
-        resultsArea.innerHTML = `<div class="no-results"><p>Type at least 3 letters.</p></div>`;
+        resultsArea.innerHTML = `
+            <div class="no-results">
+                <p>Type at least 3 letters.</p>
+            </div>`;
         return;
     }
 
     await loadDataIfNeeded();
 
-    let finalHTML = "";
-    let found = 0;
+    let foundArticle = null;
 
-    medicalDB.chapters.forEach((chapter, index) => {
-        if (chapter.content.toLowerCase().includes(query) && found < 10) {
-            finalHTML += `
-                <div class="result-item">
-                    <span class="med-header">Chapter ${chapter.chapter}</span>
-                    <button onclick="openChapter(${index})"
-                        style="margin-top:15px; padding:10px 20px; background:#3a86ff; border:none; border-radius:8px; color:white; cursor:pointer;">
-                        Open Full Chapter
-                    </button>
-                </div>
-            `;
-            found++;
+    for (let chapter of medicalDB.chapters) {
+        if (chapter.content.toLowerCase().includes(query)) {
+            foundArticle = chapter;
+            break;
         }
-    });
+    }
 
-    resultsArea.innerHTML = finalHTML || `<div class="no-results"><p>No results found.</p></div>`;
-});
+    if (!foundArticle) {
+        resultsArea.innerHTML = `
+            <div class="no-results">
+                <p>No article found.</p>
+            </div>`;
+        return;
+    }
 
-function openChapter(index) {
-    const chapter = medicalDB.chapters[index];
-
-    document.getElementById("modalContent").innerHTML = `
-        <span class="med-header">Chapter ${chapter.chapter}</span>
-        <pre class="med-paragraph" style="white-space: pre-wrap;">
-${chapter.content}
-        </pre>
+    resultsArea.innerHTML = `
+        <div class="result-item">
+            <span class="med-header">
+                Chapter ${foundArticle.chapter}
+            </span>
+            <pre class="med-paragraph" style="white-space: pre-wrap;">
+${foundArticle.content}
+            </pre>
+        </div>
     `;
-
-    document.getElementById("chapterModal").style.display = "block";
-}
-
-function closeModal() {
-    document.getElementById("chapterModal").style.display = "none";
-}
+});
 </script>
 
 </body>
