@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medora | Advanced Medical Search</title>
+    <title>Medora | Davidson Part 1</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -13,209 +13,280 @@
             --primary: #3a86ff;
             --accent: #38bdf8;
             --bg: #020617;
-            --nav-bg: rgba(15, 23, 42, 0.9);
+            --nav-bg: rgba(15, 23, 42, 0.95);
             --card-bg: rgba(30, 41, 59, 0.6);
             --glass-border: rgba(255, 255, 255, 0.08);
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: all 0.3s ease;
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background: radial-gradient(circle at top, #1e293b, #020617);
             color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            overflow-x: hidden;
+            margin: 0; min-height: 100vh; overflow-x: hidden;
         }
 
-        /* --- NAVIGATION BAR --- */
+        /* --- NAVIGATION --- */
         .navbar {
-            position: fixed;
-            top: 0; width: 100%; height: 70px;
-            background: var(--nav-bg);
-            backdrop-filter: blur(15px);
+            position: fixed; top: 0; width: 100%; height: 75px;
+            background: var(--nav-bg); backdrop-filter: blur(15px);
             border-bottom: 1px solid var(--glass-border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 40px;
-            z-index: 1000;
-            box-sizing: border-box;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 40px; z-index: 1000; box-sizing: border-box;
         }
 
-        .nav-left { display: flex; align-items: center; gap: 20px; }
         .nav-logo { font-weight: 800; font-size: 22px; color: #fff; text-decoration: none; display: flex; align-items: center; gap: 10px; }
         .nav-logo i { color: var(--primary); }
 
         .nav-links { display: flex; gap: 15px; }
         .btn-nav {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--glass-border);
-            color: var(--text-main);
-            padding: 8px 18px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+            color: var(--text-main); padding: 8px 18px; border-radius: 12px;
+            text-decoration: none; font-size: 14px; font-weight: 600; transition: var(--transition);
         }
-        .btn-nav:hover { background: var(--primary); border-color: var(--primary); transform: translateY(-2px); }
-        .btn-nav.active { background: var(--primary); }
+        .btn-nav:hover { background: var(--primary); transform: translateY(-2px); }
 
-        /* --- SEARCH SECTION --- */
+        /* --- MAIN CONTENT --- */
         .container { max-width: 900px; margin: 120px auto 60px; padding: 0 20px; }
 
-        .hero-text { text-align: center; margin-bottom: 40px; }
-        .hero-text h1 { font-size: 42px; font-weight: 800; margin: 0; background: linear-gradient(to bottom, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero-text p { color: var(--text-muted); font-size: 18px; margin-top: 10px; }
-
-        .search-box-wrapper {
-            position: relative;
-            background: var(--card-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 5px 15px;
-            display: flex;
-            align-items: center;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-            transition: var(--transition);
-            margin-bottom: 40px;
-        }
-        .search-box-wrapper:focus-within { border-color: var(--primary); box-shadow: 0 0 20px rgba(58, 134, 255, 0.2); }
+        .header-text { text-align: center; margin-bottom: 40px; }
+        .header-text h1 { font-size: 42px; font-weight: 800; margin-bottom: 10px; background: linear-gradient(to right, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
         
-        .search-box-wrapper i { color: var(--primary); font-size: 20px; margin-left: 10px; margin-right: 10px; }
-        .search-box-wrapper input {
-            background: transparent; border: none; color: white;
-            font-size: 18px; width: 100%; padding: 15px; outline: none;
-            font-family: inherit;
+        /* SEARCH BAR */
+        .search-box {
+            background: var(--card-bg); border: 1px solid var(--glass-border);
+            border-radius: 20px; padding: 15px 25px; display: flex; align-items: center;
+            backdrop-filter: blur(20px); transition: var(--transition);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
+        .search-box:focus-within { border-color: var(--primary); box-shadow: 0 0 25px rgba(58, 134, 255, 0.2); }
+        .search-box input { background: transparent; border: none; color: #fff; width: 100%; font-size: 18px; outline: none; }
+        .search-box i { color: var(--primary); font-size: 20px; margin-right: 15px; }
 
-        /* --- RESULTS STYLE --- */
-        .results-area { display: grid; gap: 20px; }
-
-        .entry-card {
-            background: var(--card-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 25px;
-            transition: var(--transition);
-            animation: fadeIn 0.5s ease both;
+        /* RESULTS GRID */
+        .results-grid { display: grid; gap: 15px; margin-top: 30px; }
+        .result-card {
+            background: var(--card-bg); border: 1px solid var(--glass-border);
+            border-radius: 18px; padding: 25px; cursor: pointer; transition: var(--transition);
+            animation: fadeIn 0.4s ease forwards; position: relative; overflow: hidden;
         }
-        .entry-card:hover { border-color: var(--primary); background: rgba(30, 41, 59, 0.8); transform: translateY(-5px); }
+        .result-card:hover { border-color: var(--primary); transform: translateY(-3px); background: rgba(30, 41, 59, 0.9); }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .topic-title { font-size: 20px; font-weight: 700; color: var(--accent); }
+        .page-badge { font-size: 12px; background: var(--primary); padding: 4px 10px; border-radius: 6px; color: #fff; font-weight: 700; }
+        .card-summary { color: var(--text-muted); font-size: 15px; line-height: 1.6; }
 
-        .entry-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .entry-title { font-size: 22px; font-weight: 700; color: var(--accent); margin: 0; }
-        .entry-page { background: rgba(58, 134, 255, 0.15); color: var(--accent); padding: 5px 12px; border-radius: 8px; font-size: 13px; font-weight: 700; border: 1px solid rgba(58, 134, 255, 0.3); }
+        /* MODAL (POPUP) */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #020617; z-index: 2000; overflow-y: auto; padding: 40px 20px;
+        }
+        .modal-content {
+            max-width: 800px; margin: 0 auto; background: rgba(30, 41, 59, 0.4);
+            border: 1px solid var(--glass-border); border-radius: 24px; padding: 50px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); backdrop-filter: blur(15px);
+        }
+        
+        .modal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--glass-border); padding-bottom: 20px; }
+        .close-btn { 
+            background: transparent; border: 1px solid var(--glass-border); color: #fff; 
+            padding: 8px 20px; border-radius: 10px; cursor: pointer; transition: 0.3s;
+        }
+        .close-btn:hover { background: #ef4444; border-color: #ef4444; }
 
-        .entry-body { color: var(--text-muted); line-height: 1.7; font-size: 15px; margin-bottom: 15px; }
+        .full-content h2 { font-size: 36px; color: var(--primary); margin-top: 0; }
+        .full-content p { line-height: 1.9; color: #e2e8f0; font-size: 17px; margin-bottom: 25px; }
+        .full-content strong { color: #fff; }
+        .full-content ul { color: #e2e8f0; line-height: 1.8; margin-bottom: 25px; }
+        .full-content li { margin-bottom: 10px; }
 
-        .entry-tags { display: flex; gap: 8px; flex-wrap: wrap; }
-        .tag { background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); padding: 4px 10px; border-radius: 6px; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-
-        .empty-state { text-align: center; padding: 80px 20px; color: var(--text-muted); }
-        .empty-state i { font-size: 48px; margin-bottom: 20px; opacity: 0.3; }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
-        <div class="nav-left">
-            <a href="index.html" class="nav-logo"><i class="fas fa-dna"></i> MEDORA</a>
-        </div>
+        <a href="#" class="nav-logo"><i class="fas fa-book-medical"></i> MEDORA</a>
         <div class="nav-links">
             <a href="dashboard.html" class="btn-nav"><i class="fas fa-th-large"></i> Dashboard</a>
-            <a href="#" class="btn-nav active"><i class="fas fa-search"></i> Library Tool</a>
-            <a href="courses.html" class="btn-nav"><i class="fas fa-graduation-cap"></i> Courses</a>
+            <a href="courses.html" class="btn-nav"><i class="fas fa-layer-group"></i> Other Tools</a>
         </div>
     </nav>
 
     <div class="container">
-        <header class="hero-text">
-            <h1>Medical Intelligence</h1>
-            <p>Search diseases, lectures, and clinical notes from the core database.</p>
-        </header>
-
-        <div class="search-box-wrapper">
-            <i class="fas fa-search"></i>
-            <input type="text" id="dbSearch" placeholder="Search for a topic (e.g. Hypertension, Malaria, Stroke)..." spellcheck="false">
+        <div class="header-text">
+            <h1>Davidson's: Part 1</h1>
+            <p style="color: var(--text-muted);">Search General Principles, Genetics, Immunology, and Acute Medicine (Pages 1-100).</p>
         </div>
 
-        <div id="resultsGrid" class="results-area">
-            <div class="empty-state">
-                <i class="fas fa-terminal"></i>
-                <p>Waiting for your input... Start typing to explore.</p>
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Search topics (e.g. Shock, Genetics, Pain, Ethics)...">
+        </div>
+
+        <div id="resultsGrid" class="results-grid"></div>
+    </div>
+
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-top">
+                <span style="color: var(--text-muted);"><i class="fas fa-book-open"></i> Reference View</span>
+                <button class="close-btn" onclick="closeModal()">Close</button>
             </div>
+            <div id="modalBody" class="full-content"></div>
         </div>
     </div>
 
     <script>
-        /* ==========================================================
-           DATABASE SECTION
-           (Place new batches here)
-        ========================================================== */
+        /* =========================================================
+           DATABASE: FIRST 100 PAGES (General Principles)
+           =========================================================
+        */
         const medicalDatabase = [
-            // BATCH 1 & 2
-            { topic: "Hypertension", details: "Persistent elevation of systemic arterial blood pressure (≥140/90 mmHg). It's a key risk factor for stroke and renal failure. Management includes lifestyle changes and pharmacological agents like ACE inhibitors.", page: 582, tags: ["CVS", "Primary", "Chronic"] },
-            { topic: "Acute Coronary Syndrome (ACS)", details: "A spectrum of conditions resulting from acute myocardial ischaemia, including STEMI, NSTEMI, and unstable angina. Common symptom: severe central chest pain.", page: 435, tags: ["Cardiology", "Emergency", "MI"] },
-            { topic: "Diabetes Mellitus Type 2", details: "Metabolic disorder characterized by insulin resistance and relative insulin deficiency. Chronic hyperglycemia leads to microvascular and macrovascular complications.", page: 760, tags: ["Endocrine", "Metabolic"] },
-            { topic: "Liver Cirrhosis", details: "Late-stage hepatic fibrosis with regenerative nodules. Leads to portal hypertension and liver failure. Common causes: alcohol, HBV, HCV.", page: 920, tags: ["Liver", "Hepatology"] },
-            { topic: "Stroke (CVA)", details: "Sudden neurological deficit of vascular origin. Ischemic (85%) or Hemorrhagic (15%). Immediate CT scan is vital for management.", page: 1155, tags: ["Neuro", "Emergency"] },
-            
-            /* --- ADD BATCH 3 BELOW THIS LINE --- */
-            
-            /* --- ADD BATCH 4 BELOW THIS LINE --- */
-            
+            // --- CHAPTER 1: Good Medical Practice ---
+            {
+                topic: "Informed Consent",
+                details: "Principles of obtaining valid consent from patients before interventions.",
+                full_info: "<strong>Definition:</strong> For consent to be valid, the patient must be competent, sufficiently informed, and acting voluntarily.<br><br><strong>Key Components:</strong><br><ul><li><strong>Capacity:</strong> Does the patient understand, retain, and weigh the information?</li><li><strong>Information:</strong> Risks, benefits, and alternatives must be explained clearly.</li><li><strong>Voluntariness:</strong> No coercion from family or medical staff.</li></ul><br><strong>Emergency:</strong> In life-threatening situations where the patient lacks capacity, treat in their 'best interests'.",
+                page: 18,
+                tags: ["Ethics", "Law", "General"]
+            },
+            {
+                topic: "Confidentiality",
+                details: "Rules regarding protecting patient information.",
+                full_info: "<strong>General Rule:</strong> Information should not be disclosed without patient consent.<br><br><strong>Exceptions:</strong><br><ul><li>By court order (legal requirement).</li><li>Public interest (e.g., serious crime, infectious disease notification).</li><li>Implied consent (sharing within the healthcare team for direct care).</li></ul>",
+                page: 22,
+                tags: ["Ethics", "Law"]
+            },
+
+            // --- CHAPTER 2: Acute Medicine & Shock ---
+            {
+                topic: "Shock (Classification)",
+                details: "Acute circulatory failure with inadequate tissue perfusion.",
+                full_info: "<strong>Definition:</strong> Inadequate delivery of oxygen to tissues.<br><br><strong>Types:</strong><br><ul><li><strong>Hypovolaemic:</strong> Loss of blood or fluid (Trauma, D&V). Low JVP, cold peripheries.</li><li><strong>Cardiogenic:</strong> Pump failure (MI, Arrhythmia). High JVP, pulmonary oedema.</li><li><strong>Distributive:</strong> Vasodilation (Sepsis, Anaphylaxis). Warm peripheries, low BP.</li><li><strong>Obstructive:</strong> Physical block (PE, Tamponade).</li></ul>",
+                page: 88,
+                tags: ["Acute", "Emergency", "Shock"]
+            },
+            {
+                topic: "Anaphylaxis",
+                details: "Severe, life-threatening hypersensitivity reaction.",
+                full_info: "<strong>Mechanism:</strong> IgE-mediated mast cell degranulation (Type 1 Hypersensitivity).<br><br><strong>Clinical Features:</strong> Stridor, wheeze, hypotension, urticaria, angioedema.<br><br><strong>Management (ABCDE):</strong><br>1. Secure Airway.<br>2. IM Adrenaline (0.5mg 1:1000) immediately.<br>3. IV Fluids.<br>4. Chlorphenamine (Antihistamine) and Hydrocortisone (Steroid).",
+                page: 92,
+                tags: ["Acute", "Immunology", "Emergency"]
+            },
+            {
+                topic: "Pain Management (WHO Ladder)",
+                details: "Step-wise approach to analgesia.",
+                full_info: "<strong>Step 1 (Mild):</strong> Non-opioids (Paracetamol, NSAIDs).<br><br><strong>Step 2 (Moderate):</strong> Weak opioids (Codeine, Tramadol) +/- Non-opioids.<br><br><strong>Step 3 (Severe):</strong> Strong opioids (Morphine, Oxycodone) +/- Non-opioids.<br><br><strong>Note:</strong> Always consider adjuvants (e.g., Amitriptyline for neuropathic pain).",
+                page: 65,
+                tags: ["Therapeutics", "Pain", "Drugs"]
+            },
+
+            // --- CHAPTER 3: Genetics ---
+            {
+                topic: "Autosomal Dominant Inheritance",
+                details: "Pattern of genetic inheritance (e.g., Huntington's, Marfan's).",
+                full_info: "<strong>Features:</strong><br><ul><li>Affects every generation (vertical transmission).</li><li>Males and females affected equally.</li><li>50% risk to offspring if one parent is affected.</li></ul><br><strong>Examples:</strong> Huntington's disease, Marfan syndrome, Neurofibromatosis, Polycystic Kidney Disease (ADPKD).",
+                page: 45,
+                tags: ["Genetics", "Inheritance"]
+            },
+            {
+                topic: "Autosomal Recessive Inheritance",
+                details: "Pattern requiring two carrier parents (e.g., CF, Sickle Cell).",
+                full_info: "<strong>Features:</strong><br><ul><li>Often skips generations (horizontal transmission).</li><li>Parents are usually asymptomatic carriers.</li><li>25% risk of affected child if both parents are carriers.</li></ul><br><strong>Examples:</strong> Cystic Fibrosis, Sickle Cell Anaemia, Thalassaemia, Haemochromatosis.",
+                page: 46,
+                tags: ["Genetics", "Inheritance"]
+            },
+            {
+                topic: "Down Syndrome (Trisomy 21)",
+                details: "Most common chromosomal abnormality.",
+                full_info: "<strong>Cause:</strong> Extra copy of chromosome 21 (Nondisjunction). Risk increases with maternal age.<br><br><strong>Clinical Features:</strong> Hypotonia, flat occiput, single palmar crease, upslanting palpebral fissures, Brushfield spots.<br><br><strong>Associated Conditions:</strong> AVSD (heart defects), Duodenal atresia, Hypothyroidism, Early-onset Alzheimer's.",
+                page: 52,
+                tags: ["Genetics", "Chromosomal"]
+            },
+
+            // --- CHAPTER 4: Immunology ---
+            {
+                topic: "Hypersensitivity Reactions",
+                details: "Classification of immune-mediated tissue damage (Gell & Coombs).",
+                full_info: "<strong>Type I (Immediate):</strong> IgE-mediated. Mast cell degranulation. (e.g., Anaphylaxis, Asthma).<br><strong>Type II (Cytotoxic):</strong> IgG/IgM antibodies against cell surface. (e.g., Autoimmune Haemolytic Anaemia).<br><strong>Type III (Immune Complex):</strong> Ag-Ab complexes deposit in tissues. (e.g., SLE, Serum Sickness).<br><strong>Type IV (Delayed):</strong> T-cell mediated. (e.g., Contact Dermatitis, TB test, Transplant rejection).",
+                page: 78,
+                tags: ["Immunology", "Basic Science"]
+            },
+            {
+                topic: "Innate vs Adaptive Immunity",
+                details: "The two arms of the immune system.",
+                full_info: "<strong>Innate Immunity:</strong> Rapid, non-specific. First line of defense. Barriers (skin), Neutrophils, Macrophages, Complement system.<br><br><strong>Adaptive Immunity:</strong> Delayed, specific, has 'memory'.<br>- <em>Humoral:</em> B-cells (Antibodies).<br>- <em>Cell-mediated:</em> T-cells (CD4+ Helper, CD8+ Cytotoxic).",
+                page: 72,
+                tags: ["Immunology", "Basic Science"]
+            }
         ];
 
-        /* ==========================================================
-           SEARCH LOGIC (LIVE SUGGESTIONS)
-        ========================================================== */
-        const searchInput = document.getElementById('dbSearch');
+        /* LOGIC */
+        const searchInput = document.getElementById('searchInput');
         const resultsGrid = document.getElementById('resultsGrid');
+        const modal = document.getElementById('detailModal');
+        const modalBody = document.getElementById('modalBody');
+
+        // Render initial state
+        renderResults("");
 
         searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase().trim();
-            resultsGrid.innerHTML = '';
+            renderResults(e.target.value);
+        });
 
-            if (query === "") {
-                resultsGrid.innerHTML = `<div class="empty-state"><i class="fas fa-terminal"></i><p>Waiting for your input... Start typing to explore.</p></div>`;
+        function renderResults(query) {
+            resultsGrid.innerHTML = "";
+            const q = query.toLowerCase().trim();
+
+            const filtered = medicalDatabase.filter(item => 
+                item.topic.toLowerCase().includes(q) || 
+                item.tags.some(t => t.toLowerCase().includes(q))
+            );
+
+            if (filtered.length === 0) {
+                resultsGrid.innerHTML = `<div style="text-align:center; color:#64748b; margin-top:40px;">No results found in Part 1 (Pages 1-100).</div>`;
                 return;
             }
 
-            const filtered = medicalDatabase.filter(item => 
-                item.topic.toLowerCase().includes(query) || 
-                item.tags.some(t => t.toLowerCase().includes(query))
-            );
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'result-card';
+                card.onclick = () => openModal(item);
+                card.innerHTML = `
+                    <div class="card-header">
+                        <span class="topic-title">${item.topic}</span>
+                        <span class="page-badge">Pg. ${item.page}</span>
+                    </div>
+                    <div class="card-summary">${item.details}</div>
+                `;
+                resultsGrid.appendChild(card);
+            });
+        }
 
-            if (filtered.length > 0) {
-                filtered.forEach(item => {
-                    const card = document.createElement('div');
-                    card.className = 'entry-card';
-                    card.innerHTML = `
-                        <div class="entry-header">
-                            <h3 class="entry-title">${item.topic}</h3>
-                            <span class="entry-page">PG. ${item.page}</span>
-                        </div>
-                        <div class="entry-body">${item.details}</div>
-                        <div class="entry-tags">
-                            ${item.tags.map(t => `<span class="tag">${t}</span>`).join('')}
-                        </div>
-                    `;
-                    resultsGrid.appendChild(card);
-                });
-            } else {
-                resultsGrid.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>No matches found in the current database for "${query}".</p></div>`;
-            }
-        });
+        function openModal(item) {
+            modalBody.innerHTML = `
+                <h2>${item.topic}</h2>
+                <div style="margin-bottom:20px; color:#94a3b8; font-size:14px;"><strong>Reference:</strong> Davidson's Principles & Practice, Page ${item.page}</div>
+                <hr style="border-color: rgba(255,255,255,0.1); margin-bottom:25px;">
+                ${item.full_info}
+            `;
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) closeModal();
+        }
     </script>
 </body>
 </html>
