@@ -106,97 +106,82 @@
     </div>
 
     <script>
-        let medicalDB = null;
+let medicalDB = null;
 
-        // Load Data
-        async function loadData() {
-            try {
-                const response = await fetch('book.json');
-                medicalDB = await response.json();
-                console.log("Database Loaded Successfully");
-            } catch (e) {
-                document.getElementById('resultsArea').innerHTML = "<p style='color:red'>Error loading book.json. Please ensure it's in the root folder.</p>";
-            }
+async function loadDataIfNeeded() {
+    if (medicalDB) return;
+
+    const loader = document.getElementById('loader');
+    loader.style.display = "block";
+
+    const response = await fetch('book.json');
+    medicalDB = await response.json();
+
+    loader.style.display = "none";
+}
+
+const searchInput = document.getElementById('searchInput');
+const resultsArea = document.getElementById('resultsArea');
+
+searchInput.addEventListener('input', async function(e) {
+    const query = e.target.value.trim().toLowerCase();
+
+    if (query.length < 3) {
+        resultsArea.innerHTML = `
+            <div class="no-results">
+                <p>Type at least 3 letters to search.</p>
+            </div>`;
+        return;
+    }
+
+    await loadDataIfNeeded();
+
+    let finalHTML = "";
+    let foundCount = 0;
+
+    medicalDB.sections.forEach((section, sectionIndex) => {
+
+        let chapterContent = section.pages.join(" ").toLowerCase();
+
+        if (chapterContent.includes(query) && foundCount < 10) {
+
+            finalHTML += `
+                <div class="result-item">
+                    <span class="med-header">
+                        Chapter ${section.section}
+                    </span>
+
+                    <button onclick="openChapter(${sectionIndex})"
+                        style="margin-top:15px; padding:10px 20px; background:#3a86ff; border:none; border-radius:8px; color:white; cursor:pointer;">
+                        Open Full Chapter
+                    </button>
+                </div>
+            `;
+
+            foundCount++;
         }
+    });
 
-        // Smart Text Formatter
-        function formatMedicalContent(text, query) {
-            // Split into blocks based on double newlines or common separators
-            let blocks = text.split(/\n\s*\n/);
-            let processedHTML = "";
+    resultsArea.innerHTML = finalHTML || `
+        <div class="no-results">
+            <p>No chapters found.</p>
+        </div>`;
+});
 
-            blocks.forEach(block => {
-                let cleanBlock = block.trim();
-                if (!cleanBlock.toLowerCase().includes(query.toLowerCase())) return;
+function openChapter(index) {
+    const section = medicalDB.sections[index];
+    let fullText = section.pages.join("\n\n");
 
-                // Detect if block is a Header (Short, Uppercase)
-                if (cleanBlock.length < 60 && cleanBlock === cleanBlock.toUpperCase()) {
-                    processedHTML += `<span class="med-header">${highlight(cleanBlock, query)}</span>`;
-                }
-                // Detect Lists (Lines starting with dots, numbers or dashes)
-                else if (cleanBlock.includes('\n') && (cleanBlock.includes('•') || cleanBlock.match(/^\d\./m))) {
-                    let listLines = cleanBlock.split('\n');
-                    listLines.forEach(line => {
-                        if(line.trim()) processedHTML += `<span class="med-list-item">${highlight(line, query)}</span>`;
-                    });
-                }
-                // Regular Paragraph
-                else {
-                    processedHTML += `<p class="med-paragraph">${highlight(cleanBlock, query)}</p>`;
-                }
-            });
+    resultsArea.innerHTML = `
+        <div class="result-item">
+            <span class="med-header">Chapter ${section.section}</span>
+            <pre class="med-paragraph" style="white-space: pre-wrap;">
+${fullText}
+            </pre>
+        </div>
+    `;
+}
+</script>
 
-            return processedHTML;
-        }
-
-        function highlight(text, query) {
-            const regex = new RegExp(`(${query})`, 'gi');
-            return text.replace(regex, `<span class="highlight">$1</span>`);
-        }
-
-        // Search Logic
-        const searchInput = document.getElementById('searchInput');
-        const resultsArea = document.getElementById('resultsArea');
-        const loader = document.getElementById('loader');
-
-        searchInput.addEventListener('input', function(e) {
-            const query = e.target.value.trim();
-            
-            if (query.length < 3) {
-                resultsArea.innerHTML = `<div class="no-results"><p>Type more to search...</p></div>`;
-                return;
-            }
-
-            loader.style.display = "block";
-            
-            // Perform Search
-            let finalHTML = "";
-            let foundCount = 0;
-
-            medicalDB.sections.forEach(section => {
-                section.pages.forEach((pageContent, index) => {
-                    if (pageContent.toLowerCase().includes(query.toLowerCase()) && foundCount < 15) {
-                        const pageNum = section.startPage + index;
-                        const formatted = formatMedicalContent(pageContent, query);
-                        
-                        if (formatted) {
-                            finalHTML += `
-                                <div class="result-item">
-                                    <span class="page-indicator">REFERENCE: PAGE ${pageNum}</span>
-                                    ${formatted}
-                                </div>
-                            `;
-                            foundCount++;
-                        }
-                    }
-                });
-            });
-
-            loader.style.display = "none";
-            resultsArea.innerHTML = finalHTML || `<div class="no-results"><p>No specific matches found for "${query}".</p></div>`;
-        });
-
-        loadData();
-    </script>
 </body>
 </html>
