@@ -88,17 +88,22 @@
             cursor: pointer;
         }
 
-        .medora-logo {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--neon);
-            animation: pulse 2s infinite;
-        }
+       .medora-logo {
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--neon);
+}
+
+.medora-logo svg {
+    width: 26px;
+    height: 26px;
+    fill: white;
+}
 
         @keyframes pulse {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
@@ -352,6 +357,81 @@
             .dashboard-container { grid-template-columns: 1fr; }
             .nav-menu { display: none; }
         }
+        /* ===== RESPONSIVE IMPROVEMENTS ===== */
+
+@media (max-width: 1200px) {
+    .dashboard-container {
+        padding: 40px 30px 150px;
+    }
+}
+
+@media (max-width: 1024px) {
+    nav.top-nav {
+        padding: 15px 30px;
+    }
+
+    .hero {
+        padding: 60px 30px 30px;
+    }
+
+    .hero h2 {
+        font-size: 38px;
+    }
+
+    .dashboard-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    nav.top-nav {
+        padding: 12px 20px;
+    }
+
+    .logo-text h1 {
+        font-size: 18px;
+    }
+
+    .hero {
+        padding: 50px 20px 20px;
+    }
+
+    .hero h2 {
+        font-size: 30px;
+    }
+
+    .hero p {
+        font-size: 15px;
+    }
+
+    .knowledge-search-container {
+        margin-bottom: 40px;
+    }
+
+    .search-wrapper {
+        flex-direction: column;
+        padding: 15px;
+        gap: 10px;
+    }
+
+    .btn-search {
+        width: 100%;
+    }
+
+    .dashboard-container {
+        grid-template-columns: 1fr;
+        padding: 30px 20px 150px;
+    }
+
+    .bottom-nav {
+        width: 95%;
+        gap: 20px;
+        padding: 12px 20px;
+    }
+}
+
     </style>
 </head>
 <body data-theme="morning">
@@ -359,13 +439,12 @@
     <div class="page-overlay"></div>
 
     <nav class="top-nav">
-        <div class="logo-area" onclick="location.href='index.html'">
-            <div class="medora-logo">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4Z" stroke="white" stroke-width="2"/>
-                    <path d="M8 12H10L11.5 9L13 15L14.5 12H16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
+       <div class="medora-logo">
+    <svg viewBox="0 0 24 24">
+        <path d="M2 12c4-6 8-8 14-8-2 3-2 6 2 8-4 2-4 5-2 8-6 0-10-2-14-8z"/>
+    </svg>
+</div>
+
             <div class="logo-text"><h1>MEDORA</h1></div>
         </div>
 
