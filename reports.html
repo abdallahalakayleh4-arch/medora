@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Medora | Global Medical Courses & Reports</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
     <script src="auth-guard.js"></script>
 
@@ -12,7 +12,7 @@
 
     <style>
         /* =====================================================
-           CORE DESIGN SYSTEM (MEDORA V3 - FULL SPEC)
+           CORE DESIGN SYSTEM (MEDORA V3 - RESPONSIVE)
         ===================================================== */
         :root {
             --bg-body: #020617;
@@ -35,6 +35,7 @@
             padding: 0;
             scrollbar-width: thin;
             scrollbar-color: var(--primary) var(--bg-body);
+            -webkit-tap-highlight-color: transparent; /* Remove blue highlight on mobile tap */
         }
 
         body {
@@ -44,57 +45,52 @@
             min-height: 100vh;
             overflow-x: hidden;
             line-height: 1.6;
+            padding-bottom: 80px; /* Space for bottom scroll */
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-body); }
-        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
-
         /* =====================================================
-           NAVIGATION BAR (EXPANDED)
+           NAVIGATION BAR (RESPONSIVE)
         ===================================================== */
         .navbar {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 85px;
+            height: 80px;
             background: var(--bg-nav);
             backdrop-filter: var(--glass-blur);
             border-bottom: 1px solid var(--glass-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 60px;
+            padding: 0 5%; /* Responsive padding */
             z-index: 2000;
+            transition: var(--transition);
         }
 
         .nav-brand {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             text-decoration: none;
             transition: var(--transition);
         }
 
-        .nav-brand:hover { opacity: 0.8; transform: scale(1.02); }
-
         .medora-logo {
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-radius: 14px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
+            font-size: 20px;
             color: white;
             box-shadow: 0 0 20px rgba(58, 134, 255, 0.4);
         }
 
         .nav-brand h1 {
-            font-size: 26px;
+            font-size: 22px;
             font-weight: 800;
             letter-spacing: -0.5px;
             background: linear-gradient(to right, #fff, #94a3b8);
@@ -102,6 +98,7 @@
             -webkit-text-fill-color: transparent;
         }
 
+        /* Center links - Hidden on Mobile/Tablet Portrait */
         .nav-center-links {
             display: flex;
             gap: 30px;
@@ -116,23 +113,13 @@
             font-size: 15px;
             font-weight: 600;
             transition: var(--transition);
-            position: relative;
         }
-
         .nav-center-links a:hover { color: #fff; }
-        .nav-center-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px; left: 0; width: 0; height: 2px;
-            background: var(--primary);
-            transition: var(--transition);
-        }
-        .nav-center-links a:hover::after { width: 100%; }
 
         .nav-right {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
         }
 
         .nav-link {
@@ -140,24 +127,22 @@
             color: var(--text-muted);
             font-size: 14px;
             font-weight: 600;
-            padding: 12px 20px;
-            border-radius: 14px;
+            padding: 10px 18px;
+            border-radius: 12px;
             transition: var(--transition);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             background: rgba(255,255,255,0.03);
             border: 1px solid var(--glass-border);
+            white-space: nowrap;
         }
 
         .nav-link:hover, .nav-link.active {
             background: rgba(58, 134, 255, 0.15);
             color: #fff;
             border-color: rgba(58, 134, 255, 0.4);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
-
-        .nav-link.active i { color: var(--primary); }
 
         /* =====================================================
            LAYOUT & CONTAINER
@@ -165,67 +150,70 @@
         .wrapper {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 140px 40px 100px;
+            padding: 120px 20px 60px; /* Reduced side padding for mobile */
+            width: 100%;
         }
 
         .hero-section {
             text-align: center;
-            margin-bottom: 80px;
-            animation: fadeInDown 0.8s ease-out;
-        }
-
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
+            margin-bottom: 60px;
+            padding: 0 10px;
         }
 
         .hero-section h2 {
-            font-size: 56px;
+            font-size: clamp(32px, 5vw, 56px); /* Fluid typography */
             font-weight: 800;
             background: linear-gradient(to bottom, #fff, #94a3b8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
-            letter-spacing: -2px;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+            line-height: 1.2;
         }
 
         .hero-section p {
             color: var(--text-muted);
-            font-size: 20px;
+            font-size: clamp(16px, 3vw, 20px);
             max-width: 800px;
             margin: 0 auto;
         }
 
         /* =====================================================
-           GRID & CARDS (DETAILED)
+           GRID & CARDS (RESPONSIVE)
         ===================================================== */
         .course-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 40px;
+            /* Adaptive Grid: Fits Mobile (1 col), Tablet (2 cols), Laptop (3 cols) */
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            gap: 30px;
         }
 
         .course-card {
             background: var(--glass-card);
             border: 1px solid var(--glass-border);
-            border-radius: 32px;
+            border-radius: 24px;
             overflow: hidden;
             cursor: pointer;
             transition: var(--transition);
             backdrop-filter: var(--glass-blur);
             display: flex;
             flex-direction: column;
-            height: 520px;
+            /* Removed fixed height, added min-height */
+            min-height: 480px; 
         }
 
         .course-card:hover {
-            transform: translateY(-15px) scale(1.02);
+            transform: translateY(-10px);
             border-color: var(--primary);
             box-shadow: var(--shadow-lg);
         }
 
+        .course-card:active {
+            transform: scale(0.98); /* Tactile feedback for touch */
+        }
+
         .card-banner {
-            height: 240px;
+            height: 220px;
             position: relative;
             overflow: hidden;
         }
@@ -234,20 +222,20 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.6s ease;
         }
 
         .course-card:hover .card-banner img { transform: scale(1.1); }
 
         .card-badge {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 8px 16px;
-            border-radius: 12px;
-            font-size: 12px;
+            top: 15px;
+            left: 15px;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-size: 11px;
             font-weight: 700;
             color: var(--accent);
             border: 1px solid rgba(56, 189, 248, 0.2);
@@ -255,24 +243,25 @@
         }
 
         .card-body {
-            padding: 30px;
+            padding: 25px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
         }
 
         .card-body h3 {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 700;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             color: #fff;
+            line-height: 1.3;
         }
 
         .card-body p {
-            font-size: 15px;
+            font-size: 14px;
             color: var(--text-muted);
-            line-height: 1.7;
-            margin-bottom: 25px;
+            line-height: 1.6;
+            margin-bottom: 20px;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
@@ -286,30 +275,30 @@
             align-items: center;
             padding-top: 20px;
             border-top: 1px solid var(--glass-border);
+            flex-wrap: wrap; /* Wrap on very small screens */
+            gap: 10px;
         }
 
         .card-meta {
             display: flex;
-            gap: 15px;
-            font-size: 13px;
+            gap: 12px;
+            font-size: 12px;
             color: var(--text-muted);
         }
-
-        .card-meta span i { color: var(--primary); margin-right: 5px; }
 
         .btn-action {
             color: var(--primary);
             font-weight: 800;
-            font-size: 13px;
+            font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         /* =====================================================
-           REPORT VIEWER (FULL VIEW)
+           REPORT VIEWER MODAL (RESPONSIVE)
         ===================================================== */
         .report-modal {
             display: none;
@@ -318,7 +307,7 @@
             background: var(--bg-body);
             z-index: 3000;
             overflow-y: auto;
-            padding: 60px 20px;
+            padding: 20px; /* Reduced padding */
         }
 
         .report-container {
@@ -326,10 +315,10 @@
             margin: 0 auto;
             background: var(--glass-card);
             border: 1px solid var(--glass-border);
-            border-radius: 40px;
-            padding: 60px;
+            border-radius: 24px;
+            padding: 40px; /* Reduced internal padding */
             box-shadow: var(--shadow-lg);
-            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: slideUp 0.6s ease;
         }
 
         @keyframes slideUp {
@@ -341,137 +330,95 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .close-btn {
             background: rgba(255,255,255,0.05);
             border: 1px solid var(--glass-border);
             color: #fff;
-            padding: 12px 25px;
-            border-radius: 15px;
+            padding: 10px 20px;
+            border-radius: 12px;
             cursor: pointer;
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 10px;
-            transition: var(--transition);
+            gap: 8px;
         }
-
-        .close-btn:hover { background: #ef4444; border-color: #ef4444; }
-
-        .report-main-header {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-            margin-bottom: 60px;
-        }
-
-        .report-main-logo {
-            width: 120px; height: 120px;
-            object-fit: contain;
-            background: #fff;
-            padding: 15px;
-            border-radius: 24px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .report-title-area h4 { color: var(--accent); text-transform: uppercase; letter-spacing: 3px; font-size: 14px; margin-bottom: 10px; }
-        .report-title-area h1 { font-size: 42px; font-weight: 800; color: #fff; line-height: 1.1; }
-
-        .report-content {
-            font-size: 18px;
-            line-height: 1.9;
-            color: #d1d5db;
-        }
-
-        .report-content h3 {
-            color: #fff;
-            font-size: 26px;
-            margin: 45px 0 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .report-content h3::before {
-            content: '';
-            width: 6px; height: 30px;
-            background: var(--primary);
-            border-radius: 10px;
-        }
-
-        .report-content p { margin-bottom: 25px; }
-
-        .report-content ul {
-            list-style: none;
-            margin-bottom: 30px;
-            padding-left: 10px;
-        }
-
-        .report-content li {
-            position: relative;
-            padding-left: 30px;
-            margin-bottom: 12px;
-        }
-
-        .report-content li::before {
-            content: '\f058';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            position: absolute;
-            left: 0;
-            color: var(--success);
-        }
-
-        .report-content strong { color: #fff; font-weight: 700; }
-
-        .report-content a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 700;
-            border-bottom: 2px solid rgba(58, 134, 255, 0.2);
-            transition: 0.3s;
-        }
-
-        .report-content a:hover { color: var(--accent); border-bottom-color: var(--accent); }
-
-        .report-footer-actions {
-            margin-top: 60px;
-            padding-top: 40px;
-            border-top: 1px solid var(--glass-border);
-            display: flex;
-            gap: 20px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: #fff;
-            padding: 16px 35px;
-            border-radius: 18px;
-            text-decoration: none;
-            font-weight: 700;
-            box-shadow: 0 10px 25px rgba(58, 134, 255, 0.4);
-            transition: var(--transition);
-        }
-
-        .btn-primary:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(58, 134, 255, 0.5); }
 
         /* =====================================================
-           FOOTER
+           MEDIA QUERIES (THE FIX FOR MOBILE/IPAD)
         ===================================================== */
-        footer {
-            margin-top: 100px;
-            padding: 60px 0;
-            border-top: 1px solid var(--glass-border);
-            text-align: center;
-            background: rgba(15, 23, 42, 0.5);
+        
+        /* Tablet (iPad) and below < 1024px */
+        @media (max-width: 1024px) {
+            .nav-center-links {
+                display: none; /* Hide center links to save space */
+            }
+            .wrapper {
+                padding-top: 100px;
+            }
         }
 
-        .footer-logo { font-size: 24px; font-weight: 800; margin-bottom: 20px; display: block; color: #fff; text-decoration: none;}
-        .footer-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 30px; }
-        .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; transition: 0.3s; }
-        .footer-links a:hover { color: #fff; }
+        /* Mobile Phones < 768px */
+        @media (max-width: 768px) {
+            .navbar {
+                height: 70px;
+                padding: 0 15px;
+            }
+            
+            .nav-brand h1 {
+                display: none; /* Hide "Medora" text on mobile to save space */
+            }
+            
+            .nav-link span {
+                /* Optional: Hide text in buttons on very small screens, keep icons */
+            }
+
+            .course-grid {
+                grid-template-columns: 1fr; /* 1 Column on Phone */
+                gap: 20px;
+            }
+
+            .report-container {
+                padding: 25px 20px;
+                border-radius: 16px;
+                margin-top: 10px;
+            }
+
+            .report-main-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .report-main-logo {
+                width: 80px; height: 80px;
+            }
+            
+            .report-title-area h1 {
+                font-size: 28px;
+            }
+
+            .report-content {
+                font-size: 16px;
+            }
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 60px;
+            padding: 40px 20px;
+            border-top: 1px solid var(--glass-border);
+            text-align: center;
+        }
+        
+        .footer-links {
+            flex-wrap: wrap;
+            gap: 15px;
+        }
 
     </style>
 </head>
@@ -490,101 +437,12 @@
         </div>
 
         <div class="nav-right">
-            <a href="dashboard.html" class="nav-link"><i class="fas fa-columns"></i> Dashboard</a>
-            <a href="library.html" class="nav-link active"><i class="fas fa-book-medical"></i> Courses</a>
+            <a href="dashboard.html" class="nav-link"><i class="fas fa-columns"></i> <span>Dashboard</span></a>
+            <a href="library.html" class="nav-link active"><i class="fas fa-book-medical"></i> <span>Courses</span></a>
         </div>
     </nav>
 
-    <div class="wrapper">
-        <header class="hero-section">
-            <h2>Elite Medical Knowledge</h2>
-            <p>Direct reports and learning paths from the world's leading medical institutions.</p>
-        </header>
-
-        <div class="course-grid">
-            
-            <div class="course-card" onclick="openReport('harvard')">
-                <div class="card-banner">
-                    <span class="card-badge"><i class="fas fa-star"></i> Ivy League</span>
-                    <img src="https://online.hms.harvard.edu/sites/default/files/styles/hero_image_extra_large/public/2021-09/HMX_Physiology_Hero.jpg" alt="Harvard HMS">
-                </div>
-                <div class="card-body">
-                    <h3>Harvard Medical School</h3>
-                    <p>Advanced HMX Online Learning program. Master the fundamentals of Immunology, Physiology, and Genetics through clinical cases.</p>
-                    <div class="card-footer">
-                        <div class="card-meta">
-                            <span><i class="far fa-clock"></i> 10-12 Weeks</span>
-                            <span><i class="fas fa-certificate"></i> Verified</span>
-                        </div>
-                        <div class="btn-action">Read Report <i class="fas fa-chevron-right"></i></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="course-card" onclick="openReport('stanford')">
-                <div class="card-banner">
-                    <span class="card-badge"><i class="fas fa-laptop-medical"></i> Innovation</span>
-                    <img src="https://images.unsplash.com/photo-1541339907198-e08756ebafe3?auto=format&fit=crop&q=80&w=1200" alt="Stanford Medicine">
-                </div>
-                <div class="card-body">
-                    <h3>Stanford University</h3>
-                    <p>Exploring the Stanford Center for Health Education. From professional CME credits to graduate health education modules.</p>
-                    <div class="card-footer">
-                        <div class="card-meta">
-                            <span><i class="far fa-calendar"></i> Self-Paced</span>
-                            <span><i class="fas fa-user-md"></i> Graduate</span>
-                        </div>
-                        <div class="btn-action">Read Report <i class="fas fa-chevron-right"></i></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="course-card" onclick="openReport('coursera')">
-                <div class="card-banner">
-                    <span class="card-badge"><i class="fas fa-globe"></i> Global Access</span>
-                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=1200" alt="Coursera Medical">
-                </div>
-                <div class="card-body">
-                    <h3>Coursera for Med Students</h3>
-                    <p>Aggregated medical content from Johns Hopkins, Duke, and UCSD. Core sciences for undergraduate medical students.</p>
-                    <div class="card-footer">
-                        <div class="card-meta">
-                            <span><i class="far fa-play-circle"></i> On-Demand</span>
-                            <span><i class="fas fa-users"></i> Multiversity</span>
-                        </div>
-                        <div class="btn-action">Read Report <i class="fas fa-chevron-right"></i></div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div id="reportModal" class="report-modal">
-        <div class="report-container">
-            <div class="report-nav">
-                <button class="close-btn" onclick="closeReport()"><i class="fas fa-arrow-left"></i> Back to Courses</button>
-                <div class="report-controls">
-                    <i class="fas fa-share-nodes" style="margin-right: 20px; cursor: pointer;"></i>
-                    <i class="fas fa-bookmark" style="cursor: pointer;"></i>
-                </div>
-            </div>
-
-            <div id="reportBody">
-                </div>
-        </div>
-    </div>
-
-    <footer>
-        <a href="#" class="footer-logo">Medora</a>
-        <div class="footer-links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Use</a>
-            <a href="#">Medical Disclaimer</a>
-            <a href="#">Contact Support</a>
-        </div>
-        <p style="color: var(--text-muted); font-size: 13px;">&copy; 2026 Medora Medical Education. All Rights Reserved.</p>
-    </footer>
+    ```
 
     <script>
         /* =====================================================
