@@ -11,6 +11,5 @@
     "isolatedModules": true,
     "noEmit": true,
     "types": ["vite/client"]
-  },
-  "include": ["app", "app.config.ts"]
+  }
 }
