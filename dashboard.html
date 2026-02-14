@@ -485,11 +485,8 @@
             <i class="fas fa-tasks"></i>
             <h3>To-Do Performance</h3>
             <p>Sync your clinical rounds, lectures, and daily goals with smart prioritization.</p>
-            <div class="todo-preview">
-                <div class="todo-item"><i class="fas fa-check-circle" style="color: var(--accent);"></i> Review ECG Basics</div>
-                <div class="todo-item"><i class="far fa-circle"></i> Biochemistry Lab Report</div>
-                <div class="todo-item"><i class="far fa-circle"></i> Pharmacology Quiz Prep</div>
-            </div>
+           <div class="todo-preview" id="dashboard-todo-preview">
+</div>
         </div>
 
         <div class="med-card" onclick="location.href='timer.html'">
@@ -606,6 +603,35 @@
                 card.style.transform = `perspective(1000px) translateY(0) rotateX(0) rotateY(0)`;
             });
         });
+        // Load real ToDo preview into dashboard
+function loadDashboardTodos() {
+    const previewContainer = document.getElementById("dashboard-todo-preview");
+    if (!previewContainer) return;
+
+    const todos = JSON.parse(localStorage.getItem("medora-todos")) || [];
+
+    previewContainer.innerHTML = "";
+
+    todos.slice(0, 3).forEach(todo => {
+        const item = document.createElement("div");
+        item.className = "todo-item";
+
+        item.innerHTML = `
+            <i class="${todo.completed ? 'fas fa-check-circle' : 'far fa-circle'}"
+               style="color: ${todo.completed ? 'var(--accent)' : 'var(--text-muted)'}"></i>
+            ${todo.text}
+        `;
+
+        previewContainer.appendChild(item);
+    });
+
+    if (todos.length === 0) {
+        previewContainer.innerHTML = "<div style='font-size:13px;color:var(--text-muted)'>No tasks yet</div>";
+    }
+}
+
+window.addEventListener("load", loadDashboardTodos);
+
     </script>
 </body>
 </html>
