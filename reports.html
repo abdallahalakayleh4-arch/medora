@@ -5,10 +5,8 @@
     <title>Medora | Global Medical Courses & Reports</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <script src="auth-guard.js"></script>
-
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="[https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap](https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap)" rel="stylesheet">
+    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
 
     <style>
         /* =====================================================
@@ -35,7 +33,7 @@
             padding: 0;
             scrollbar-width: thin;
             scrollbar-color: var(--primary) var(--bg-body);
-            -webkit-tap-highlight-color: transparent; /* Remove blue highlight on mobile tap */
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -45,12 +43,10 @@
             min-height: 100vh;
             overflow-x: hidden;
             line-height: 1.6;
-            padding-bottom: 80px; /* Space for bottom scroll */
+            padding-bottom: 80px;
         }
 
-        /* =====================================================
-           NAVIGATION BAR (RESPONSIVE)
-        ===================================================== */
+        /* NAVBAR */
         .navbar {
             position: fixed;
             top: 0;
@@ -63,7 +59,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 5%; /* Responsive padding */
+            padding: 0 5%;
             z-index: 2000;
             transition: var(--transition);
         }
@@ -98,7 +94,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Center links - Hidden on Mobile/Tablet Portrait */
         .nav-center-links {
             display: flex;
             gap: 30px;
@@ -144,13 +139,11 @@
             border-color: rgba(58, 134, 255, 0.4);
         }
 
-        /* =====================================================
-           LAYOUT & CONTAINER
-        ===================================================== */
+        /* LAYOUT & CONTAINER */
         .wrapper {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 120px 20px 60px; /* Reduced side padding for mobile */
+            padding: 120px 20px 60px;
             width: 100%;
         }
 
@@ -161,7 +154,7 @@
         }
 
         .hero-section h2 {
-            font-size: clamp(32px, 5vw, 56px); /* Fluid typography */
+            font-size: clamp(32px, 5vw, 56px);
             font-weight: 800;
             background: linear-gradient(to bottom, #fff, #94a3b8);
             -webkit-background-clip: text;
@@ -178,12 +171,9 @@
             margin: 0 auto;
         }
 
-        /* =====================================================
-           GRID & CARDS (RESPONSIVE)
-        ===================================================== */
+        /* GRID & CARDS */
         .course-grid {
             display: grid;
-            /* Adaptive Grid: Fits Mobile (1 col), Tablet (2 cols), Laptop (3 cols) */
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
             gap: 30px;
         }
@@ -198,7 +188,6 @@
             backdrop-filter: var(--glass-blur);
             display: flex;
             flex-direction: column;
-            /* Removed fixed height, added min-height */
             min-height: 480px; 
         }
 
@@ -209,7 +198,7 @@
         }
 
         .course-card:active {
-            transform: scale(0.98); /* Tactile feedback for touch */
+            transform: scale(0.98);
         }
 
         .card-banner {
@@ -275,7 +264,7 @@
             align-items: center;
             padding-top: 20px;
             border-top: 1px solid var(--glass-border);
-            flex-wrap: wrap; /* Wrap on very small screens */
+            flex-wrap: wrap;
             gap: 10px;
         }
 
@@ -297,9 +286,7 @@
             gap: 6px;
         }
 
-        /* =====================================================
-           REPORT VIEWER MODAL (RESPONSIVE)
-        ===================================================== */
+        /* MODAL */
         .report-modal {
             display: none;
             position: fixed;
@@ -307,7 +294,7 @@
             background: var(--bg-body);
             z-index: 3000;
             overflow-y: auto;
-            padding: 20px; /* Reduced padding */
+            padding: 20px;
         }
 
         .report-container {
@@ -316,9 +303,11 @@
             background: var(--glass-card);
             border: 1px solid var(--glass-border);
             border-radius: 24px;
-            padding: 40px; /* Reduced internal padding */
+            padding: 40px;
             box-shadow: var(--shadow-lg);
             animation: slideUp 0.6s ease;
+            margin-top: 20px;
+            margin-bottom: 20px;
         }
 
         @keyframes slideUp {
@@ -346,80 +335,88 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            transition: var(--transition);
         }
-
-        /* =====================================================
-           MEDIA QUERIES (THE FIX FOR MOBILE/IPAD)
-        ===================================================== */
         
-        /* Tablet (iPad) and below < 1024px */
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .report-main-header {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .report-main-logo {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            background: #fff;
+            border-radius: 20px;
+            padding: 10px;
+        }
+
+        .report-title-area h4 {
+            color: var(--accent);
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .report-title-area h1 {
+            font-size: 36px;
+            line-height: 1.2;
+        }
+        
+        .report-footer-actions {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid var(--glass-border);
+        }
+        
+        .btn-primary {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+        
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        /* MEDIA QUERIES */
         @media (max-width: 1024px) {
-            .nav-center-links {
-                display: none; /* Hide center links to save space */
-            }
-            .wrapper {
-                padding-top: 100px;
-            }
+            .nav-center-links { display: none; }
+            .wrapper { padding-top: 100px; }
         }
 
-        /* Mobile Phones < 768px */
         @media (max-width: 768px) {
-            .navbar {
-                height: 70px;
-                padding: 0 15px;
-            }
-            
-            .nav-brand h1 {
-                display: none; /* Hide "Medora" text on mobile to save space */
-            }
-            
-            .nav-link span {
-                /* Optional: Hide text in buttons on very small screens, keep icons */
-            }
-
-            .course-grid {
-                grid-template-columns: 1fr; /* 1 Column on Phone */
-                gap: 20px;
-            }
-
-            .report-container {
-                padding: 25px 20px;
-                border-radius: 16px;
-                margin-top: 10px;
-            }
-
-            .report-main-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 20px;
-            }
-            
-            .report-main-logo {
-                width: 80px; height: 80px;
-            }
-            
-            .report-title-area h1 {
-                font-size: 28px;
-            }
-
-            .report-content {
-                font-size: 16px;
-            }
+            .navbar { height: 70px; padding: 0 15px; }
+            .nav-brand h1 { display: none; }
+            .course-grid { grid-template-columns: 1fr; gap: 20px; }
+            .report-container { padding: 25px 20px; }
+            .report-main-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+            .report-main-logo { width: 80px; height: 80px; }
+            .report-title-area h1 { font-size: 28px; }
         }
 
-        /* Footer */
         footer {
             margin-top: 60px;
             padding: 40px 20px;
             border-top: 1px solid var(--glass-border);
             text-align: center;
         }
-        
-        .footer-links {
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
     </style>
 </head>
 <body>
@@ -442,126 +439,143 @@
         </div>
     </nav>
 
-    ```
+    <div class="wrapper">
+        
+        <section class="hero-section">
+            <h2>Explore Medical Intelligence</h2>
+            <p>Curated courses and reports from world-leading institutions.</p>
+        </section>
+
+        <div class="course-grid">
+            
+            <article class="course-card" onclick="openReport('harvard')">
+                <div class="card-banner">
+                    <div class="card-badge">Ivy League</div>
+                    <img src="[https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Harvard_Wreath_Logo_1.svg/1200px-Harvard_Wreath_Logo_1.svg.png](https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Harvard_Wreath_Logo_1.svg/1200px-Harvard_Wreath_Logo_1.svg.png)" alt="Harvard">
+                </div>
+                <div class="card-body">
+                    <h3>Harvard Medical School</h3>
+                    <p>HMX Online Learning: Immunology, Physiology, and Genetics fundamentals.</p>
+                    <div class="card-footer">
+                        <div class="card-meta">
+                            <span><i class="far fa-clock"></i> Self-Paced</span>
+                            <span><i class="fas fa-certificate"></i> Cert</span>
+                        </div>
+                        <span class="btn-action">View Report <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="course-card" onclick="openReport('stanford')">
+                <div class="card-banner">
+                    <div class="card-badge">Top Tier</div>
+                    <img src="[https://identity.stanford.edu/wp-content/uploads/sites/3/2020/07/block-s-right.png](https://identity.stanford.edu/wp-content/uploads/sites/3/2020/07/block-s-right.png)" alt="Stanford">
+                </div>
+                <div class="card-body">
+                    <h3>Stanford University</h3>
+                    <p>Center for Health Education: Artificial Intelligence in Healthcare and Nutrition.</p>
+                    <div class="card-footer">
+                        <div class="card-meta">
+                            <span><i class="far fa-play-circle"></i> On-Demand</span>
+                            <span><i class="fas fa-user-md"></i> CME</span>
+                        </div>
+                        <span class="btn-action">View Report <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="course-card" onclick="openReport('coursera')">
+                <div class="card-banner">
+                    <div class="card-badge">Partner</div>
+                    <img src="[https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Coursera-Logo_600x600.svg/1200px-Coursera-Logo_600x600.svg.png](https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Coursera-Logo_600x600.svg/1200px-Coursera-Logo_600x600.svg.png)" alt="Coursera">
+                </div>
+                <div class="card-body">
+                    <h3>Coursera for Med Students</h3>
+                    <p>Epidemiology, Neuroscience, and Public Health from partner universities.</p>
+                    <div class="card-footer">
+                        <div class="card-meta">
+                            <span><i class="fas fa-globe"></i> Multi-Uni</span>
+                            <span><i class="fas fa-laptop"></i> Online</span>
+                        </div>
+                        <span class="btn-action">View Report <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </div>
+
+    <div id="reportModal" class="report-modal">
+        <div class="report-container">
+            <div class="report-nav">
+                <button class="close-btn" onclick="closeReport()">
+                    <i class="fas fa-arrow-left"></i> Back to Library
+                </button>
+                <div class="medora-logo" style="width:32px; height:32px; font-size:14px;">M</div>
+            </div>
+            <div id="reportBody"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <p style="color: var(--text-muted); font-size: 14px;">&copy; 2024 Medora Medical Library. All rights reserved.</p>
+        </div>
+    </footer>
 
     <script>
         /* =====================================================
-           REPORT DATABASE (INJECTED DIRECTLY FROM YOUR FILE)
+           REPORT DATABASE
         ===================================================== */
         const reports = {
             'harvard': {
-                logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/2/29/Harvard_shield_wreath.svg/1200px-Harvard_shield_wreath.svg.png',
+                logo: '[https://upload.wikimedia.org/wikipedia/en/thumb/2/29/Harvard_shield_wreath.svg/1200px-Harvard_shield_wreath.svg.png](https://upload.wikimedia.org/wikipedia/en/thumb/2/29/Harvard_shield_wreath.svg/1200px-Harvard_shield_wreath.svg.png)',
                 subtitle: 'HMX Online Learning',
                 title: 'Harvard Medical School',
                 content: `
                     <div class="report-content">
                         <h3>1. Program Overview</h3>
-                        <p>The <strong>HMX Online Learning</strong> program from <strong>Harvard Medical School</strong> provides in-depth foundational training in biomedical sciences. The courses focus on understanding core scientific mechanisms and applying them to real clinical scenarios, strengthening diagnostic and analytical reasoning.</p>
-                        <p>🔗 <strong>Program Overview:</strong> <a href="https://learn.hms.harvard.edu/about/program-categories/hmx-online-learning" target="_blank">View Website</a></p>
-
+                        <p>The <strong>HMX Online Learning</strong> program from <strong>Harvard Medical School</strong> provides in-depth foundational training in biomedical sciences.</p>
+                        
                         <h3>2. Immunology Fundamentals</h3>
-                        <p>This course explores:</p>
-                        <ul>
-                            <li>Innate and adaptive immune responses</li>
-                            <li>Immune system regulation and dysfunction</li>
-                            <li>Hypersensitivity and immunodeficiency disorders</li>
-                            <li>Clinical relevance of immune mechanisms in disease</li>
-                        </ul>
-                        <p>🔗 <strong>Course Link:</strong> <a href="https://learn.hms.harvard.edu/programs/immunology-fundamentals" target="_blank">Access Course</a></p>
-
+                        <p>This course explores innate and adaptive immune responses, immune system regulation, and dysfunction.</p>
+                        
                         <h3>3. Physiology Fundamentals</h3>
-                        <p>This course covers:</p>
-                        <ul>
-                            <li>Core principles of homeostasis</li>
-                            <li>Cardiovascular and respiratory regulation</li>
-                            <li>Fluid balance and acid–base physiology</li>
-                            <li>Mechanisms behind common pathophysiological changes</li>
-                        </ul>
-                        <p>🔗 <strong>Course Link:</strong> <a href="https://learn.hms.harvard.edu/programs/physiology-fundamentals" target="_blank">Access Course</a></p>
-
-                        <h3>4. Genetics Fundamentals</h3>
-                        <p>This course includes:</p>
-                        <ul>
-                            <li>Principles of inheritance</li>
-                            <li>Genetic variation and mutations</li>
-                            <li>Chromosomal abnormalities</li>
-                            <li>Modern genetic testing and precision medicine</li>
-                        </ul>
-                        <p>🔗 <strong>Course Link:</strong> <a href="https://learn.hms.harvard.edu/programs/genetics-fundamentals" target="_blank">Access Course</a></p>
+                        <p>Covers core principles of homeostasis, cardiovascular and respiratory regulation, fluid balance and acid–base physiology.</p>
                     </div>
                 `,
-                link: 'https://learn.hms.harvard.edu'
+                link: '[https://learn.hms.harvard.edu](https://learn.hms.harvard.edu)'
             },
             'stanford': {
-                logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Stanford_Cardinal_logo.svg/1200px-Stanford_Cardinal_logo.svg.png',
+                logo: '[https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Stanford_Cardinal_logo.svg/1200px-Stanford_Cardinal_logo.svg.png](https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Stanford_Cardinal_logo.svg/1200px-Stanford_Cardinal_logo.svg.png)',
                 subtitle: 'Health & Professional Education',
                 title: 'Stanford University',
                 content: `
                     <div class="report-content">
-                        <h3>1. Stanford Online – Broad Online Courses</h3>
-                        <p><strong>Stanford Online</strong> is the main hub for Stanford’s online education. You can find:</p>
-                        <ul>
-                            <li>Free and paid online courses in various subjects, including health, healthcare systems, public health, bioethics, and more</li>
-                            <li>Professional certificates and graduate-level online programs</li>
-                            <li>Courses you can audit (study for free) or pay to earn a certificate</li>
-                        </ul>
-                        <p>🔗 <strong>Browse:</strong> <a href="https://online.stanford.edu/" target="_blank">https://online.stanford.edu/</a></p>
+                        <h3>1. Stanford Online</h3>
+                        <p>Stanford Online is the main hub for free and paid online courses in health, healthcare systems, and public health.</p>
 
-                        <h3>2. Stanford Center for Health Education</h3>
-                        <p>The <strong>Stanford Center for Health Education</strong> offers structured online programs more directly related to health topics.</p>
-                        <strong>Professional Education Programs:</strong>
-                        <ul>
-                            <li>Self-paced online courses for health and wellness fields.</li>
-                            <li>Earn a certificate upon completion.</li>
-                            <li>Topics like Machine Learning in Medicine or Medical Teaching.</li>
-                        </ul>
-                        <strong>Graduate Health Education:</strong>
-                        <ul>
-                            <li>Online graduate-level courses in epidemiology, clinical research design, and biostatistics.</li>
-                        </ul>
-
-                        <h3>3. Stanford Medicine Continuing Medical Education (CME)</h3>
-                        <p><strong>Stanford School of Medicine</strong> through its CME program offers:</p>
-                        <ul>
-                            <li>A large catalog of online, on-demand medical education modules.</li>
-                            <li>Webinars, recorded lectures, and podcasts covering genetics, cardiology, nutrition, AI in healthcare, and more.</li>
-                            <li>Completion can lead to CME credits for professionals.</li>
-                        </ul>
-                        <p>🔗 <strong>CME Platform:</strong> <a href="https://stanford.cloud-cme.com/" target="_blank">https://stanford.cloud-cme.com/</a></p>
+                        <h3>2. Center for Health Education</h3>
+                        <p>Offers professional certificates in topics like Machine Learning in Medicine and Medical Teaching.</p>
                     </div>
                 `,
-                link: 'https://online.stanford.edu'
+                link: '[https://online.stanford.edu](https://online.stanford.edu)'
             },
             'coursera': {
-                logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Coursera-Logo_600x600.svg/1200px-Coursera-Logo_600x600.svg.png',
+                logo: '[https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Coursera-Logo_600x600.svg/1200px-Coursera-Logo_600x600.svg.png](https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Coursera-Logo_600x600.svg/1200px-Coursera-Logo_600x600.svg.png)',
                 subtitle: 'Academic Partner Platform',
                 title: 'Coursera for Medical Students',
                 content: `
                     <div class="report-content">
-                        <p>Coursera is an online platform that partners with leading universities to offer structured courses useful for medical students. It provides academic-level content that can strengthen both basic sciences and clinical understanding.</p>
-
-                        <h3>Why It’s Useful</h3>
+                        <p>Coursera partners with leading universities to offer structured courses useful for medical students.</p>
+                        <h3>Popular Courses</h3>
                         <ul>
-                            <li>Reinforces subjects like physiology, anatomy, immunology, and genetics.</li>
-                            <li>Offers courses in epidemiology and public health.</li>
-                            <li>Includes clinical reasoning and research methodology.</li>
-                            <li>Allows free auditing (certificate optional with payment).</li>
-                        </ul>
-
-                        <h3>Popular Medical-Related Courses</h3>
-                        <ul>
-                            <li><strong>Epidemiology: The Basic Science of Public Health</strong> – Johns Hopkins University</li>
+                            <li><strong>Epidemiology</strong> – Johns Hopkins University</li>
                             <li><strong>Medical Neuroscience</strong> – Duke University</li>
-                            <li><strong>Genetics and Evolution</strong> – University of California, San Diego</li>
-                            <li><strong>AI in Healthcare</strong> – Stanford University</li>
                         </ul>
-
-                        <h3>How to Start</h3>
-                        <p>Visit: <a href="https://www.coursera.org" target="_blank">https://www.coursera.org</a></p>
-                        <p>Search for keywords like “medicine,” “anatomy,” “physiology,” or “public health.”</p>
                     </div>
                 `,
-                link: 'https://www.coursera.org'
+                link: '[https://www.coursera.org](https://www.coursera.org)'
             }
         };
 
@@ -572,6 +586,8 @@
             const data = reports[id];
             const modal = document.getElementById('reportModal');
             const body = document.getElementById('reportBody');
+
+            if(!data) return; // الحماية من الأخطاء
 
             body.innerHTML = `
                 <div class="report-main-header">
