@@ -14,427 +14,230 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-    <style>
-        /* 
-           MEDORA PROFESSIONAL DESIGN SYSTEM v2.0
-           Designed for Clinical Excellence
-        */
-        :root {
-            /* Morning Mode Variables */
-            --primary: #2563eb;
-            --secondary: #3b82f6;
-            --accent: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --bg-image: url('https://images.unsplash.com/photo-1576089172869-4f5f6f315620?q=80&w=2000&auto=format&fit=crop');
-            --glass: rgba(255, 255, 255, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.5);
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --shadow: 0 20px 50px rgba(0,0,0,0.1);
-            --card-radius: 24px;
-        }
+<style>
 
-        [data-theme="icu"] {
-            /* ICU Night Mode Variables */
-            --primary: #38bdf8;
-            --secondary: #818cf8;
-            --accent: #34d399;
-            --bg-image: url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2053&auto=format&fit=crop');
-            --glass: rgba(15, 23, 42, 0.85);
-            --glass-border: rgba(51, 65, 85, 0.5);
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            --shadow: 0 25px 60px rgba(0,0,0,0.5);
-        }
+/* ===== MEDORA PROFESSIONAL UI v3 ===== */
 
-        * {
-            box-sizing: border-box;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+:root{
+    --primary:#2563eb;
+    --secondary:#3b82f6;
+    --accent:#10b981;
+    --danger:#ef4444;
+    --warning:#f59e0b;
+    --bg-image:url('https://images.unsplash.com/photo-1576089172869-4f5f6f315620?q=80&w=2000&auto=format&fit=crop');
+    --glass:rgba(255,255,255,0.78);
+    --glass-border:rgba(255,255,255,0.5);
+    --text-main:#1e293b;
+    --text-muted:#64748b;
+    --shadow:0 20px 50px rgba(0,0,0,0.12);
+    --radius:22px;
+}
 
-        body {
-            margin: 0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: var(--bg-image) no-repeat center center fixed;
-            background-size: cover;
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-        }
+[data-theme="icu"]{
+    --primary:#38bdf8;
+    --secondary:#818cf8;
+    --accent:#34d399;
+    --bg-image:url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2053&auto=format&fit=crop');
+    --glass:rgba(15,23,42,0.88);
+    --glass-border:rgba(51,65,85,0.5);
+    --text-main:#f1f5f9;
+    --text-muted:#94a3b8;
+    --shadow:0 25px 60px rgba(0,0,0,0.5);
+}
 
-        .overlay {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(0,0,0,0.1));
-            backdrop-filter: blur(8px);
-            z-index: -1;
-        }
+*{
+    box-sizing:border-box;
+    transition:.3s ease;
+}
 
-        /* --- HEADER & LOGO --- */
-        header {
-            padding: 20px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--glass);
-            border-bottom: 1px solid var(--glass-border);
-            backdrop-filter: blur(20px);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+body{
+    margin:0;
+    font-family:'Plus Jakarta Sans',sans-serif;
+    background:var(--bg-image) no-repeat center center fixed;
+    background-size:cover;
+    color:var(--text-main);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
 
-        .logo-box {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            cursor: pointer;
-        }
+.overlay{
+    position:fixed;
+    inset:0;
+    backdrop-filter:blur(12px);
+    background:linear-gradient(135deg,rgba(255,255,255,.05),rgba(0,0,0,.2));
+    z-index:-1;
+}
 
-        .medora-pulse {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 20px;
-            box-shadow: 0 8px 15px rgba(37, 99, 235, 0.3);
-            position: relative;
-        }
+/* ===== HEADER ===== */
 
-        .medora-pulse::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 12px;
-            border: 2px solid var(--primary);
-            animation: ripple 2s infinite;
-        }
+header{
+    padding:18px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:var(--glass);
+    border-bottom:1px solid var(--glass-border);
+    backdrop-filter:blur(20px);
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
 
-        @keyframes ripple {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(1.5); opacity: 0; }
-        }
+.logo-box{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    cursor:pointer;
+}
 
-        .logo-text h1 {
-            margin: 0;
-            font-size: 22px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+.medora-pulse{
+    width:46px;
+    height:46px;
+    border-radius:14px;
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 10px 20px rgba(37,99,235,.35);
+}
 
-        /* --- MAIN CONTAINER --- */
-        .main-wrapper {
-            max-width: 1100px;
-            margin: 40px auto;
-            width: 95%;
-            display: grid;
-            grid-template-columns: 1fr 350px;
-            gap: 30px;
-            flex-grow: 1;
-        }
+.medora-pulse svg{
+    width:26px;
+    height:26px;
+}
 
-        /* --- TO-DO CARD --- */
-        .todo-section {
-            background: var(--glass);
-            border-radius: var(--card-radius);
-            padding: 40px;
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(15px);
-        }
+.logo-text h1{
+    margin:0;
+    font-size:20px;
+    font-weight:800;
+    letter-spacing:-0.5px;
+    background:linear-gradient(to right,var(--primary),var(--secondary));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
 
-        .section-header {
-            margin-bottom: 30px;
-        }
+/* ===== MAIN WRAPPER ===== */
 
-        .section-header h2 {
-            font-size: 28px;
-            margin: 0;
-            font-weight: 800;
-        }
+.main-wrapper{
+    max-width:1200px;
+    margin:40px auto;
+    width:92%;
+    display:grid;
+    grid-template-columns:1fr 340px;
+    gap:30px;
+    flex-grow:1;
+}
 
-        .section-header p {
-            color: var(--text-muted);
-            margin: 5px 0 0;
-        }
+/* ===== TODO CARD ===== */
 
-        /* --- INPUT AREA --- */
-        .input-group {
-            background: rgba(255,255,255,0.2);
-            padding: 8px;
-            border-radius: 18px;
-            display: flex;
-            gap: 10px;
-            border: 1px solid var(--glass-border);
-            margin-bottom: 30px;
-        }
+.todo-section{
+    background:var(--glass);
+    border-radius:var(--radius);
+    padding:40px;
+    border:1px solid var(--glass-border);
+    box-shadow:var(--shadow);
+    backdrop-filter:blur(15px);
+}
 
-        .input-group input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            padding: 15px 20px;
-            color: var(--text-main);
-            font-size: 16px;
-            font-family: inherit;
-            outline: none;
-        }
+.section-header h2{
+    font-size:26px;
+    font-weight:800;
+}
 
-        .priority-select {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 0 15px;
-            color: var(--text-main);
-            font-weight: 600;
-            cursor: pointer;
-        }
+.input-group{
+    background:rgba(255,255,255,.25);
+    padding:8px;
+    border-radius:18px;
+    display:flex;
+    gap:10px;
+    border:1px solid var(--glass-border);
+    margin-bottom:25px;
+    flex-wrap:wrap;
+}
 
-        #addBtn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 0 25px;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
-        }
+.input-group input{
+    flex:1;
+    min-width:200px;
+    background:transparent;
+    border:none;
+    padding:14px 18px;
+    color:var(--text-main);
+    font-size:15px;
+    outline:none;
+}
 
-        #addBtn:hover {
-            transform: scale(1.05);
-            background: var(--secondary);
-        }
+.priority-select{
+    border-radius:12px;
+    padding:10px 14px;
+}
 
-        /* --- LIST STYLING --- */
-        ul {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+#addBtn{
+    padding:12px 20px;
+    border-radius:12px;
+}
 
-        li {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            padding: 20px;
-            border-radius: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            animation: slideIn 0.5s ease forwards;
-            position: relative;
-            overflow: hidden;
-        }
+/* ===== SIDEBAR ===== */
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+.sidebar{
+    display:flex;
+    flex-direction:column;
+    gap:25px;
+}
 
-        li.priority-emergency { border-left: 6px solid var(--danger); }
-        li.priority-urgent { border-left: 6px solid var(--warning); }
-        li.priority-routine { border-left: 6px solid var(--primary); }
+/* ===== RESPONSIVE ===== */
 
-        li.done {
-            opacity: 0.6;
-            filter: grayscale(0.5);
-        }
+@media(max-width:1024px){
+    .main-wrapper{
+        grid-template-columns:1fr;
+    }
+    .sidebar{
+        order:-1;
+    }
+}
 
-        li.done .task-text {
-            text-decoration: line-through;
-        }
+@media(max-width:768px){
+    header{
+        padding:15px 20px;
+    }
+    .main-wrapper{
+        width:95%;
+        margin:25px auto 120px;
+    }
+    .todo-section{
+        padding:25px;
+    }
+}
 
-        .task-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .task-text {
-            font-weight: 600;
-            font-size: 16px;
-        }
-
-        .task-meta {
-            display: block;
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 4px;
-        }
-
-        .task-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn-icon {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .btn-done { background: rgba(16, 185, 129, 0.1); color: var(--accent); }
-        .btn-done:hover { background: var(--accent); color: white; }
-
-        .btn-delete { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
-        .btn-delete:hover { background: var(--danger); color: white; }
-
-        /* --- SIDEBAR & PROGRESS --- */
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-
-        .stats-card {
-            background: var(--glass);
-            border-radius: var(--card-radius);
-            padding: 30px;
-            text-align: center;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(15px);
-        }
-
-        .progress-container {
-            position: relative;
-            width: 180px;
-            height: 180px;
-            margin: 20px auto;
-        }
-
-        svg {
-            transform: rotate(-90deg);
-        }
-
-        .circle-bg {
-            fill: none;
-            stroke: rgba(0,0,0,0.05);
-            stroke-width: 12;
-        }
-
-        .circle-fg {
-            fill: none;
-            stroke-width: 12;
-            stroke-linecap: round;
-            stroke-dasharray: 440;
-            stroke-dashoffset: 440;
-            transition: stroke-dashoffset 1s ease, stroke 0.5s ease;
-        }
-
-        .percentage {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 32px;
-            font-weight: 800;
-            color: var(--primary);
-        }
-
-        /* --- THEME TOGGLE --- */
-        .theme-switch {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            padding: 10px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-        }
-
-        /* --- BOTTOM NAV --- */
-        .bottom-nav {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--glass);
-            padding: 15px 40px;
-            border-radius: 50px;
-            border: 1px solid var(--glass-border);
-            display: flex;
-            gap: 40px;
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(25px);
-            z-index: 1000;
-        }
-
-        .bottom-nav a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 20px;
-            position: relative;
-        }
-
-        .bottom-nav a:hover, .bottom-nav a.active {
-            color: var(--primary);
-            transform: translateY(-5px);
-        }
-
-        /* --- NOTIFICATION --- */
-        #status-toast {
-            position: fixed;
-            bottom: 110px;
-            right: 30px;
-            padding: 15px 25px;
-            background: var(--primary);
-            color: white;
-            border-radius: 15px;
-            font-weight: 600;
-            box-shadow: var(--shadow);
-            display: none;
-            animation: fadeIn 0.3s forwards;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-    </style>
+</style>
 </head>
 <body>
 
-    <div class="overlay"></div>
+<div class="overlay"></div>
 
-    <header>
-        <div class="logo-box" onclick="window.location.href='dashboard.html'">
-            <div class="medora-pulse">
-                <i class="fas fa-heartbeat"></i>
-            </div>
-            <div class="logo-text">
-                <h1>MEDORA <span style="font-weight: 300; font-size: 14px;">| Clinical Hub</span></h1>
-            </div>
+<header>
+    <div class="logo-box" onclick="window.location.href='dashboard.html'">
+        <div class="medora-pulse">
+            <svg viewBox="0 0 24 24" fill="none">
+                <path d="M3 13C6 11 9 10 12 10C15 10 18 11 21 13C18 14 15 15 12 15C9 15 6 14 3 13Z" fill="white"/>
+                <path d="M12 10L10 6H14L12 10Z" fill="white"/>
+            </svg>
         </div>
-
-        <div style="display: flex; gap: 15px; align-items: center;">
-            <button class="theme-switch" onclick="toggleTheme()">
-                <i id="theme-icon" class="fas fa-sun"></i>
-                <span id="theme-text">Morning Mode</span>
-            </button>
-            <div id="user-info" style="font-size: 14px; font-weight: 600;">Authenticating...</div>
+        <div class="logo-text">
+            <h1>MEDORA <span style="font-weight:300;font-size:14px;">| Clinical Hub</span></h1>
         </div>
-    </header>
+    </div>
 
-    <main class="main-wrapper">
+    <div style="display:flex;gap:15px;align-items:center;">
+        <button class="theme-switch" onclick="toggleTheme()">
+            <i id="theme-icon" class="fas fa-sun"></i>
+            <span id="theme-text">Morning Mode</span>
+        </button>
+        <div id="user-info" style="font-size:14px;font-weight:600;">Authenticating...</div>
+    </div>
+</header>
+
+<main class="main-wrapper">
         <!-- Tasks Section -->
         <section class="todo-section">
             <div class="section-header">
@@ -454,12 +257,10 @@
                 </button>
             </div>
 
-            <ul id="list">
-                <!-- Tasks will be injected here -->
-            </ul>
+            <ul id="list"></ul>
         </section>
 
-        <!-- Sidebar Section -->
+        <!-- Sidebar -->
         <aside class="sidebar">
             <div class="stats-card">
                 <h3>Completion Rate</h3>
@@ -470,11 +271,15 @@
                     </svg>
                     <div class="percentage" id="progressText">0%</div>
                 </div>
-                <p id="statsSummary" style="color: var(--text-muted); font-size: 14px;">No tasks yet. Ready for your shift?</p>
+                <p id="statsSummary" style="color: var(--text-muted); font-size: 14px;">
+                    No tasks yet. Ready for your shift?
+                </p>
             </div>
 
             <div class="stats-card" style="text-align: left;">
-                <h4 style="margin-bottom: 10px;"><i class="fas fa-lightbulb" style="color: var(--warning);"></i> Medical Pearl</h4>
+                <h4 style="margin-bottom: 10px;">
+                    <i class="fas fa-lightbulb" style="color: var(--warning);"></i> Medical Pearl
+                </h4>
                 <p id="quote" style="font-style: italic; font-size: 13px; line-height: 1.5;">
                     "The good physician treats the disease; the great physician treats the patient who has the disease." — William Osler
                 </p>
@@ -491,177 +296,237 @@
 
     <div id="status-toast"></div>
 
-    <script>
-        // --- FIREBASE CONFIGURATION ---
-        // I kept your original config
-        const firebaseConfig = {
-            apiKey: "AIzaSyCRVWEvWa-xOi3NFjP-IdIaCBXNJoEOKqY",
-            authDomain: "medora-app-10e70.firebaseapp.com",
-            projectId: "medora-app-10e70"
-        };
+<script>
+/* ===========================
+   FIREBASE CONFIGURATION
+=========================== */
 
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+const firebaseConfig = {
+    apiKey: "AIzaSyCRVWEvWa-xOi3NFjP-IdIaCBXNJoEOKqY",
+    authDomain: "medora-app-10e70.firebaseapp.com",
+    projectId: "medora-app-10e70"
+};
 
-        // --- DOM ELEMENTS ---
-        const taskInput = document.getElementById("taskInput");
-        const prioritySelect = document.getElementById("prioritySelect");
-        const addBtn = document.getElementById("addBtn");
-        const list = document.getElementById("list");
-        const progressText = document.getElementById("progressText");
-        const progressCircle = document.getElementById("progressCircle");
-        const statsSummary = document.getElementById("statsSummary");
-        const toast = document.getElementById("status-toast");
-        const userInfo = document.getElementById("user-info");
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-        let userId = null;
+/* ===========================
+   DOM ELEMENTS
+=========================== */
 
-        // --- AUTHENTICATION ---
-        auth.onAuthStateChanged(user => {
-            if (!user) {
-                showToast("Redirecting to login...", "#ef4444");
-                setTimeout(() => window.location.href = "login.html", 2000);
-                return;
-            }
-            userId = user.uid;
-            userInfo.innerHTML = `<i class="fas fa-user-md"></i> ${user.email.split('@')[0]}`;
-            showToast("Clinical Data Synced ✔");
-            loadTasks();
+const taskInput = document.getElementById("taskInput");
+const prioritySelect = document.getElementById("prioritySelect");
+const addBtn = document.getElementById("addBtn");
+const list = document.getElementById("list");
+const progressText = document.getElementById("progressText");
+const progressCircle = document.getElementById("progressCircle");
+const statsSummary = document.getElementById("statsSummary");
+const toast = document.getElementById("status-toast");
+const userInfo = document.getElementById("user-info");
+
+let userId = null;
+
+/* ===========================
+   AUTH STATE
+=========================== */
+
+auth.onAuthStateChanged(user => {
+    if (!user) {
+        showToast("Redirecting to login...", "#ef4444");
+        setTimeout(() => window.location.href = "login.html", 2000);
+        return;
+    }
+
+    userId = user.uid;
+    userInfo.innerHTML = `<i class="fas fa-user-md"></i> ${user.email.split('@')[0]}`;
+    showToast("Clinical Data Synced ✔");
+    loadTasks();
+});
+
+/* ===========================
+   THEME TOGGLE
+=========================== */
+
+function toggleTheme() {
+    const html = document.documentElement;
+    const icon = document.getElementById("theme-icon");
+    const text = document.getElementById("theme-text");
+
+    if (html.getAttribute("data-theme") === "morning") {
+        html.setAttribute("data-theme", "icu");
+        icon.className = "fas fa-moon";
+        text.innerText = "ICU Night Mode";
+    } else {
+        html.setAttribute("data-theme", "morning");
+        icon.className = "fas fa-sun";
+        text.innerText = "Morning Mode";
+    }
+}
+
+/* ===========================
+   ADD TASK
+=========================== */
+
+addBtn.onclick = () => {
+    const text = taskInput.value.trim();
+    const priority = prioritySelect.value;
+
+    if (!text || !userId) {
+        taskInput.style.border = "1px solid var(--danger)";
+        return;
+    }
+
+    db.collection("users").doc(userId).collection("todos").add({
+        text: text,
+        priority: priority,
+        completed: false,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+        taskInput.value = "";
+        showToast("Task Added to Rounds");
+    }).catch(err => {
+        showToast("Sync Error: " + err.message, "#ef4444");
+    });
+};
+
+/* ===========================
+   LOAD TASKS
+=========================== */
+
+function loadTasks() {
+    db.collection("users")
+      .doc(userId)
+      .collection("todos")
+      .orderBy("timestamp", "desc")
+      .onSnapshot(snapshot => {
+
+        list.innerHTML = "";
+        let total = snapshot.size;
+        let done = 0;
+
+        if (total === 0) {
+            list.innerHTML =
+                `<li style="justify-content:center;color:var(--text-muted);">
+                    No current medical tasks. Take a break!
+                 </li>`;
+            updateProgress(0, 0);
+            return;
+        }
+
+        snapshot.forEach(doc => {
+            const task = doc.data();
+            if (task.completed) done++;
+
+            const li = document.createElement("li");
+            li.className =
+                `priority-${task.priority} ${task.completed ? 'done' : ''}`;
+
+            const time = task.timestamp
+                ? new Date(task.timestamp.toDate())
+                    .toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})
+                : "Just now";
+
+            li.innerHTML = `
+                <div class="task-info">
+                    <i class="fas ${task.completed ? 'fa-check-circle' : 'fa-notes-medical'}"
+                       style="color:${task.completed ? 'var(--accent)' : 'var(--primary)'};font-size:20px;">
+                    </i>
+                    <div>
+                        <span class="task-text">${task.text}</span>
+                        <span class="task-meta">
+                            <i class="far fa-clock"></i> ${time} | ${task.priority.toUpperCase()}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="task-actions">
+                    <button class="btn-icon btn-done"
+                        onclick="toggleTask('${doc.id}', ${task.completed})">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button class="btn-icon btn-delete"
+                        onclick="deleteTask('${doc.id}')">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+
+            list.appendChild(li);
         });
 
-        // --- THEME LOGIC ---
-        function toggleTheme() {
-            const html = document.documentElement;
-            const icon = document.getElementById("theme-icon");
-            const text = document.getElementById("theme-text");
-            
-            if (html.getAttribute("data-theme") === "morning") {
-                html.setAttribute("data-theme", "icu");
-                icon.className = "fas fa-moon";
-                text.innerText = "ICU Night Mode";
-            } else {
-                html.setAttribute("data-theme", "morning");
-                icon.className = "fas fa-sun";
-                text.innerText = "Morning Mode";
-            }
-        }
+        updateProgress(done, total);
+    });
+}
 
-        // --- ADD TASK ---
-        addBtn.onclick = () => {
-            const text = taskInput.value.trim();
-            const priority = prioritySelect.value;
-            
-            if (!text || !userId) {
-                taskInput.style.border = "1px solid var(--danger)";
-                return;
-            }
+/* ===========================
+   TASK ACTIONS
+=========================== */
 
-            db.collection("users").doc(userId).collection("todos").add({
-                text: text,
-                priority: priority,
-                completed: false,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => {
-                taskInput.value = "";
-                showToast("Task Added to Rounds");
-            }).catch(err => {
-                showToast("Sync Error: " + err.message, "#ef4444");
-            });
-        };
+window.toggleTask = (id, currentStatus) => {
+    db.collection("users")
+      .doc(userId)
+      .collection("todos")
+      .doc(id)
+      .update({ completed: !currentStatus });
+};
 
-        // --- LOAD & LISTEN TO TASKS ---
-        function loadTasks() {
-            db.collection("users")
-              .doc(userId)
-              .collection("todos")
-              .orderBy("timestamp", "desc")
-              .onSnapshot(snapshot => {
-                list.innerHTML = "";
-                let total = snapshot.size;
-                let done = 0;
+window.deleteTask = (id) => {
+    if (confirm("Confirm dismissal of this task?")) {
+        db.collection("users")
+          .doc(userId)
+          .collection("todos")
+          .doc(id)
+          .delete();
+        showToast("Task Dismissed", "#64748b");
+    }
+};
 
-                if (total === 0) {
-                    list.innerHTML = `<li style="justify-content:center; color:var(--text-muted);">No current medical tasks. Take a break!</li>`;
-                    updateProgress(0, 0);
-                    return;
-                }
+/* ===========================
+   PROGRESS UI
+=========================== */
 
-                snapshot.forEach(doc => {
-                    const task = doc.data();
-                    if (task.completed) done++;
+function updateProgress(done, total) {
+    const percent = total === 0 ? 0 :
+        Math.round((done / total) * 100);
 
-                    const li = document.createElement("li");
-                    li.className = `priority-${task.priority} ${task.completed ? 'done' : ''}`;
-                    
-                    const time = task.timestamp ? new Date(task.timestamp.toDate()).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "Just now";
+    progressText.innerText = percent + "%";
 
-                    li.innerHTML = `
-                        <div class="task-info">
-                            <i class="fas ${task.completed ? 'fa-check-circle' : 'fa-notes-medical'}" 
-                               style="color: ${task.completed ? 'var(--accent)' : 'var(--primary)'}; font-size: 20px;"></i>
-                            <div>
-                                <span class="task-text">${task.text}</span>
-                                <span class="task-meta"><i class="far fa-clock"></i> ${time} | ${task.priority.toUpperCase()}</span>
-                            </div>
-                        </div>
-                        <div class="task-actions">
-                            <button class="btn-icon btn-done" onclick="toggleTask('${doc.id}', ${task.completed})" title="Complete">
-                                <i class="fas fa-check"></i>
-                            </button>
-                            <button class="btn-icon btn-delete" onclick="deleteTask('${doc.id}')" title="Dismiss">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    `;
-                    list.appendChild(li);
-                });
+    const offset = 440 - (440 * percent) / 100;
+    progressCircle.style.strokeDashoffset = offset;
 
-                updateProgress(done, total);
-            });
-        }
+    if (percent < 30)
+        progressCircle.style.stroke = "var(--danger)";
+    else if (percent < 80)
+        progressCircle.style.stroke = "var(--warning)";
+    else
+        progressCircle.style.stroke = "var(--accent)";
 
-        // --- TASK ACTIONS ---
-        window.toggleTask = (id, currentStatus) => {
-            db.collection("users").doc(userId).collection("todos").doc(id).update({
-                completed: !currentStatus
-            });
-        };
+    statsSummary.innerText =
+        `${done} of ${total} clinical objectives met.`;
+}
 
-        window.deleteTask = (id) => {
-            if(confirm("Confirm dismissal of this task?")) {
-                db.collection("users").doc(userId).collection("todos").doc(id).delete();
-                showToast("Task Dismissed", "#64748b");
-            }
-        };
+/* ===========================
+   TOAST
+=========================== */
 
-        // --- PROGRESS & UI ---
-        function updateProgress(done, total) {
-            const percent = total === 0 ? 0 : Math.round((done / total) * 100);
-            progressText.innerText = percent + "%";
-            
-            const offset = 440 - (440 * percent) / 100;
-            progressCircle.style.strokeDashoffset = offset;
+function showToast(msg, color = "#2563eb") {
+    toast.innerText = msg;
+    toast.style.background = color;
+    toast.style.display = "block";
+    setTimeout(() => {
+        toast.style.display = "none";
+    }, 3000);
+}
 
-            // Dynamic Progress Color
-            if (percent < 30) progressCircle.style.stroke = "var(--danger)";
-            else if (percent < 80) progressCircle.style.stroke = "var(--warning)";
-            else progressCircle.style.stroke = "var(--accent)";
+/* ===========================
+   ENTER KEY
+=========================== */
 
-            statsSummary.innerText = `${done} of ${total} clinical objectives met.`;
-        }
+taskInput.addEventListener("keypress", e => {
+    if (e.key === "Enter") addBtn.click();
+});
 
-        function showToast(msg, color = "#2563eb") {
-            toast.innerText = msg;
-            toast.style.background = color;
-            toast.style.display = "block";
-            setTimeout(() => { toast.style.display = "none"; }, 3000);
-        }
-
-        // Allow 'Enter' key to add task
-        taskInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") addBtn.click();
-        });
-    </script>
+</script>
 </body>
 </html>
