@@ -9,14 +9,14 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@tanstack/react-router": "1.159.10",
-    "@tanstack/start": "1.159.10",
+    "@tanstack/react-router": "1.159.6",
+    "@tanstack/start": "1.159.6",
     "firebase": "^12.9.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@tanstack/router-cli": "1.159.9",
+    "@tanstack/router-cli": "1.159.6",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "@vitejs/plugin-react": "^4.2.0",
