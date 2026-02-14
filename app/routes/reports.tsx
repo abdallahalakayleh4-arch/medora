@@ -6,7 +6,7 @@ import { usePageTitle } from "../lib/usePageTitle";
 
 const reports = {
   harvard: {
-    logo: "[https://upload.wikimedia.org/wikipedia/en/thumb/2/29/Harvard_shield_wreath.svg/1200px-Harvard_shield_wreath.svg.png](https://upload.wikimedia.org/wikipedia/en/thumb/2/29/Harvard_shield_wreath.svg/1200px-Harvard_shield_wreath.svg.png)",
+    logo: "https://upload.wikimedia.org/wikipedia/en/thumb/2/29/Harvard_shield_wreath.svg/1200px-Harvard_shield_wreath.svg.png",
     subtitle: "HMX Online Learning",
     title: "Harvard Medical School",
     content: `
@@ -21,10 +21,10 @@ const reports = {
         <p>Covers core principles of homeostasis, cardiovascular and respiratory regulation, fluid balance and acid–base physiology.</p>
       </div>
     `,
-    link: "[https://learn.hms.harvard.edu](https://learn.hms.harvard.edu)",
+    link: "https://learn.hms.harvard.edu",
   },
   stanford: {
-    logo: "[https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Stanford_Cardinal_logo.svg/1200px-Stanford_Cardinal_logo.svg.png](https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Stanford_Cardinal_logo.svg/1200px-Stanford_Cardinal_logo.svg.png)",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Stanford_Cardinal_logo.svg/1200px-Stanford_Cardinal_logo.svg.png",
     subtitle: "Health & Professional Education",
     title: "Stanford University",
     content: `
@@ -36,10 +36,10 @@ const reports = {
         <p>Offers professional certificates in topics like Machine Learning in Medicine and Medical Teaching.</p>
       </div>
     `,
-    link: "[https://online.stanford.edu](https://online.stanford.edu)",
+    link: "https://online.stanford.edu",
   },
   coursera: {
-    logo: "[https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Coursera-Logo_600x600.svg/1200px-Coursera-Logo_600x600.svg.png](https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Coursera-Logo_600x600.svg/1200px-Coursera-Logo_600x600.svg.png)",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Coursera-Logo_600x600.svg/1200px-Coursera-Logo_600x600.svg.png",
     subtitle: "Academic Partner Platform",
     title: "Coursera for Medical Students",
     content: `
@@ -52,7 +52,7 @@ const reports = {
         </ul>
       </div>
     `,
-    link: "[https://www.coursera.org](https://www.coursera.org)",
+    link: "https://www.coursera.org",
   },
 } as const;
 

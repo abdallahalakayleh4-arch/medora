@@ -15,6 +15,7 @@ const legacyLinks: Record<string, string> = {
   "calculators.html": "/calculators",
   "knowledge.html": "/knowledge",
   "reports.html": "/reports",
+  "library.html": "/reports",
   "scores.html": "/scores",
   "timer.html": "/timer",
   "todo.html": "/todo",
