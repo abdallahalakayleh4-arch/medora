@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Medora | Global Medical Courses & Reports</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <link href="[https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap](https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap)" rel="stylesheet">
+    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
+
+    <style>
+        /* =====================================================
+           CORE DESIGN SYSTEM (MEDORA V3 - RESPONSIVE)
+        ===================================================== */
+        :root {
+            --bg-body: #020617;
+            --bg-nav: rgba(15, 23, 42, 0.95);
+            --glass-card: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --primary: #3a86ff;
+            --accent: #38bdf8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --glass-blur: blur(25px);
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --shadow-lg: 0 20px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) var(--bg-body);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #020617 70%);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+            padding-bottom: 80px;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: var(--bg-nav);
+            backdrop-filter: var(--glass-blur);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            z-index: 2000;
+            transition: var(--transition);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .medora-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            box-shadow: 0 0 20px rgba(58, 134, 255, 0.4);
+        }
+
+        .nav-brand h1 {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-center-links {
+            display: flex;
+            gap: 30px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav-center-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 15px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .nav-center-links a:hover { color: #fff; }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 600;
+            padding: 10px 18px;
+            border-radius: 12px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border);
+            white-space: nowrap;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(58, 134, 255, 0.15);
+            color: #fff;
+            border-color: rgba(58, 134, 255, 0.4);
+        }
+
+        /* LAYOUT & CONTAINER */
+        .wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 120px 20px 60px;
+            width: 100%;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 0 10px;
+        }
+
+        .hero-section h2 {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 800;
+            background: linear-gradient(to bottom, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        .hero-section p {
+            color: var(--text-muted);
+            font-size: clamp(16px, 3vw, 20px);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* GRID & CARDS */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            gap: 30px;
+        }
+
+        .course-card {
+            background: var(--glass-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--transition);
+            backdrop-filter: var(--glass-blur);
+            display: flex;
+            flex-direction: column;
+            min-height: 480px; 
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .course-card:active {
+            transform: scale(0.98);
+        }
+
+        .card-banner {
+            height: 220px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .course-card:hover .card-banner img { transform: scale(1.1); }
+
+        .card-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            z-index: 10;
+        }
+
+        .card-body {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-body h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #fff;
+            line-height: 1.3;
+        }
+
+        .card-body p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--glass-border);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .card-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .btn-action {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* MODAL */
+        .report-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-body);
+            z-index: 3000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .report-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--glass-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.6s ease;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .report-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .close-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+        
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .report-main-header {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .report-main-logo {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            background: #fff;
+            border-radius: 20px;
+            padding: 10px;
+        }
+
+        .report-title-area h4 {
+            color: var(--accent);
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .report-title-area h1 {
+            font-size: 36px;
+            line-height: 1.2;
+        }
+        
+        .report-footer-actions {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid var(--glass-border);
+        }
+        
+        .btn-primary {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+        
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        /* MEDIA QUERIES */
+        @media (max-width: 1024px) {
+            .nav-center-links { display: none; }
+            .wrapper { padding-top: 100px; }
+        }
+
+        @media (max-width: 768px) {
+            .navbar { height: 70px; padding: 0 15px; }
+            .nav-brand h1 { display: none; }
+            .course-grid { grid-template-columns: 1fr; gap: 20px; }
+            .report-container { padding: 25px 20px; }
+            .report-main-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+            .report-main-logo { width: 80px; height: 80px; }
+            .report-title-area h1 { font-size: 28px; }
+        }
+
+        footer {
+            margin-top: 60px;
+            padding: 40px 20px;
+            border-top: 1px solid var(--glass-border);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="#" class="nav-brand">
+            <div class="medora-logo"><i class="fas fa-microscope"></i></div>
+            <h1>Medora</h1>
+        </a>
+
+        <div class="nav-center-links">
+            <a href="#">About Us</a>
+            <a href="#">Connect</a>
+            <a href="#">Policy</a>
+        </div>
+
+        <div class="nav-right">
+            <a href="dashboard.html" class="nav-link"><i class="fas fa-columns"></i> <span>Dashboard</span></a>
+            <a href="library.html" class="nav-link active"><i class="fas fa-book-medical"></i> <span>Courses</span></a>
+        </div>
+    </nav>
+
+    <div class="wrapper">
+        
+        <section class="hero-section">
+            <h2>Explore Medical Intelligence</h2>
+            <p>Curated courses and reports from world-leading institutions.</p>
+        </section>
+
+        <div class="course-grid">
+            
+            <article class="course-card" onclick="openReport('harvard')">
+                <div class="card-banner">
+                    <div class="card-badge">Ivy League</div>
+                    <img src="[https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Harvard_Wreath_Logo_1.svg/1200px-Harvard_Wreath_Logo_1.svg.png](https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Harvard_Wreath_Logo_1.svg/1200px-Harvard_Wreath_Logo_1.svg.png)" alt="Harvard">
+                </div>
+                <div class="card-body">
+                    <h3>Harvard Medical School</h3>
+                    <p>HMX Online Learning: Immunology, Physiology, and Genetics fundamentals.</p>
+                    <div class="card-footer">
+                        <div class="card-meta">
+                            <span><i class="far fa-clock"></i> Self-Paced</span>
+                            <span><i class="fas fa-certificate"></i> Cert</span>
+                        </div>
+                        <span class="btn-action">View Report <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="course-card" onclick="openReport('stanford')">
+                <div class="card-banner">
+                    <div class="card-badge">Top Tier</div>
+                    <img src="[https://identity.stanford.edu/wp-content/uploads/sites/3/2020/07/block-s-right.png](https://identity.stanford.edu/wp-content/uploads/sites/3/2020/07/block-s-right.png)" alt="Stanford">
+                </div>
+                <div class="card-body">
+                    <h3>Stanford University</h3>
+                    <p>Center for Health Education: Artificial Intelligence in Healthcare and Nutrition.</p>
+                    <div class="card-footer">
+                        <div class="card-meta">
+                            <span><i class="far fa-play-circle"></i> On-Demand</span>
+                            <span><i class="fas fa-user-md"></i> CME</span>
+                        </div>
+                        <span class="btn-action">View Report <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="course-card" onclick="openReport('coursera')">
+                <div class="card-banner">
+                    <div class="card-badge">Partner</div>
+                    <img src="[https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Coursera-Logo_600x600.svg/1200px-Coursera-Logo_600x600.svg.png](https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Coursera-Logo_600x600.svg/1200px-Coursera-Logo_600x600.svg.png)" alt="Coursera">
+                </div>
+                <div class="card-body">
+                    <h3>Coursera for Med Students</h3>
+                    <p>Epidemiology, Neuroscience, and Public Health from partner universities.</p>
+                    <div class="card-footer">
+                        <div class="card-meta">
+                            <span><i class="fas fa-globe"></i> Multi-Uni</span>
+                            <span><i class="fas fa-laptop"></i> Online</span>
+                        </div>
+                        <span class="btn-action">View Report <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </div>
+
+    <div id="reportModal" class="report-modal">
+        <div class="report-container">
+            <div class="report-nav">
+                <button class="close-btn" onclick="closeReport()">
+                    <i class="fas fa-arrow-left"></i> Back to Library
+                </button>
+                <div class="medora-logo" style="width:32px; height:32px; font-size:14px;">M</div>
+            </div>
+            <div id="reportBody"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <p style="color: var(--text-muted); font-size: 14px;">&copy; 2024 Medora Medical Library. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        /* =====================================================
+           REPORT DATABASE
+        ===================================================== */
+        const reports = {
+            'harvard': {
+                logo: '[https://upload.wikimedia.org/wikipedia/en/thumb/2/29/Harvard_shield_wreath.svg/1200px-Harvard_shield_wreath.svg.png](https://upload.wikimedia.org/wikipedia/en/thumb/2/29/Harvard_shield_wreath.svg/1200px-Harvard_shield_wreath.svg.png)',
+                subtitle: 'HMX Online Learning',
+                title: 'Harvard Medical School',
+                content: `
+                    <div class="report-content">
+                        <h3>1. Program Overview</h3>
+                        <p>The <strong>HMX Online Learning</strong> program from <strong>Harvard Medical School</strong> provides in-depth foundational training in biomedical sciences.</p>
+                        
+                        <h3>2. Immunology Fundamentals</h3>
+                        <p>This course explores innate and adaptive immune responses, immune system regulation, and dysfunction.</p>
+                        
+                        <h3>3. Physiology Fundamentals</h3>
+                        <p>Covers core principles of homeostasis, cardiovascular and respiratory regulation, fluid balance and acid–base physiology.</p>
+                    </div>
+                `,
+                link: '[https://learn.hms.harvard.edu](https://learn.hms.harvard.edu)'
+            },
+            'stanford': {
+                logo: '[https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Stanford_Cardinal_logo.svg/1200px-Stanford_Cardinal_logo.svg.png](https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Stanford_Cardinal_logo.svg/1200px-Stanford_Cardinal_logo.svg.png)',
+                subtitle: 'Health & Professional Education',
+                title: 'Stanford University',
+                content: `
+                    <div class="report-content">
+                        <h3>1. Stanford Online</h3>
+                        <p>Stanford Online is the main hub for free and paid online courses in health, healthcare systems, and public health.</p>
+
+                        <h3>2. Center for Health Education</h3>
+                        <p>Offers professional certificates in topics like Machine Learning in Medicine and Medical Teaching.</p>
+                    </div>
+                `,
+                link: '[https://online.stanford.edu](https://online.stanford.edu)'
+            },
+            'coursera': {
+                logo: '[https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Coursera-Logo_600x600.svg/1200px-Coursera-Logo_600x600.svg.png](https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Coursera-Logo_600x600.svg/1200px-Coursera-Logo_600x600.svg.png)',
+                subtitle: 'Academic Partner Platform',
+                title: 'Coursera for Medical Students',
+                content: `
+                    <div class="report-content">
+                        <p>Coursera partners with leading universities to offer structured courses useful for medical students.</p>
+                        <h3>Popular Courses</h3>
+                        <ul>
+                            <li><strong>Epidemiology</strong> – Johns Hopkins University</li>
+                            <li><strong>Medical Neuroscience</strong> – Duke University</li>
+                        </ul>
+                    </div>
+                `,
+                link: '[https://www.coursera.org](https://www.coursera.org)'
+            }
+        };
+
+        /* =====================================================
+           CORE LOGIC (MODAL SYSTEM)
+        ===================================================== */
+        function openReport(id) {
+            const data = reports[id];
+            const modal = document.getElementById('reportModal');
+            const body = document.getElementById('reportBody');
+
+            if(!data) return; // الحماية من الأخطاء
+
+            body.innerHTML = `
+                <div class="report-main-header">
+                    <img src="${data.logo}" class="report-main-logo" alt="Logo">
+                    <div class="report-title-area">
+                        <h4>${data.subtitle}</h4>
+                        <h1>${data.title}</h1>
+                    </div>
+                </div>
+                ${data.content}
+                <div class="report-footer-actions">
+                    <a href="${data.link}" target="_blank" class="btn-primary">Visit Official Institution <i class="fas fa-external-link-alt"></i></a>
+                </div>
+            `;
+
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Stop scrolling
+        }
+
+        function closeReport() {
+            document.getElementById('reportModal').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Enable scrolling
+        }
+
+        // Close on escape key
+        window.addEventListener('keydown', (e) => {
+            if(e.key === 'Escape') closeReport();
+        });
+    </script>
+</body>
+</html>

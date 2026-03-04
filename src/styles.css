@@ -1,0 +1,59 @@
+:root {
+  color-scheme: dark;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #0d1117;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-height: 100vh;
+}
+
+header {
+  border-bottom: 1px solid #30363d;
+  padding: 0.75rem 1rem;
+  background: #161b22;
+}
+
+h1 {
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.nav-link {
+  color: #8b949e;
+  text-decoration: none;
+  border: 1px solid #30363d;
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+.nav-link.active {
+  color: #ffffff;
+  border-color: #58a6ff;
+  background: #1f6feb33;
+}
+
+main {
+  min-height: 0;
+}
+
+.legacy-frame {
+  width: 100%;
+  border: 0;
+  min-height: calc(100vh - 102px);
+  display: block;
+  background: #fff;
+}
